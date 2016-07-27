@@ -1,4 +1,4 @@
-*.log
-*.project
+.log
+.project
 bin/
-*.classpath
+.classpath
