@@ -9,7 +9,6 @@ public class EnglishCalculator {
 			return num1 * num2;
 		case "plus":
 			return num1 + num2;
-
 		case "minus":
 			return num1 - num2;
 		case "divided":
@@ -20,7 +19,5 @@ public class EnglishCalculator {
 		default:
 			throw new IllegalArgumentException("not a valid operation");
 		}
-
 	}
-
 }
