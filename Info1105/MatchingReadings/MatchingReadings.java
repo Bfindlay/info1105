@@ -64,7 +64,6 @@ public class MatchingReadings {
 				maxEntry = entry;
 			}
 		}
-
 		return maxEntry;
 	}
 
