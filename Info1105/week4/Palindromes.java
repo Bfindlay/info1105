@@ -5,6 +5,8 @@ import java.util.Stack;
 public class Palindromes {
 
 	public static void main(String[] args) {
+
+		// TESTS Because CBF to write a junit test suite
 		boolean result = isPalindrome("racecar");
 		String test1 = "Madam, I'm Adam";
 		String test2 = "Never odd or even";
@@ -46,6 +48,7 @@ public class Palindromes {
 		return true;
 	}
 
+	// sentences using the recursive check
 	public static boolean isPalindromeSentence(String sentence) {
 		Stack<Character> s = new Stack<>();
 		char[] arr = sentence.replaceAll("[^A-Za-z0-9]", "").toLowerCase().toCharArray();
