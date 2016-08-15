@@ -422,6 +422,7 @@ public class LinkedEnhancedPositionalList<E> implements EnhancedPositionalList<E
 			current = this.after(current);
 		}
 		return this.first();
+
 	}
 
 	/**
@@ -444,7 +445,11 @@ public class LinkedEnhancedPositionalList<E> implements EnhancedPositionalList<E
 			current = this.before(current);
 		}
 		return this.first();
+
+
 	}
+
+	
 
 	/**
 	 * Inserts a list of elements at the front of the list.

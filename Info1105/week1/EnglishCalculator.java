@@ -1,3 +1,5 @@
+package week1;
+
 public class EnglishCalculator {
 
 	public static double calculate(String s) {

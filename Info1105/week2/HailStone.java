@@ -5,19 +5,28 @@ import java.util.List;
 
 public class HailStone {
 
-	static ArrayList<Integer> list = new ArrayList<Integer>();
-
 	public static List<Integer> hailstone(int n) {
+		List<Integer> list = new ArrayList<Integer>();
 		list.add(n);
-		if (n == 1)
-			return list;
-		return (n % 2 == 0) ? hailstone(n / 2) : hailstone((n * 3) + 1);
-
+		while (n != 1) {
+			if ((n & 1) == 0)
+				n = n / 2;
+			else
+				n = 3 * n + 1;
+			list.add(n);
+		}
+		return list;
 	}
 
 	public static void main(String[] args) {
-		hailstone(24);
-		for(int i : list){
+		List<Integer> list = new ArrayList<Integer>();
+		list = hailstone(1);
+		for (int i : list) {
+			System.out.println(i);
+		}
+		System.out.println("___________________________");
+		list = hailstone(2);
+		for (int i : list) {
 			System.out.println(i);
 		}
 	}
