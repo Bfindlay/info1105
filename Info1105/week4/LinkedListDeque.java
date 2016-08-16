@@ -8,7 +8,7 @@ public class LinkedListDeque<E> implements Deque<E> {
 	}
 
 	// NESTED NODE CLASS
-	static class Node<E> {
+	private static class Node<E> {
 		private E data;
 		private Node<E> next;
 		private Node<E> prev;
@@ -48,8 +48,8 @@ public class LinkedListDeque<E> implements Deque<E> {
 
 	public LinkedListDeque() {
 		this.head = new Node<>(null, null, null);
-		this.tail = new Node<>(null, tail, null);
-		head.setNext(tail);
+		this.tail = new Node<>(null, head, null);
+		head.next = tail;
 		this.size = 0;
 	}
 
@@ -93,23 +93,30 @@ public class LinkedListDeque<E> implements Deque<E> {
 
 	@Override
 	public void addLast(E element) {
-		Node<E> newNode = new Node<E>(element, this.tail.prev, this.tail.prev.next);
+		Node<E> newNode = new Node<E>(element, this.tail.prev, this.tail);
 		tail.prev.next = newNode;
 		tail.prev = newNode;
 		size++;
-
 	}
 
 	@Override
 	public E pollFirst() {
-		// TODO Auto-generated method stub
-		return null;
+		// get the data from first element
+		E data = head.getNext().getData();
+		// Delete the first node and set head.next.next to head.next
+		head.next = head.getNext().getNext();
+		// reduce size by 1;
+		size--;
+		return data;
 	}
 
 	@Override
+	// TODO fix the public class declarations
 	public E pollLast() {
-		// TODO Auto-generated method stub
-		return null;
+		E data = tail.getPrev().getData();
+		tail.prev = tail.prev.prev;
+		size--;
+		return data;
 	}
 
 }
