@@ -13,15 +13,31 @@ public class LinkedListDequeTest {
 	}
 
 	@Test
+	public void testPeakLast() {
+		LinkedListDeque<String> deque = new LinkedListDeque<>();
+		deque.addFirst("A");
+		assertEquals("A", deque.peekLast());
+	}
+
+	@Test
+	public void testPeakFirst() {
+		LinkedListDeque<String> deque = new LinkedListDeque<>();
+		deque.addFirst("A");
+		assertEquals("A", deque.peekFirst());
+	}
+
+	@Test
 	public void testAddFirst() {
 		LinkedListDeque<String> deque = new LinkedListDeque<>();
 		deque.addFirst("hello");
-		assertEquals("hello", deque.peekFirst());
+		deque.addFirst("new Hello");
+		assertEquals("new Hello", deque.peekFirst());
 	}
 
 	@Test
 	public void testAddLast() {
 		LinkedListDeque<String> deque = new LinkedListDeque<>();
+		// deque.addFirst("first");
 		deque.addLast("last");
 		assertEquals("last", deque.peekLast());
 	}
@@ -37,6 +53,24 @@ public class LinkedListDequeTest {
 	public void testEmpty() {
 		LinkedListDeque<String> deque = new LinkedListDeque<>();
 		assertEquals(true, deque.isEmpty());
+	}
+
+	@Test
+	public void testPollFirst() {
+		LinkedListDeque<String> deque = new LinkedListDeque<>();
+		deque.addFirst("A");
+		deque.addLast("B");
+		System.out.println(deque.size());
+		assertEquals("A", deque.pollFirst());
+		System.out.println(deque.size());
+	}
+
+	@Test
+	public void testPollLast() {
+		LinkedListDeque<String> deque = new LinkedListDeque<>();
+		deque.addFirst("A");
+		deque.addLast("B");
+		assertEquals("B", deque.pollLast());
 	}
 
 }
