@@ -17,7 +17,7 @@ public class Fibonacci {
 	}
 
 	public static void main(String[] args) {
-		Stack<Integer> test = getNumbers(3);
+		Stack<Integer> test = getNumbers(10000);
 		System.out.println(test);
 	}
 }

@@ -6,8 +6,8 @@ public class Palindromes {
 
 	public static void main(String[] args) {
 
-		// TESTS Because CBF to write a junit test suite
-		boolean result = isPalindrome("racecar");
+		// TESTS Because CBF to write a junit test
+		boolean result = isPalindrome("");
 		String test1 = "Madam, I'm Adam";
 		String test2 = "Never odd or even";
 		String testFail = "Hello World";
@@ -27,7 +27,6 @@ public class Palindromes {
 			s.push(c);
 		}
 		return check(arr, s, 0);
-
 	}
 
 	// With recursion
@@ -35,15 +34,13 @@ public class Palindromes {
 		if (i == arr.length)
 			return true;
 		return (arr[i] == s.pop()) ? check(arr, s, i + 1) : false;
-
 	}
 
 	// Without recursion
 	public static boolean check(char[] arr, Stack<Character> s) {
 		for (int i = 0; i < arr.length; i++) {
-			if (s.pop() != arr[i]) {
+			if (s.pop() != arr[i])
 				return false;
-			}
 		}
 		return true;
 	}
