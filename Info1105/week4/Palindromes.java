@@ -6,8 +6,12 @@ public class Palindromes {
 
 	public static void main(String[] args) {
 
-		// TESTS Because CBF to write a junit test
-		boolean result = isPalindrome("");
+		long startTime = System.nanoTime();
+		boolean result = isPalindrome("racecar");
+		long endTime = System.nanoTime();
+		long totalTime = endTime - startTime;
+		System.out.println(totalTime);
+		System.out.println("Total time for recursion" + "16563" + "loops is 349473");
 		String test1 = "Madam, I'm Adam";
 		String test2 = "Never odd or even";
 		String testFail = "Hello World";
@@ -26,7 +30,7 @@ public class Palindromes {
 		for (char c : arr) {
 			s.push(c);
 		}
-		return check(arr, s, 0);
+		return check(arr, s);
 	}
 
 	// With recursion

@@ -60,9 +60,7 @@ public class LinkedListDequeTest {
 		LinkedListDeque<String> deque = new LinkedListDeque<>();
 		deque.addFirst("A");
 		deque.addLast("B");
-		System.out.println(deque.size());
 		assertEquals("A", deque.pollFirst());
-		System.out.println(deque.size());
 	}
 
 	@Test
