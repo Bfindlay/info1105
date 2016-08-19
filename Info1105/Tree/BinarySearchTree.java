@@ -2,12 +2,13 @@ package Tree;
 
 import java.util.Iterator;
 
-public class BinaryTree<E> implements Tree<E> {
+public class BinarySearchTree<E> {
 
 	private int size;
-	private TreeNode<E> root;
 
-	public BinaryTree() {
+	private TreeNode root;
+
+	public BinarySearchTree() {
 		this.size = 0;
 		this.root = null;
 	}
@@ -15,21 +16,30 @@ public class BinaryTree<E> implements Tree<E> {
 	public void addRoot(E element) {
 		// TODO fix if root exists
 		if (this.root == null) {
-			TreeNode<E> root = new TreeNode<E>(element, null, null, null);
+			TreeNode root = new TreeNode(element, null, null, null);
 			this.root = root;
 			size++;
 		}
 	}
 
+	public void insert(E element) {
+		TreeNode<E> node;
+		E leftdata;
+		E rightData;
+	}
+
 	public void addLeft(E element) {
-		TreeNode<E> node = new TreeNode<E>();
-		
+		// TODO fix constructor and set parent of current node
+		TreeNode<E> node = new TreeNode<E>(element, null, null, null);
+
 		if (root.left() == null) {
 			root.setLeft(node);
 		} else {
 			TreeNode<E> currentNode = root.left();
 			for (int i = 0; i < size; i++) {
-				currentNode = 
+				if (currentNode.left() != null) {
+					currentNode.setLeft(node);
+				}
 			}
 		}
 	}
