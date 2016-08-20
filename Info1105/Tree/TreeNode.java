@@ -1,6 +1,6 @@
 package Tree;
 
-public class TreeNode<E> {
+public class TreeNode<E extends Comparable<E>> implements Comparable<TreeNode<E>> {
 
 	private E element;
 	private TreeNode<E> parent;
@@ -14,8 +14,13 @@ public class TreeNode<E> {
 		this.right = right;
 	}
 
+	@Override
+	public int compareTo(TreeNode<E> node) {
+		return node.element.compareTo(this.element);
+	}
+
 	public E element() {
-		return element;
+		return this.element;
 	}
 
 	public void setElement(E element) {
@@ -45,4 +50,5 @@ public class TreeNode<E> {
 	public void setRight(TreeNode<E> right) {
 		this.right = right;
 	}
+
 }
