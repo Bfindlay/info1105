@@ -14,33 +14,10 @@ public class BinarySearchTreeTest {
 
 	@Test
 	public void testCompare() {
-		BinarySearchTree<Integer> bst = new BinarySearchTree<Integer>();
-		TreeNode<Integer> newNode = new TreeNode<Integer>(10, null, null, null);
-		TreeNode<Integer> testNode2 = new TreeNode<Integer>(9, null, null, null);
-		TreeNode<Integer> testNode3 = new TreeNode<Integer>(11, null, null, null);
+		BinarySearchTree<Integer> bst = new BinarySearchTree<>();
+		TreeNode<Integer> newNode = new TreeNode(10, null, null, null);
 		bst.addRoot(10);
 		assertEquals(0, bst.root().compareTo(newNode));
-		// assertEquals(0, bst.root().element().compareTo(newNode.element()));
-		// assertEquals(1, bst.root().element().compareTo(testNode2.element()));
-		// assertEquals(-1,
-		// bst.root().element().compareTo(testNode3.element()));
-
-	}
-
-	@Test
-	public void testIsRoot() {
-		BinarySearchTree<Integer> bst = new BinarySearchTree<>();
-		bst.addRoot(10);
-		assertEquals(true, bst.isRoot(bst.root()));
-
-	}
-
-	@Test
-	public void testRootValue() {
-		BinarySearchTree<Integer> bst = new BinarySearchTree<>();
-		bst.addRoot(10);
-		int element = bst.root().element();
-		assertEquals(10, element);
 	}
 
 	@Test
@@ -49,6 +26,21 @@ public class BinarySearchTreeTest {
 		assertEquals(0, bt.size());
 		bt.addRoot(10);
 		assertEquals(1, bt.size());
+	}
+
+	@Test
+	public void testInsert() {
+		BinarySearchTree<Integer> bst = new BinarySearchTree<>();
+		bst.addRoot(10);
+		assertEquals(1, bst.size());
+		bst.insert(9);
+		assertEquals(2, bst.size());
+		int element = bst.root().left().element();
+		assertEquals(9, element);
+		bst.insert(11);
+		assertEquals(3, bst.size());
+		int element_2 = bst.root().right().element();
+		assertEquals(11, element_2);
 	}
 
 	@Test
