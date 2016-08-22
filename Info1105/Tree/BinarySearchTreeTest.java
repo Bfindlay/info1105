@@ -3,6 +3,8 @@ package Tree;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BinarySearchTreeTest {
 
@@ -26,6 +28,33 @@ public class BinarySearchTreeTest {
 		assertEquals(0, bt.size());
 		bt.addRoot(10);
 		assertEquals(1, bt.size());
+	}
+
+	@Test
+	public void testChildren() {
+		BinarySearchTree<Integer> bst = new BinarySearchTree<>();
+		List<TreeNode<Integer>> list = new ArrayList<>();
+		bst.addRoot(10);
+		bst.insert(11);
+		bst.insert(9);
+		list = bst.children(bst.root());
+		int test1 = list.get(0).element();
+		int test2 = list.get(1).element();
+		assertEquals(9, test1);
+		assertEquals(11, test2);
+	}
+
+	@Test
+	public void testNumChildren() {
+		BinarySearchTree<Integer> bst = new BinarySearchTree<>();
+		bst.addRoot(10);
+		assertEquals(0, bst.numChildren(bst.root()));
+		bst.insert(11);
+		assertEquals(1, bst.numChildren(bst.root()));
+		bst.insert(9);
+		assertEquals(2, bst.numChildren(bst.root()));
+		bst.insert(12);
+		assertEquals(2, bst.numChildren(bst.root()));
 	}
 
 	@Test

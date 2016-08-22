@@ -1,6 +1,8 @@
 package Tree;
 
 import java.util.Iterator;
+import java.util.List;
+import java.util.ArrayList;
 
 public class BinarySearchTree<T extends Comparable<T>> {
 
@@ -19,7 +21,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
 		size++;
 	}
 
-	// TODO split into add left / addright helpers
+	// TODO fix this mess
 	public void insert(T element) {
 		TreeNode<T> insert_node = new TreeNode<>(element, null, null, null);
 		if (this.root == null) {
@@ -78,14 +80,23 @@ public class BinarySearchTree<T extends Comparable<T>> {
 		return p.Parent();
 	}
 
-	public TreeNode<T> children(TreeNode<T> p) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
+	public List<TreeNode<T>> children(TreeNode<T> p) throws IllegalArgumentException {
+		List<TreeNode<T>> list = new ArrayList<TreeNode<T>>();
+		if (p.left() != null)
+			list.add(p.left());
+		if (p.right() != null)
+			list.add(p.right());
+		return list;
 	}
 
 	public int numChildren(TreeNode<T> p) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return 0;
+		// TODO fix null pointer when no root node exists;
+		int numChildren = 0;
+		if (p.left() != null)
+			numChildren++;
+		if (p.right() != null)
+			numChildren++;
+		return numChildren;
 	}
 
 	public boolean isInternal(TreeNode<T> p) throws IllegalArgumentException {
