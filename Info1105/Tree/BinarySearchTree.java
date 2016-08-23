@@ -54,6 +54,12 @@ public class BinarySearchTree<T extends Comparable<T>> {
 		}
 	}
 
+	public BinarySearchTree<T> mirror() {
+		BinarySearchTree<T> mirrored = this;
+
+		return new BinarySearchTree<T>();
+	}
+
 	public int size() {
 		return this.size;
 	}
