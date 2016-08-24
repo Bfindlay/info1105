@@ -22,6 +22,8 @@ package week5;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import Tree.TreeNode;
+
 /**
  * Concrete implementation of a binary tree using a node-based, linked
  * structure.
@@ -371,16 +373,15 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
 	private int countLeaves(Position<E> p) {
 		Node<E> node = validate(p);
 		if ((node.getLeft() == null) && (node.getRight() == null)) {
-			// TODO: base case here, for node without children
+			return 1;
 		} else {
 			// recursive cases, depending on which child nodes exist
 			if (node.getRight() == null) {
-				// there is only a left child
 				return countLeaves(node.getLeft());
 			} else if (node.getLeft() == null) {
-				// TODO: fill the code where there is only a right child
+				return countLeaves(node.getRight());
 			} else {
-				// TODO: fill in code when two children
+				return countLeaves(node.getRight()) + countLeaves(node.getLeft());
 			}
 		}
 	}
@@ -388,16 +389,54 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
 	// ----------- TUTORIAL exercise 2 -----------
 	/** Returns true if the tree is proper, false otherwise */
 	public boolean isProper() {
-		// TODO: implement this
+		return isProperHelp(this.root);
+	}
+
+	public boolean isProperHelp(Node<E> node) {
+		if (node == null)
+			return true;
+
+		// if leaf node
+		if (node.left == null && node.right == null)
+			return true;
+
+		// if both left and right subtrees are not null
+		// the are full
+		if ((node.left != null) && (node.right != null))
+			return (isProperHelp(node.left) && isProperHelp(node.right));
+
+		// if none work
 		return false;
 	}
 
 	// ----------- TUTORIAL exercise 3 -----------
 	/** Returns a mirrored copy of the tree */
 	public LinkedBinaryTree<E> mirror() {
-		LinkedBinaryTree<E> reversed = new LinkedBinaryTree<E>();
-		// TODO: implement this
-		return reversed;
+		LinkedBinaryTree<E> mirr = new LinkedBinaryTree<E>();
+		mirr.addRoot(this.root.getElement());
+		if (this.size == 1) {
+			return mirr;
+		}
+		boolean flip = true;
+		Node<E> current = this.root;
+		Node<E> currentMirr = mirr.root;
+		Iterable<Position<E>> itr = this.preorder();
+		for (Position<E> e : itr) {
+			current = itr;
+		}
+
+		while (flip) {
+			if (current.getLeft() == null || current.getRight() == null)
+				break;
+			if (current.getLeft() != null) {
+				currentMirr.setRight(createNode(current.getLeft().getElement(), currentMirr, null, null));
+			}
+			if (current.getRight() != null) {
+				currentMirr.setLeft(createNode(current.getRight().getElement(), currentMirr, null, null));
+			}
+
+		}
+		return mirr;
 	}
 
 	// ----------- TUTORIAL exercise 4 -----------
