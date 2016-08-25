@@ -22,8 +22,6 @@ package week5;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import Tree.TreeNode;
-
 /**
  * Concrete implementation of a binary tree using a node-based, linked
  * structure.
@@ -417,32 +415,73 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
 		if (this.size == 1) {
 			return mirr;
 		}
-		boolean flip = true;
-		Node<E> current = this.root;
-		Node<E> currentMirr = mirr.root;
-		Iterable<Position<E>> itr = this.preorder();
-		for (Position<E> e : itr) {
-			current = itr;
-		}
 
-		while (flip) {
-			if (current.getLeft() == null || current.getRight() == null)
-				break;
-			if (current.getLeft() != null) {
-				currentMirr.setRight(createNode(current.getLeft().getElement(), currentMirr, null, null));
-			}
-			if (current.getRight() != null) {
-				currentMirr.setLeft(createNode(current.getRight().getElement(), currentMirr, null, null));
-			}
-
-		}
 		return mirr;
 	}
 
-	// ----------- TUTORIAL exercise 4 -----------
+	public void mirror1() {
+		root = mirror(root);
+	}
+
+	Node<E> mirror(Node<E> node) {
+		if (node == null)
+			return node;
+
+		/* do the subtrees */
+		Node<E> left = mirror(node.left);
+		Node<E> right = mirror(node.right);
+
+		/* swap the left and right pointers */
+		node.left = right;
+		node.right = left;
+
+		return node;
+	}
+
+	public LinkedBinaryTree<E> copy() {
+		LinkedBinaryTree<E> copy = new LinkedBinaryTree<>();
+		Iterable<Position<E>> itr = this.preorder();
+		int count = 0;
+		Position<E> curr = this.root();
+		Position<E> prevC = copy.root();
+		Node<E> prev;
+		for (Position<E> e : itr) {
+			if (count == 0) {
+				copy.addRoot(e.getElement());
+				prevC = copy.root();
+				count++;
+			} else {
+				Node<E> n = validate(prevC);
+				Node<E> node = (Node<E>) prevC;
+				copy.createNode(e.getElement(), n, n.left, n.right);
+			}
+		}
+		return copy;
+	}
+
+	// FOR TESTING
+	// TODO REMOVE THIS BEFORE SUBMISSION
+	public void printTree() {
+		Iterable<Position<E>> itr = this.preorder();
+		for (Position<E> e : itr) {
+			System.out.print(e.getElement() + " ");
+		}
+		System.out.println(" ");
+	}
+
 	/** Reverses the tree */
 	public void reverseMe() {
-		// TODO: implement this
+		reverse(this.root);
+	}
+
+	public void reverse(Node<E> node) {
+		if (node == null)
+			return;
+		Node<E> temp = node.getRight();
+		node.setRight(node.getLeft());
+		node.setLeft(temp);
+		reverse(node.getLeft());
+		reverse(node.getRight());
 	}
 
 } // ----------- end of LinkedBinaryTree class -----------

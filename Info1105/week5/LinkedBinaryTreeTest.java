@@ -23,6 +23,11 @@ public class LinkedBinaryTreeTest {
 		int test = lbt.root.getElement();
 		lbt.addLeft(lbt.root, 10);
 		lbt.addRight(lbt.root, 40);
+		lbt.addLeft(lbt.root.getLeft(), 2);
+		lbt.addRight(lbt.root.getLeft(), 15);
+		lbt.addLeft(lbt.root.getRight(), 30);
+		lbt.addRight(lbt.root.getRight(), 60);
+
 		assertEquals(20, test);
 		int leftelem = lbt.root.getLeft().getElement();
 		int rightelem = lbt.root.getRight().getElement();
@@ -43,6 +48,63 @@ public class LinkedBinaryTreeTest {
 		assertEquals(currentRight, testLeft);
 		assertEquals(currentLeft, testRight);
 
+	}
+
+	@Test
+	public void testReverse() {
+		LinkedBinaryTree<Integer> lbt = new LinkedBinaryTree<>();
+		lbt.addRoot(20);
+
+		int test = lbt.root.getElement();
+		lbt.addLeft(lbt.root, 10);
+		lbt.addRight(lbt.root, 40);
+		lbt.addLeft(lbt.root.getLeft(), 2);
+		lbt.addRight(lbt.root.getLeft(), 15);
+		lbt.addLeft(lbt.root.getRight(), 30);
+		lbt.addRight(lbt.root.getRight(), 60);
+		lbt.printTree();
+		lbt.reverseMe();
+		lbt.printTree();
+	}
+
+	@Test
+	public void testCopy() {
+		LinkedBinaryTree<Integer> lbt = new LinkedBinaryTree<>();
+		lbt.addRoot(20);
+
+		int test = lbt.root.getElement();
+		lbt.addLeft(lbt.root, 10);
+		lbt.addRight(lbt.root, 40);
+		lbt.addLeft(lbt.root.getLeft(), 2);
+		lbt.addRight(lbt.root.getLeft(), 15);
+		lbt.addLeft(lbt.root.getRight(), 30);
+		lbt.addRight(lbt.root.getRight(), 60);
+
+		lbt.printTree();
+		LinkedBinaryTree<Integer> copy = lbt.copy();
+		copy.printTree();
+	}
+
+	@Test
+	public void testNewMirror() {
+		LinkedBinaryTree<Integer> lbt = new LinkedBinaryTree<>();
+		lbt.addRoot(20);
+
+		int test = lbt.root.getElement();
+		lbt.addLeft(lbt.root, 10);
+		lbt.addRight(lbt.root, 40);
+		lbt.addLeft(lbt.root.getLeft(), 2);
+		lbt.addRight(lbt.root.getLeft(), 15);
+		lbt.addLeft(lbt.root.getRight(), 30);
+		lbt.addRight(lbt.root.getRight(), 60);
+
+		lbt.printTree();
+
+		assertEquals(20, test);
+		lbt.mirror1();
+		test = lbt.root.getElement();
+		assertEquals(20, test);
+		lbt.printTree();
 	}
 
 	@Test
