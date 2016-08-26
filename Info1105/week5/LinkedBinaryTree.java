@@ -461,28 +461,6 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
 		return b;
 	}
 
-	public LinkedBinaryTree<E> m() {
-		Iterable<Position<E>> pre = this.preorder();
-		Iterable<Position<E>> in = this.inorder();
-		// TODO fix this, dont know why i did this to get the root;
-		ArrayList<E> preorder = new ArrayList<>();
-		ArrayList<E> rInorder = new ArrayList<>();
-
-		for (Position<E> e : pre) {
-			preorder.add(e.getElement());
-		}
-		// List contains the Mirrored Tree "inorder traversal" form
-		Stack<E> s = new Stack<>();
-		for (Position<E> e : in) {
-			s.push(e.getElement());
-		}
-		rInorder = reverseList(s);
-
-		LinkedBinaryTree<E> mirr = new LinkedBinaryTree<E>();
-		return mirr;
-
-	}
-
 	public ArrayList<E> reverseList(Stack<E> s) {
 		ArrayList<E> reversed = new ArrayList<>();
 		int _size = s.size();
