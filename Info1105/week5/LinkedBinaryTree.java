@@ -29,7 +29,13 @@ package week5;
  * @author Michael T. Goodrich
  * @author Roberto Tamassia
  * @author Michael H. Goldwasser
+ * 
  */
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Stack;
+
 public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
 
 	// ---------------- nested Node class ----------------
@@ -411,58 +417,67 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
 	/** Returns a mirrored copy of the tree */
 	public LinkedBinaryTree<E> mirror() {
 		LinkedBinaryTree<E> mirr = new LinkedBinaryTree<E>();
-		mirr.addRoot(this.root.getElement());
-		if (this.size == 1) {
-			return mirr;
-		}
+		mirr = m();
+		mirr.addRoot(root.getElement());
 
 		return mirr;
 	}
 
-	public void mirror1() {
-		root = mirror(root);
-	}
+	public LinkedBinaryTree<E> m() {
+		Iterable<Position<E>> pre = this.preorder();
+		Iterable<Position<E>> in = this.inorder();
+		// TODO fix this, dont know why i did this to get the root;
+		ArrayList<E> preorder = new ArrayList<>();
 
-	Node<E> mirror(Node<E> node) {
-		if (node == null)
-			return node;
-
-		/* do the subtrees */
-		Node<E> left = mirror(node.left);
-		Node<E> right = mirror(node.right);
-
-		/* swap the left and right pointers */
-		node.left = right;
-		node.right = left;
-
-		return node;
-	}
-
-	public LinkedBinaryTree<E> copy() {
-		LinkedBinaryTree<E> copy = new LinkedBinaryTree<>();
-		Iterable<Position<E>> itr = this.preorder();
-		int count = 0;
-		Position<E> curr = this.root();
-		Position<E> prevC = copy.root();
-		Node<E> prev;
-		for (Position<E> e : itr) {
-			if (count == 0) {
-				copy.addRoot(e.getElement());
-				prevC = copy.root();
-				count++;
-			} else {
-				Node<E> n = validate(prevC);
-				Node<E> node = (Node<E>) prevC;
-				copy.createNode(e.getElement(), n, n.left, n.right);
-			}
+		for (Position<E> e : pre) {
+			preorder.add(e.getElement());
 		}
-		return copy;
+		// List contains the Mirrored Tree "inorder traversal" form
+		Stack<E> s = new Stack<>();
+		for (Position<E> e : in) {
+			s.push(e.getElement());
+		}
+		ArrayList<E> rInorder = reverseList(s);
+
+		return buildTree(preorder, rInorder);
+	}
+
+	public LinkedBinaryTree<E> buildTree(ArrayList<E> pre, ArrayList<E> ino) {
+		LinkedBinaryTree<E> mirr = new LinkedBinaryTree<>();
+		mirr.addRoot(pre.get(0));
+		E root = pre.get(0);
+		// element of the list that contains the root
+		// Elements before root = left subtree, elements after = right subtree;
+		int rootIndex = 0;
+		for (int i = 0; i < ino.size(); i++) {
+			rootIndex = (ino.get(i) == root) ? i : rootIndex++;
+		}
+		List<E> subLeft = ino.subList(0, rootIndex);
+		List<E> subRight = ino.subList(rootIndex + 1, ino.size());
+		LinkedBinaryTree<E> rightTree = buildTree(subRight);
+		LinkedBinaryTree<E> leftTree = buildTree(subLeft);
+
+		return null;
+	}
+
+	public LinkedBinaryTree<E> buildTree(List<E> subTree) {
+
+		return null;
+	}
+
+	public ArrayList<E> reverseList(Stack<E> s) {
+		ArrayList<E> reversed = new ArrayList<>();
+		int _size = s.size();
+		for (int i = 0; i < _size; i++) {
+			reversed.add(s.pop());
+		}
+		return reversed;
 	}
 
 	// FOR TESTING
 	// TODO REMOVE THIS BEFORE SUBMISSION
 	public void printTree() {
-		Iterable<Position<E>> itr = this.preorder();
+		Iterable<Position<E>> itr = this.inorder();
 		for (Position<E> e : itr) {
 			System.out.print(e.getElement() + " ");
 		}

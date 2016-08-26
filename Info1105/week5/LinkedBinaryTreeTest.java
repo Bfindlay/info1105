@@ -101,7 +101,7 @@ public class LinkedBinaryTreeTest {
 		lbt.printTree();
 
 		assertEquals(20, test);
-		lbt.mirror1();
+		lbt.mirror();
 		test = lbt.root.getElement();
 		assertEquals(20, test);
 		lbt.printTree();
@@ -112,7 +112,15 @@ public class LinkedBinaryTreeTest {
 		LinkedBinaryTree<Integer> lbt = new LinkedBinaryTree<>();
 		lbt.addRoot(20);
 
-		LinkedBinaryTree<Integer> mirror = lbt.mirror();
+		int test = lbt.root.getElement();
+		lbt.addLeft(lbt.root, 10);
+		lbt.addRight(lbt.root, 40);
+		lbt.addLeft(lbt.root.getLeft(), 2);
+		lbt.addRight(lbt.root.getLeft(), 15);
+		lbt.addLeft(lbt.root.getRight(), 30);
+		lbt.addRight(lbt.root.getRight(), 60);
+
+		LinkedBinaryTree<Integer> mirror = lbt.m();
 
 	}
 
