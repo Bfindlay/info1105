@@ -68,24 +68,6 @@ public class LinkedBinaryTreeTest {
 	}
 
 	@Test
-	public void testCopy() {
-		LinkedBinaryTree<Integer> lbt = new LinkedBinaryTree<>();
-		lbt.addRoot(20);
-
-		int test = lbt.root.getElement();
-		lbt.addLeft(lbt.root, 10);
-		lbt.addRight(lbt.root, 40);
-		lbt.addLeft(lbt.root.getLeft(), 2);
-		lbt.addRight(lbt.root.getLeft(), 15);
-		lbt.addLeft(lbt.root.getRight(), 30);
-		lbt.addRight(lbt.root.getRight(), 60);
-
-		lbt.printTree();
-		LinkedBinaryTree<Integer> copy = lbt.copy();
-		copy.printTree();
-	}
-
-	@Test
 	public void testNewMirror() {
 		LinkedBinaryTree<Integer> lbt = new LinkedBinaryTree<>();
 		lbt.addRoot(20);
@@ -108,6 +90,25 @@ public class LinkedBinaryTreeTest {
 	}
 
 	@Test
+	public void TestCopy() {
+		LinkedBinaryTree<Integer> lbt = new LinkedBinaryTree<>();
+		lbt.addRoot(20);
+
+		int test = lbt.root.getElement();
+		lbt.addLeft(lbt.root, 10);
+		lbt.addRight(lbt.root, 40);
+		lbt.addLeft(lbt.root.getLeft(), 2);
+		lbt.addRight(lbt.root.getLeft(), 15);
+		lbt.addLeft(lbt.root.getRight(), 30);
+		lbt.addRight(lbt.root.getRight(), 60);
+
+		lbt.printTree();
+		LinkedBinaryTree<Integer> copy = lbt.copyTree();
+		copy.printTree();
+
+	}
+
+	@Test
 	public void TestMirrorMany() {
 		LinkedBinaryTree<Integer> lbt = new LinkedBinaryTree<>();
 		lbt.addRoot(20);
@@ -120,7 +121,9 @@ public class LinkedBinaryTreeTest {
 		lbt.addLeft(lbt.root.getRight(), 30);
 		lbt.addRight(lbt.root.getRight(), 60);
 
-		LinkedBinaryTree<Integer> mirror = lbt.m();
+		LinkedBinaryTree<Integer> mirror = lbt.mirror();
+		lbt.printTree();
+		mirror.printTree();
 
 	}
 
