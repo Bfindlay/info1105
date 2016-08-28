@@ -67,45 +67,53 @@ public class LinkedBinaryTreeTest {
 		lbt.printTree();
 	}
 
+	// @Test
+	// public void testNewMirror() {
+	// LinkedBinaryTree<Integer> lbt = new LinkedBinaryTree<>();
+	// lbt.addRoot(20);
+	//
+	// int test = lbt.root.getElement();
+	// lbt.addLeft(lbt.root, 10);
+	// lbt.addRight(lbt.root, 40);
+	// lbt.addLeft(lbt.root.getLeft(), 2);
+	// lbt.addRight(lbt.root.getLeft(), 15);
+	// lbt.addLeft(lbt.root.getRight(), 30);
+	// lbt.addRight(lbt.root.getRight(), 60);
+	//
+	// lbt.printTree();
+	//
+	// assertEquals(20, test);
+	// lbt.mirror();
+	// test = lbt.root.getElement();
+	// assertEquals(20, test);
+	// lbt.printTree();
+	// }
+
 	@Test
 	public void testNewMirror() {
 		LinkedBinaryTree<Integer> lbt = new LinkedBinaryTree<>();
+		// Add root to the test tree
 		lbt.addRoot(20);
 
-		int test = lbt.root.getElement();
+		int rootElement = lbt.root.getElement();
+		// Build the new tree
 		lbt.addLeft(lbt.root, 10);
 		lbt.addRight(lbt.root, 40);
 		lbt.addLeft(lbt.root.getLeft(), 2);
 		lbt.addRight(lbt.root.getLeft(), 15);
 		lbt.addLeft(lbt.root.getRight(), 30);
 		lbt.addRight(lbt.root.getRight(), 60);
-
+		/*
+		 * 
+		 * This results in a tree (20) / \ (10) (40) / \ / \ (2) (15) (30) (60)
+		 * 
+		 * 
+		 * 
+		 */
 		lbt.printTree();
-
-		assertEquals(20, test);
+		assertEquals(19, rootElement);
 		lbt.mirror();
-		test = lbt.root.getElement();
-		assertEquals(20, test);
-		lbt.printTree();
-	}
-
-	@Test
-	public void TestCopy() {
-		LinkedBinaryTree<Integer> lbt = new LinkedBinaryTree<>();
-		lbt.addRoot(20);
-
-		int test = lbt.root.getElement();
-		lbt.addLeft(lbt.root, 10);
-		lbt.addRight(lbt.root, 40);
-		lbt.addLeft(lbt.root.getLeft(), 2);
-		lbt.addRight(lbt.root.getLeft(), 15);
-		lbt.addLeft(lbt.root.getRight(), 30);
-		lbt.addRight(lbt.root.getRight(), 60);
-
-		lbt.printTree();
-		LinkedBinaryTree<Integer> copy = lbt.copyTree();
-		copy.printTree();
-
+		// Do your testing here...
 	}
 
 	@Test
