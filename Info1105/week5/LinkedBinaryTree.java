@@ -422,7 +422,6 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
 	public LinkedBinaryTree<E> mirror() {
 		LinkedBinaryTree<E> mirr = this.copyTree();
 		mirror(mirr.root);
-
 		return mirr;
 	}
 
@@ -430,11 +429,9 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
 		if (node == null)
 			return node;
 
-		/* do the subtrees */
 		Node<E> left = mirror(node.left);
 		Node<E> right = mirror(node.right);
 
-		/* swap the left and right pointers */
 		node.left = right;
 		node.right = left;
 
@@ -449,16 +446,16 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
 	}
 
 	private Node<E> copyTree(Node<E> current) {
-		Node<E> b = new Node<E>();
+		Node<E> node = new Node<E>();
 		if (current != null) {
 			if (current.left != null)
-				b.left = copyTree(current.left);
+				node.left = copyTree(current.left);
 			if (current.right != null)
-				b.right = copyTree(current.right);
-			b.element = current.element;
-			b.parent = current.getParent();
+				node.right = copyTree(current.right);
+			node.element = current.element;
+			node.parent = current.getParent();
 		}
-		return b;
+		return node;
 	}
 
 	public ArrayList<E> reverseList(Stack<E> s) {
