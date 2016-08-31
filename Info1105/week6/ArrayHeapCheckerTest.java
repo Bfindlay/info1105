@@ -39,11 +39,26 @@ public class ArrayHeapCheckerTest {
 
 		assertTrue(ArrayHeapChecker.isCompleteBinaryTree(new Integer[] { null }));
 
-		assertTrue(ArrayHeapChecker.isCompleteBinaryTree(new Integer[] { null, null, null }));
+		assertTrue(ArrayHeapChecker.isCompleteBinaryTree(new Integer[] { 0, 1, 2, 3, 4, 5, 6 }));
 
-		assertTrue(ArrayHeapChecker.isBinaryTree(new Integer[] { 0, 1, 2, 3, 4, 5, 6 }));
+		// test null tree true;
+		assertTrue(ArrayHeapChecker.isCompleteBinaryTree(new Integer[] { null }));
+		assertTrue(ArrayHeapChecker.isCompleteBinaryTree(new Integer[] {}));
+		// Test array size 3
+
+		assertTrue(ArrayHeapChecker.isCompleteBinaryTree(new Integer[] { null, null, null }));
+		assertFalse(ArrayHeapChecker.isCompleteBinaryTree(new Integer[] { null, null, 0 }));
+		assertFalse(ArrayHeapChecker.isCompleteBinaryTree(new Integer[] { null, 0, null }));
+		assertFalse(ArrayHeapChecker.isCompleteBinaryTree(new Integer[] { null, 1, 1 }));
+
+		assertTrue(ArrayHeapChecker.isCompleteBinaryTree(new Integer[] { 0, null, null }));
+		assertTrue(ArrayHeapChecker.isCompleteBinaryTree(new Integer[] { 0, 0, 0 }));
+		assertTrue(ArrayHeapChecker.isCompleteBinaryTree(new Integer[] { 0, 0, null }));
 		// assertFalse(ArrayHeapChecker.isCompleteBinaryTree(new Integer[] { 0,
 		// null, 0 }));
+
+		assertFalse(ArrayHeapChecker.isCompleteBinaryTree2(new Integer[] { 0, null, 0 }));
+		assertFalse(ArrayHeapChecker.isCompleteBinaryTree2(new Integer[] { 0, null, null }));
 	}
 
 }

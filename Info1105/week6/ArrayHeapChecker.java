@@ -19,11 +19,29 @@ public class ArrayHeapChecker {
 		if (!isBinaryTree(arr)) {
 			return false;
 		}
-		for (int i = 0; i < arr.length - 1; i++) {
+		if (arr.length == 3 && arr[1] == null && arr[2] != null) {
+			return false;
+		}
+		for (int i = 0; i < arr.length - 2; i++) {
 			int parent = (i - 1) / 2;
 			if (arr[parent] == null && arr[parent + 1] != null) {
 				return false;
 			}
+
+		}
+		return true;
+	}
+
+	public static boolean isCompleteBinaryTree2(Integer[] arr) {
+		if (!isBinaryTree(arr)) {
+			return false;
+		}
+
+		for (int i = 1; i < arr.length; i++) {
+			if (arr[i - 1] != null && arr[i] == null) {
+				return false;
+			}
+
 		}
 		return true;
 	}
