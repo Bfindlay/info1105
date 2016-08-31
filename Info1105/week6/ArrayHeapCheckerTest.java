@@ -57,8 +57,8 @@ public class ArrayHeapCheckerTest {
 		// assertFalse(ArrayHeapChecker.isCompleteBinaryTree(new Integer[] { 0,
 		// null, 0 }));
 
-		assertFalse(ArrayHeapChecker.isCompleteBinaryTree2(new Integer[] { 0, null, 0 }));
-		assertFalse(ArrayHeapChecker.isCompleteBinaryTree2(new Integer[] { 0, null, null }));
+		assertFalse(ArrayHeapChecker.isCompleteBinaryTree(new Integer[] { 0, null, 0 }));
+		assertTrue(ArrayHeapChecker.isCompleteBinaryTree(new Integer[] { 0, null, null }));
 	}
 
 }
