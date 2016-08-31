@@ -61,4 +61,11 @@ public class ArrayHeapCheckerTest {
 		assertTrue(ArrayHeapChecker.isCompleteBinaryTree(new Integer[] { 0, null, null }));
 	}
 
+	@Test
+	public void testMinHeap() {
+		assertTrue(ArrayHeapChecker.isMinHeap(new Integer[] { 6, 7, 12, 10, 15, 17 }));
+		assertFalse(ArrayHeapChecker.isMinHeap(new Integer[] { 6, 3, 12, 10, 15, 17 }));
+		assertFalse(ArrayHeapChecker.isMinHeap(new Integer[] { 6, 3, 12 }));
+	}
+
 }

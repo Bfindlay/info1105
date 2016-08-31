@@ -27,11 +27,15 @@ public class ArrayHeapChecker {
 	}
 
 	// Check if the given array is a min-heap
-	public static boolean isMinHeap(Integer[] array) {
-		if (!isCompleteBinaryTree(array)) {
+	public static boolean isMinHeap(Integer[] arr) {
+		if (!isCompleteBinaryTree(arr)) {
 			return false;
 		}
-		// TODO: implement this
+		for (int i = 0; i < arr.length - (2 * i + 2); i++) {
+			if (!(arr[i] <= arr[2 * i + 1]) || !(arr[i] <= arr[2 * i + 2])) {
+				return false;
+			}
+		}
 		return true;
 	}
 
