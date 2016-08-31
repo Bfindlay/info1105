@@ -15,11 +15,16 @@ public class ArrayHeapChecker {
 	}
 
 	// Check if the given array is a complete binary tree
-	public static boolean isCompleteBinaryTree(Integer[] array) {
-		if (!isBinaryTree(array)) {
+	public static boolean isCompleteBinaryTree(Integer[] arr) {
+		if (!isBinaryTree(arr)) {
 			return false;
 		}
-		// TODO: implement this
+		for (int i = 0; i < arr.length - 1; i++) {
+			int parent = (i - 1) / 2;
+			if (arr[parent] == null && arr[parent + 1] != null) {
+				return false;
+			}
+		}
 		return true;
 	}
 
