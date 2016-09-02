@@ -27,22 +27,30 @@ public class ArrayHeapChecker {
 	}
 
 	public static boolean isMinHeap(Integer[] arr) {
-		int n = arr.length;
-		return isMinHeap(arr, 0, n);
+		return isMinHeap(arr, 0);
 	}
 
-	public static boolean isMinHeap(Integer[] arr, int i, int n) {
-		// If a leaf node
-		if (i > (n - 2) / 2)
+	public static boolean isMinHeap(Integer[] arr, int n) {
+		if ((n > (arr.length - 2) / 2) || arr.length == 1)
+			return true;
+		Integer root = arr[n];
+		Integer left = arr[2 * n + 1];
+		Integer right = arr[2 * n + 2];
+		if (root == null && left != null) {
 			return false;
-
-		// If an internal node and is greater than its children, and
-		// same is recursively true for the children
-		if (arr[i] >= arr[2 * i + 1] && arr[i] >= arr[2 * i + 2] && isMinHeap(arr, 2 * i + 1, n)
-				&& isMinHeap(arr, 2 * i + 2, n))
+		} else if (root == null && left == null && right == null) {
+			return true;
+		}
+		if (left <= root || right <= root) {
 			return false;
-
+		} else {
+			// chain the left tree and compare its root to children
+			isMinHeap(arr, left);
+			// chain the right tree and compare its root to children
+			isMinHeap(arr, right);
+		}
 		return true;
+
 	}
 
 }
