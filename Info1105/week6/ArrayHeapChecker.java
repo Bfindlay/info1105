@@ -26,16 +26,22 @@ public class ArrayHeapChecker {
 		return true;
 	}
 
-	// Check if the given array is a min-heap
 	public static boolean isMinHeap(Integer[] arr) {
-		if (!isCompleteBinaryTree(arr)) {
+		int n = arr.length;
+		return isMinHeap(arr, 0, n);
+	}
+
+	public static boolean isMinHeap(Integer[] arr, int i, int n) {
+		// If a leaf node
+		if (i > (n - 2) / 2)
 			return false;
-		}
-		for (int i = 0; i < arr.length - (2 * i + 2); i++) {
-			if (!(arr[i] <= arr[2 * i + 1]) || !(arr[i] <= arr[2 * i + 2])) {
-				return false;
-			}
-		}
+
+		// If an internal node and is greater than its children, and
+		// same is recursively true for the children
+		if (arr[i] >= arr[2 * i + 1] && arr[i] >= arr[2 * i + 2] && isMinHeap(arr, 2 * i + 1, n)
+				&& isMinHeap(arr, 2 * i + 2, n))
+			return false;
+
 		return true;
 	}
 

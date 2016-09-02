@@ -64,6 +64,10 @@ public class ArrayHeapCheckerTest {
 	@Test
 	public void testMinHeap() {
 		assertTrue(ArrayHeapChecker.isMinHeap(new Integer[] { 6, 7, 12, 10, 15, 17 }));
+		assertTrue(ArrayHeapChecker.isMinHeap(new Integer[] { 6, 7, 12, 10, 15, 17, 18 }));
+		// assertTrue(ArrayHeapChecker.isMinHeap(new Integer[] { null, null,
+		// null, null, null }));
+		assertTrue(ArrayHeapChecker.isMinHeap(new Integer[] { 0, null, null }));
 		assertFalse(ArrayHeapChecker.isMinHeap(new Integer[] { 6, 3, 12, 10, 15, 17 }));
 		assertFalse(ArrayHeapChecker.isMinHeap(new Integer[] { 6, 3, 12 }));
 	}
