@@ -27,20 +27,22 @@ public class ArrayHeapChecker {
 	}
 
 	public static boolean isMinHeap(Integer[] arr) {
+		if (!isCompleteBinaryTree(arr)) {
+			return false;
+		}
 		return isMinHeap(arr, 0);
+
 	}
 
-	public static boolean isMinHeap(Integer[] arr, int n) {
+	public static boolean isMinHeap(Integer[] arr, Integer n) {
+
 		if ((n > (arr.length - 2) / 2) || arr.length == 1)
 			return true;
+
 		Integer root = arr[n];
 		Integer left = arr[2 * n + 1];
 		Integer right = arr[2 * n + 2];
-		if (root == null && left != null) {
-			return false;
-		} else if (root == null && left == null && right == null) {
-			return true;
-		}
+
 		if (left <= root || right <= root) {
 			return false;
 		} else {
@@ -50,7 +52,6 @@ public class ArrayHeapChecker {
 			isMinHeap(arr, right);
 		}
 		return true;
-
 	}
 
 }
