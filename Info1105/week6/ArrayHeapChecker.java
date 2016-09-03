@@ -26,32 +26,37 @@ public class ArrayHeapChecker {
 		return true;
 	}
 
-	public static boolean isMinHeap(Integer[] arr) {
-		if (!isCompleteBinaryTree(arr)) {
+	public static boolean isMinHeap(Integer[] array) {
+		if (!isCompleteBinaryTree(array)) {
 			return false;
 		}
-		return isMinHeap(arr, 0);
+		return isMinHeap(array, array.length - 1);
 
 	}
 
-	public static boolean isMinHeap(Integer[] arr, Integer n) {
-
-		if ((n > (arr.length - 2) / 2) || arr.length == 1)
+	public static boolean isMinHeap(Integer[] arr, int n) {
+		System.out.println(n);
+		if (!(n > 0))
 			return true;
-
-		Integer root = arr[n];
-		Integer left = arr[2 * n + 1];
-		Integer right = arr[2 * n + 2];
-
-		if (left <= root || right <= root) {
-			return false;
-		} else {
-			// chain the left tree and compare its root to children
-			isMinHeap(arr, left);
-			// chain the right tree and compare its root to children
-			isMinHeap(arr, right);
+		if (arr[n] != null) {
+			return ((arr[(n - 1) / 2].compareTo(arr[n]) > 0)) ? false : (!((n - 1) > 0)) ? true : isMinHeap(arr, n - 1);
 		}
 		return true;
+	}
+
+	public static boolean isMinHeap2(Integer[] array) {
+		if (!isCompleteBinaryTree(array)) {
+			return false;
+		}
+		for (int i = array.length - 1; i > 0; i--) {
+			if (array[i] != null) {
+				if (array[(i - 1) / 2].compareTo(array[i]) > 0) {
+					return false;
+				}
+			}
+		}
+		return true;
+
 	}
 
 }
