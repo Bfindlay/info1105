@@ -26,24 +26,18 @@ public class ArrayHeapChecker {
 		return true;
 	}
 
+	// Version 1 : Recursive unmaintainable ternary chaining because YOLO
 	public static boolean isMinHeap(Integer[] array) {
-		if (!isCompleteBinaryTree(array)) {
-			return false;
-		}
-		return isMinHeap(array, array.length - 1);
-
+		return (!isCompleteBinaryTree(array)) ? false : isMinHeap(array, array.length - 1);
 	}
 
 	public static boolean isMinHeap(Integer[] arr, int n) {
-		System.out.println(n);
 		if (!(n > 0))
 			return true;
-		if (arr[n] != null) {
-			return ((arr[(n - 1) / 2].compareTo(arr[n]) > 0)) ? false : (!((n - 1) > 0)) ? true : isMinHeap(arr, n - 1);
-		}
-		return true;
+		return (arr[n] != null) ? (((arr[(n - 1) / 2].compareTo(arr[n]) > 0)) ? false : isMinHeap(arr, n - 1)) : true;
 	}
 
+	// Version 2 : Readable Iterative check
 	public static boolean isMinHeap2(Integer[] array) {
 		if (!isCompleteBinaryTree(array)) {
 			return false;
