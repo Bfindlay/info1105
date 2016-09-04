@@ -15,13 +15,12 @@ public class ArrayHeapChecker {
 	}
 
 	public static boolean isCompleteBinaryTree(Integer[] arr) {
-		if (!isBinaryTree(arr)) {
+		if (!isBinaryTree(arr))
 			return false;
-		}
+
 		for (int i = 1; i < arr.length - 1; i++) {
-			if (arr[i] == null && arr[i + 1] != null) {
+			if (arr[i] == null && arr[i + 1] != null)
 				return false;
-			}
 		}
 		return true;
 	}
@@ -52,5 +51,4 @@ public class ArrayHeapChecker {
 		return true;
 
 	}
-
 }
