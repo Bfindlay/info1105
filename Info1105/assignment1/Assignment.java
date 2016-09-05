@@ -13,7 +13,6 @@ public class Assignment implements Calendar {
 	// The default constructor for the class should be public
 	// We will use this when we test your code!
 
-	// TODO make this private after testig
 	private TreeMap<Date, List<Appointment>> tree;
 	private Map<String, List<Appointment>> locations;
 
@@ -77,10 +76,14 @@ public class Assignment implements Calendar {
 	@Override
 	public void remove(Appointment appointment) {
 		// TODO Implement this! (then remove this TODO comment)
-		List<Appointment> list = tree.get(appointment.getStartTime());
 
-		System.out.println(list.indexOf(appointment));
-		// remove from map and tree
+		// Remove from Tree
+		List<Appointment> list = tree.get(appointment.getStartTime());
+		tree.get(appointment.getStartTime()).remove(list.indexOf(appointment));
+
+		// Remove from location Map
+		List<Appointment> locList = locations.get(appointment.getLocation());
+		locations.get(appointment.getLocation()).remove(locList.indexOf(appointment));
 
 	}
 }
