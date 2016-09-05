@@ -67,9 +67,6 @@ public class assignmentTest {
 		Date c = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/02 15:00:00");
 		Date d = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 09:59:59");
 		Date e = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("1968/01/03 12:00:00");
-		System.out.println(e);
-
-		System.out.println(df.format(new Date(-400)));
 
 		Calendar calendar = new Assignment();
 		calendar.add("Exam", e, "SIT");
@@ -111,7 +108,7 @@ public class assignmentTest {
 		calendar.add("Exam", a, "SIT");
 		calendar.add("Exam", b, "SIT");
 		calendar.add("Exam", b, "SIT");
-		calendar.add("Exam", b, "HOME");
+		calendar.add("DERP", b, "HOME");
 		calendar.add("Exam", b, "SIT");
 		calendar.add("Lunch", b, "SIT");
 		Appointment app = calendar.getNextAppointment(a, "HOME");
