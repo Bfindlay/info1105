@@ -14,22 +14,15 @@ public class Heap {
 
 	public void heapify(int[] arr) {
 		// TODO: bottom up heap construction, in-place
-		int temp;
-		for (int i = arr.length - 1; i > 0; i--) {
-			for (int j = (i - 1) / 2; j > 0; j--) {
-				if (arr[i] < arr[j]) {
-					// child is smaller than parent, switch them
-					temp = arr[i];
-					arr[i] = arr[(i - 1) / 2];
-					arr[(i - 1) / 2] = temp;
+		heapify(arr, arr.length - 1);
 
-					temp = arr[j - 1];
-					arr[j - 1] = arr[j];
-					arr[j] = temp;
-				}
-			}
+	}
+
+	private void heapify(int[] arr, int i) {
+		if (i != 0) {
+
 		}
-		this.set(arr);
+
 	}
 
 	public void heapSort(int[] array) {
