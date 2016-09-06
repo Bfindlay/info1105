@@ -3,14 +3,14 @@ package assignment1;
 import java.util.HashMap;
 import java.util.List;
 import java.util.TreeMap;
+import java.util.stream.Collectors;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 @SuppressWarnings("serial")
-public class MultiMapTree extends TreeMap<Date, List<Appointment>> {
+public class MultiMapTree extends TreeMap<Object, Object> {
 
-	private TreeMap<Date, List<Appointment>> tree;
+	public TreeMap<Date, List<Appointment>> tree;
 	private HashMap<String, List<Appointment>> map;
 
 	public MultiMapTree() {
@@ -31,7 +31,6 @@ public class MultiMapTree extends TreeMap<Date, List<Appointment>> {
 			event.add(entry);
 			tree.put(when, event);
 		}
-
 		// Insert locations
 		if (map.containsKey(location)) {
 			List<Appointment> loc = map.get(location);
@@ -57,7 +56,18 @@ public class MultiMapTree extends TreeMap<Date, List<Appointment>> {
 			map.remove(appointment.getLocation());
 		else
 			map.get(appointment.getLocation()).remove(locList.indexOf(appointment));
+	}
 
+	// TODO handle no event error
+	public Appointment getNextEntry(Date when) {
+		return (tree.higherEntry(when) != null) ? tree.higherEntry(when).getValue().get(0) : null;
+	}
+
+	public Appointment getNextEntry(Date when, String location) {
+		List<Appointment> list = tree.higherEntry(when).getValue();
+		System.out.println(list.size());
+		return (list.size() == 0) ? null
+				: list.stream().filter(entry -> entry.getLocation() == location).collect(Collectors.toList()).get(0);
 	}
 
 	public boolean containsMapKey(String location) {
