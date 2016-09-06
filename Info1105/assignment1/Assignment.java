@@ -34,7 +34,10 @@ public class Assignment implements Calendar {
 
 	@Override
 	public Appointment getNextAppointment(Date when, String location) {
-		return tree.getNextEntry(when, location);
+		if (when == null || location == null) {
+			throw new IllegalArgumentException("time was null");
+		}
+		return (when != null) ? tree.getNextEntry(when, location) : null;
 	}
 
 	@Override

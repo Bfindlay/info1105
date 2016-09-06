@@ -65,9 +65,11 @@ public class MultiMapTree extends TreeMap<Object, Object> {
 
 	public Appointment getNextEntry(Date when, String location) {
 		List<Appointment> list = tree.higherEntry(when).getValue();
-		System.out.println(list.size());
-		return (list.size() == 0) ? null
-				: list.stream().filter(entry -> entry.getLocation() == location).collect(Collectors.toList()).get(0);
+
+		List<Appointment> result = list.stream().filter(entry -> entry.getLocation() == location)
+				.collect(Collectors.toList());
+		return (result.size() == 0) ? null : result.get(0);
+
 	}
 
 	public boolean containsMapKey(String location) {
