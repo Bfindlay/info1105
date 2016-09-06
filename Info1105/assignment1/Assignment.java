@@ -13,12 +13,14 @@ public class Assignment implements Calendar {
 	// The default constructor for the class should be public
 	// We will use this when we test your code!
 
-	private TreeMap<Date, List<Appointment>> tree;
-	private Map<String, List<Appointment>> locations;
+	// TODO change this to private after testing
+	public TreeMap<Date, List<Appointment>> tree;
+	public Map<String, List<Appointment>> locations;
 
 	public Assignment() {
 		tree = new TreeMap<>();
 		locations = new HashMap<>();
+
 	}
 
 	@Override
@@ -78,12 +80,19 @@ public class Assignment implements Calendar {
 		// TODO Implement this! (then remove this TODO comment)
 
 		// Remove from Tree
+		// TODO remember to remove the entire listing if the list is 0!
 		List<Appointment> list = tree.get(appointment.getStartTime());
-		tree.get(appointment.getStartTime()).remove(list.indexOf(appointment));
+		if (list.size() == 1)
+			tree.remove(appointment.getStartTime());
+		else
+			tree.get(appointment.getStartTime()).remove(list.indexOf(appointment));
 
 		// Remove from location Map
 		List<Appointment> locList = locations.get(appointment.getLocation());
-		locations.get(appointment.getLocation()).remove(locList.indexOf(appointment));
+		if (locList.size() == 1)
+			locations.remove(appointment.getLocation());
+		else
+			locations.get(appointment.getLocation()).remove(locList.indexOf(appointment));
 
 	}
 }

@@ -104,15 +104,25 @@ public class assignmentTest {
 		Date d = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 09:59:59");
 		Date e = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 12:00:00");
 
-		Calendar calendar = new Assignment();
+		Assignment calendar = new Assignment();
 		calendar.add("Exam", a, "SIT");
 		calendar.add("Exam", b, "SIT");
 		calendar.add("Exam", b, "SIT");
 		calendar.add("DERP", b, "HOME");
 		calendar.add("Exam", b, "SIT");
-		calendar.add("Lunch", b, "SIT");
-		Appointment app = calendar.getNextAppointment(a, "HOME");
+		calendar.add("Lunch", c, "SIT");
+		calendar.add("Lunch", d, "SIT");
+		calendar.add("Exam", d, "HOME");
+		calendar.add("Lunch", e, "Carslaw");
+
+		Appointment app = calendar.getNextAppointment(d);
+		assertEquals(5, calendar.tree.size());
+		assertEquals(3, calendar.locations.size());
+		calendar.add("Quiz", e, "Wallace");
+		assertEquals(4, calendar.locations.size());
+
 		calendar.remove(app);
+		assertEquals(4, calendar.tree.size());
 	}
 
 	@Test
