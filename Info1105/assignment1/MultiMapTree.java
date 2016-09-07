@@ -69,7 +69,6 @@ public class MultiMapTree extends TreeMap<Object, Object> {
 		List<Appointment> result = list.stream().filter(entry -> entry.getLocation() == location)
 				.collect(Collectors.toList());
 		return (result.size() == 0) ? null : result.get(0);
-
 	}
 
 	public boolean containsMapKey(String location) {
@@ -79,5 +78,4 @@ public class MultiMapTree extends TreeMap<Object, Object> {
 	public List<Appointment> getMapValue(String location) {
 		return map.get(location);
 	}
-
 }
