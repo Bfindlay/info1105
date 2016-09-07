@@ -79,6 +79,8 @@ public class AssignmentTest {
 		assertNull(calendar.getNextAppointment(b, "HOME"));
 		thrown.expect(IllegalArgumentException.class);
 		calendar.getNextAppointment(null, null);
+		calendar.add("Test", g, "Home");
+		assertEquals("Home", calendar.getNextAppointment(g));
 	}
 
 	@Test
