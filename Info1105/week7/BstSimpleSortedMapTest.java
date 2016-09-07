@@ -33,6 +33,14 @@ public class BstSimpleSortedMapTest {
 	}
 
 	@Test
+	public void testNullRoot() {
+		BstSimpleSortedMap tree = new BstSimpleSortedMap();
+
+		tree.put(4, "A");
+		assertEquals("A", tree.get(4));
+	}
+
+	@Test
 	public void testBasicRemove() {
 		BstSimpleSortedMap tree = new BstSimpleSortedMap();
 
