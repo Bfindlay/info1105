@@ -147,13 +147,12 @@ public class BstSimpleSortedMap implements SimpleSortedMap {
 		}
 		int cmp = key.compareTo(x.key);
 		if (cmp < 0) {
-			put(key, val, x.left);
+			x.left = put(key, val, x.left);
 		} else if (cmp > 0) {
-			put(key, val, x.right);
+			x.right = put(key, val, x.right);
 		} else {
 			// cmp == 0
 			MySimpleEntry entry = new MySimpleEntry(key, val);
-
 			entry.setParent(entry);
 			int comp = key.compareTo(entry.getParent().getKey());
 			if (comp < 0)
