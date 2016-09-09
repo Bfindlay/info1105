@@ -133,6 +133,11 @@ public class AssignmentTest {
 		Appointment app = calendar.getNextAppointment(d);
 		calendar.remove(app);
 		assertEquals(0, calendar.getAppointments("Carslaw").size());
+
+		// Check for null argument exception
+		thrown.expect(IllegalArgumentException.class);
+		calendar.remove(null);
+
 	}
 
 	@Test

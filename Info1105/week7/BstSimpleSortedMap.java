@@ -178,54 +178,113 @@ public class BstSimpleSortedMap implements SimpleSortedMap {
 
 	@Override
 	public String remove(Integer k) {
+		String old = get(k);
 
-		remove(k, root);
-		return null;
+		remove(this.root, k).getValue();
+		return old;
+
 	}
 
-	public MySimpleEntry remove(Integer k, MySimpleEntry x) {
-
-		if (x == null)
+	public MySimpleEntry remove(MySimpleEntry start, Integer elem) {
+		// If the element we want to delete wasn't found
+		if (start == null) {
+			// Go back up the recursive loop, but let our object know that the
+			// element we wanted to delete wasn't found
 			return null;
-		int cmp = k.compareTo(x.getKey());
-		if (cmp == 0) {
-			// BINGO found the key, remove it
-			if (x.getLeft() != null && x.getRight() != null) {
-				// find position r in order predecessor of P
-				// swap r and p
-				// delete R from tree
-				MySimpleEntry r = max(x);
-				MySimpleEntry currentParent = x.getParent();
-				MySimpleEntry currentLeft = x.getLeft();
-				MySimpleEntry currentRight = x.getRight();
+		}
 
-				// Remove the reference to r from its parent
-				r.getParent().setRight(null);
-				// move r to position p
-				r.setParent(currentParent);
-				r.setLeft(currentLeft);
-				r.setRight(currentRight);
-				currentRight.setParent(r);
-				currentLeft.setParent(r);
+		// Compare the current node's element to the element we're looking for
+		int comparison = start.key.compareTo(elem);
 
-			}
-			if (x.getLeft() == null && x.getRight() == null) {
-				int comp = x.getKey().compareTo(x.getParent().getKey());
-				if (comp < 0) {
-					x.getParent().setLeft(null);
-					x.setParent(null);
-				} else if (comp > 0) {
-					x.getParent().setRight(null);
+		// If the deletion will happen somewhere down the left tree
+		if (comparison > 0) {
+			// Attempt to delete down the left tree
+			start.left = remove(start.left, elem);
+		}
+		// If the deletion will happen somewhere down the right tree
+		else if (comparison < 0) {
+			// Attempt to delete down the right tree
+			start.right = remove(start.right, elem);
+		}
+		// If we are at the element we want to delete
+		else {
+			// If the node we want to delete has two children
+			if (start.left != null && start.right != null) {
+				// Back up pointers
+				MySimpleEntry left = start.left;
+				MySimpleEntry right = start.right;
+
+				// Replace the current element with the smallest element in the
+				// right subtree
+				start = removeMin(start.right, start);
+
+				// Back up pointer
+				MySimpleEntry minRight = start.right;
+
+				// Fix pointers
+				start.left = left;
+				start.right = right;
+
+				// We need to fix start.right if it points to the node we just
+				// moved
+				if (start.right.key == start.key) {
+					start.right = minRight;
 				}
 			}
-
-		} else if (cmp > 0) {
-			remove(k, x.getRight());
-		} else {
-			return remove(k, x.getLeft());
+			// If the node we want to delete is a leaf
+			else if (start.left == null && start.right == null) {
+				// Delete the current node from the tree
+				start = null;
+			}
+			// If the node we want to delete just has a left child
+			else if (start.left != null) {
+				start = start.left;
+			}
+			// If the node we want to delete just has a right child
+			else {
+				start = start.right;
+			}
 		}
-		size--;
-		return x;
+
+		return start;
+	}
+
+	/**
+	 * This method removes the minimum node that comes after the given starting
+	 * node.
+	 *
+	 * @param start
+	 *            The node from which to start the removal process
+	 * @param parent
+	 *            The parent node of "start"
+	 * @return Returns a MySimpleEntry with: element: The element of the removed
+	 *         node left: null right: The right subtree of the deleted node
+	 */
+	public MySimpleEntry removeMin(MySimpleEntry start, MySimpleEntry parent) {
+		// If there is nothing to traverse or remove
+		if (start == null) {
+			return null;
+		}
+
+		// If we've found the minimum node
+		if (start.left == null) {
+			// Save the important values from the node
+			// T elem = start.element;
+			// MySimpleEntry deletedRight = start.right;
+
+			// Rewire nodes
+			if (parent != root) {
+				parent.left = start.right; // deletedRight;
+			}
+
+			// start = null;
+
+			// Return a new node that follows this method's specifications
+			return start;
+		}
+
+		// Recurse until we get to the minimum node
+		return removeMin(start.left, start);
 	}
 
 	@Override

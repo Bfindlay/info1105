@@ -2,30 +2,37 @@ package assignment1;
 
 import java.util.Date;
 
-public class Entry implements Appointment {
-	private String description;
-	private String location;
-	private Date date;
+/**
+ * 
+ * @author Brett
+ *
+ */
 
-	public Entry(String d, String l, Date t) {
-		this.description = d;
-		this.location = l;
-		this.date = t;
+public class Entry implements Appointment {
+
+	private final String DESCRIPTION;
+	private final String LOCATION;
+	private final Date DATE;
+
+	public Entry(String desc, String loc, Date date) {
+		this.DESCRIPTION = desc;
+		this.LOCATION = loc;
+		this.DATE = date;
 	}
 
 	@Override
 	public String getDescription() {
-		return this.description;
+		return this.DESCRIPTION;
 	}
 
 	@Override
 	public String getLocation() {
-		return this.location;
+		return this.LOCATION;
 	}
 
 	@Override
 	public Date getStartTime() {
-		return this.date;
+		return this.DATE;
 	}
 
 }

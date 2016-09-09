@@ -18,12 +18,19 @@ public class Assignment implements Calendar {
 	}
 
 	// TODO handle no event errors
+	// TODO No event => Empty list
+	// TODO THrows illegal Argument excetion if any argument is null
 	@Override
 	public List<Appointment> getAppointments(String location) {
+		if (location == null) {
+			throw new IllegalArgumentException("Location was null");
+		}
 		return (tree.containsMapKey(location)) ? tree.getMapValue(location) : new ArrayList<Appointment>();
 	}
 
-	// TODO handle no event errors
+	// TODO Return the next appointment at or after the given time (in any
+	// location) // If there is no such appointment, return null
+	// TODO Throws IllegalArgumentException if the argument is null
 	@Override
 	public Appointment getNextAppointment(Date when) {
 		if (when == null) {
@@ -32,6 +39,9 @@ public class Assignment implements Calendar {
 		return tree.getNextEntry(when);
 	}
 
+	// TODO Return the next appointment at or after the given time,
+	// If there is no such appointment, return null
+	// Throws IllegalArgumentException if any argument is null
 	@Override
 	public Appointment getNextAppointment(Date when, String location) {
 		if (when == null || location == null) {
@@ -40,13 +50,21 @@ public class Assignment implements Calendar {
 		return (when != null) ? tree.getNextEntry(when, location) : null;
 	}
 
+	// TODO Throws IllegalArgumentException if any argument is null
 	@Override
-	public void add(String description, Date when, String location) {
-		tree.insertEntry(description, when, location);
+	public void add(String desc, Date when, String loc) {
+		if (desc == null || when == null || loc == null) {
+			throw new IllegalArgumentException("Argument was null");
+		}
+		tree.insertEntry(desc, when, loc);
 	}
 
+	// TODO // Throws IllegalArgumentException if the argument is null
 	@Override
 	public void remove(Appointment appointment) {
+		if (appointment == null) {
+			throw new IllegalArgumentException("Appointment was null");
+		}
 		tree.removeEntry(appointment);
 
 	}

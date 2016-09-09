@@ -7,6 +7,15 @@ import java.util.stream.Collectors;
 import java.util.ArrayList;
 import java.util.Date;
 
+/**
+ * 
+ * @author Brett
+ * 
+ *         This is a Wrapper class created to connect a Self Balancing Tree
+ *         (TreeMap) with a HashMap to enable retrieval of a value using one of
+ *         two keys;
+ *
+ */
 @SuppressWarnings("serial")
 public class MultiMapTree extends TreeMap<Object, Object> {
 
@@ -19,7 +28,6 @@ public class MultiMapTree extends TreeMap<Object, Object> {
 	}
 
 	public void insertEntry(String description, Date when, String location) {
-
 		Entry entry = new Entry(description, location, when);
 		if (tree.containsKey(when)) {
 			List<Appointment> l = tree.get(when);
