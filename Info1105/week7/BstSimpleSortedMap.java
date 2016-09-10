@@ -178,9 +178,10 @@ public class BstSimpleSortedMap implements SimpleSortedMap {
 
 	@Override
 	public String remove(Integer k) {
+
 		String old = get(k);
 
-		remove(this.root, k).getValue();
+		remove(this.root, k);
 		return old;
 
 	}
