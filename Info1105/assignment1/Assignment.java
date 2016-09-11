@@ -11,10 +11,10 @@ public class Assignment implements Calendar {
 	// The default constructor for the class should be public
 	// We will use this when we test your code!
 
-	private MultiMapTree tree;
+	private MultiKeyTree tree;
 
 	public Assignment() {
-		tree = new MultiMapTree();
+		tree = new MultiKeyTree();
 	}
 
 	// TODO handle no event errors

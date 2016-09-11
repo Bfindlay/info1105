@@ -142,6 +142,8 @@ public class AssignmentTest {
 		thrown.expect(IllegalArgumentException.class);
 		calendar.remove(null);
 
+		// TODO remove appointment not in the list;
+
 	}
 
 	@Test

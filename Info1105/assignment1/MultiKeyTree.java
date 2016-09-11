@@ -9,20 +9,53 @@ import java.util.Date;
 
 /**
  * 
- * @author Brett
+ * @author Brett Findlay
+ * @SID 450258163
  * 
- *         This is a Wrapper class created to connect a Self Balancing Tree
- *         (TreeMap) with a HashMap to enable retrieval of a value using one of
- *         two keys;
+ *      This is a Wrapper class created to connect a Self Balancing Binary Tree
+ *      (TreeMap), with a HashMap to enable retrieval of a value using one of
+ *      two keys;
  *
  */
-@SuppressWarnings("serial")
-public class MultiMapTree extends TreeMap<Object, Object> {
+
+public class MultiKeyTree extends TreeMap<Date, List<Appointment>> {
+
+	/* NESTED APPOINTMENT CLASS IMPLEMENTATION */
+	private class Entry implements Appointment {
+
+		private final String DESCRIPTION;
+		private final String LOCATION;
+		private final Date DATE;
+
+		public Entry(String desc, String loc, Date date) {
+			this.DESCRIPTION = desc;
+			this.LOCATION = loc;
+			this.DATE = date;
+		}
+
+		@Override
+		public String getDescription() {
+			return this.DESCRIPTION;
+		}
+
+		@Override
+		public String getLocation() {
+			return this.LOCATION;
+		}
+
+		@Override
+		public Date getStartTime() {
+			return this.DATE;
+		}
+
+	}
+
+	/* BEGIN MULTIKEY TREE IMPLEMENTATION */
 
 	public TreeMap<Date, List<Appointment>> tree;
 	private HashMap<String, List<Appointment>> map;
 
-	public MultiMapTree() {
+	public MultiKeyTree() {
 		tree = new TreeMap<>();
 		map = new HashMap<>();
 	}
@@ -67,14 +100,11 @@ public class MultiMapTree extends TreeMap<Object, Object> {
 			map.get(appointment.getLocation()).remove(locList.indexOf(appointment));
 	}
 
-	// TODO handle no event error
-	// TODO Make sure it finds the next event
 	public Appointment getNextEntry(Date when) {
-
 		if (tree.containsKey(when))
 			return tree.get(when).get(0);
-		else
-			return (tree.higherEntry(when) != null) ? tree.higherEntry(when).getValue().get(0) : null;
+
+		return (tree.higherEntry(when) != null) ? tree.higherEntry(when).getValue().get(0) : null;
 	}
 
 	// TODO make sure it finds the enxt event at that location
@@ -83,13 +113,13 @@ public class MultiMapTree extends TreeMap<Object, Object> {
 			List<Appointment> list = tree.get(when);
 			List<Appointment> result = list.stream().filter(entry -> entry.getLocation() == location)
 					.collect(Collectors.toList());
-			return (result.size() != 0) ? result.get(0) : getNextEntryHelp(tree.higherKey(when), location);
+			return (result.size() != 0) ? result.get(0) : validate(tree.higherKey(when), location);
 		} else {
-			return getNextEntryHelp(tree.higherKey(when), location);
+			return validate(tree.higherKey(when), location);
 		}
 	}
 
-	public Appointment getNextEntryHelp(Date when, String location) {
+	public Appointment validate(Date when, String location) {
 		if (when == null) {
 			return null;
 		}
@@ -99,8 +129,7 @@ public class MultiMapTree extends TreeMap<Object, Object> {
 		if (result.size() != 0) {
 			return result.get(0);
 		}
-		Date key = tree.higherKey(when);
-		return getNextEntryHelp(key, location);
+		return validate(tree.higherKey(when), location);
 	}
 
 	public boolean containsMapKey(String location) {
