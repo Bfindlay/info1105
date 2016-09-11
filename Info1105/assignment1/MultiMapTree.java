@@ -68,24 +68,39 @@ public class MultiMapTree extends TreeMap<Object, Object> {
 	}
 
 	// TODO handle no event error
+	// TODO Make sure it finds the next event
 	public Appointment getNextEntry(Date when) {
-		// return (tree.get(when) != null) ? tree.get(when).get(0) :
-		// tree.higherEntry(when).getValue().get(0);
+
 		if (tree.containsKey(when))
 			return tree.get(when).get(0);
 		else
 			return (tree.higherEntry(when) != null) ? tree.higherEntry(when).getValue().get(0) : null;
 	}
 
+	// TODO make sure it finds the enxt event at that location
 	public Appointment getNextEntry(Date when, String location) {
+		if (tree.containsKey(when)) {
+			List<Appointment> list = tree.get(when);
+			List<Appointment> result = list.stream().filter(entry -> entry.getLocation() == location)
+					.collect(Collectors.toList());
+			return (result.size() != 0) ? result.get(0) : getNextEntryHelp(tree.higherKey(when), location);
+		} else {
+			return getNextEntryHelp(tree.higherKey(when), location);
+		}
+	}
 
-		List<Appointment> list = (tree.get(when) != null) ? tree.get(when)
-				: (tree.higherEntry(when).getValue() == null) ? null : tree.higherEntry(when).getValue();
-		if (list == null)
+	public Appointment getNextEntryHelp(Date when, String location) {
+		if (when == null) {
 			return null;
+		}
+		List<Appointment> list = tree.get(when);
 		List<Appointment> result = list.stream().filter(entry -> entry.getLocation() == location)
 				.collect(Collectors.toList());
-		return (result.size() == 0) ? null : result.get(0);
+		if (result.size() != 0) {
+			return result.get(0);
+		}
+		Date key = tree.higherKey(when);
+		return getNextEntryHelp(key, location);
 	}
 
 	public boolean containsMapKey(String location) {
