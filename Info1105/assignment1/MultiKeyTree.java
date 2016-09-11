@@ -18,7 +18,7 @@ import java.util.Date;
  *
  */
 
-public class MultiKeyTree extends TreeMap<Date, List<Appointment>> {
+public class MultiKeyTree {
 
 	/* NESTED APPOINTMENT CLASS IMPLEMENTATION */
 	private class Entry implements Appointment {
@@ -109,27 +109,17 @@ public class MultiKeyTree extends TreeMap<Date, List<Appointment>> {
 
 	// TODO make sure it finds the enxt event at that location
 	public Appointment getNextEntry(Date when, String location) {
+		if (when == null) {
+			return null;
+		}
 		if (tree.containsKey(when)) {
 			List<Appointment> list = tree.get(when);
 			List<Appointment> result = list.stream().filter(entry -> entry.getLocation() == location)
 					.collect(Collectors.toList());
-			return (result.size() != 0) ? result.get(0) : validate(tree.higherKey(when), location);
+			return (result.size() != 0) ? result.get(0) : getNextEntry(tree.higherKey(when), location);
 		} else {
-			return validate(tree.higherKey(when), location);
+			return getNextEntry(tree.higherKey(when), location);
 		}
-	}
-
-	public Appointment validate(Date when, String location) {
-		if (when == null) {
-			return null;
-		}
-		List<Appointment> list = tree.get(when);
-		List<Appointment> result = list.stream().filter(entry -> entry.getLocation() == location)
-				.collect(Collectors.toList());
-		if (result.size() != 0) {
-			return result.get(0);
-		}
-		return validate(tree.higherKey(when), location);
 	}
 
 	public boolean containsMapKey(String location) {
