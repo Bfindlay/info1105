@@ -74,7 +74,7 @@ public class AssignmentTest {
 		calendar.add("Second lunch", b, "Uni");
 		calendar.add("Home Time", c, "BUS");
 		assertEquals("SIT", calendar.getNextAppointment(a, "SIT").getLocation());
-		assertEquals("BUS", calendar.getNextAppointment(b).getLocation());
+		assertEquals("SIT", calendar.getNextAppointment(b).getLocation());
 		assertNull(calendar.getNextAppointment(g));
 		assertNull(calendar.getNextAppointment(b, "HOME"));
 		thrown.expect(IllegalArgumentException.class);
@@ -106,7 +106,7 @@ public class AssignmentTest {
 		Appointment app = calendar.getNextAppointment(d);
 		calendar.remove(app);
 		assertEquals(1, calendar.getAppointments("Broadway").size());
-		Appointment ap = calendar.getNextAppointment(b);
+		Appointment ap = calendar.getNextAppointment(c);
 		calendar.remove(ap);
 		assertEquals(0, calendar.getAppointments("Broadway").size());
 	}
@@ -125,15 +125,19 @@ public class AssignmentTest {
 		calendar.add("Exam", b, "SIT");
 		calendar.add("DERP", b, "HOME");
 		calendar.add("Exam", b, "SIT");
-		calendar.add("Lunch", c, "Broadway");
+		calendar.add("REMOVE", c, "Broadway");
 		calendar.add("Lunch", d, "SIT");
 		calendar.add("Exam", d, "HOME");
 		calendar.add("Lunch", e, "Carslaw");
 		assertEquals(1, calendar.getAppointments("Carslaw").size());
-		Appointment app = calendar.getNextAppointment(d);
+		Appointment app = calendar.getNextAppointment(e);
 		calendar.remove(app);
 		assertEquals(0, calendar.getAppointments("Carslaw").size());
 
+		Appointment app2 = calendar.getNextAppointment(c);
+		assertEquals("REMOVE", app2.getDescription());
+		calendar.remove(app2);
+		assertEquals("Lunch", calendar.getNextAppointment(c).getDescription());
 		// Check for null argument exception
 		thrown.expect(IllegalArgumentException.class);
 		calendar.remove(null);
@@ -192,6 +196,34 @@ public class AssignmentTest {
 
 		// This should cause an IllegalArgumentException to be thrown
 		calendar.getNextAppointment(null);
+
+	}
+
+	@Test
+	public void testGetNextAPpointmentLocation() throws ParseException {
+
+		Date a = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/02 08:00:00");
+		Date b = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/02 10:00:00");
+		Date c = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/02 15:00:00");
+		Date d = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 09:59:59");
+		Date e = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 12:00:00");
+		Date f = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/04 11:00:00");
+		Date g = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/04 12:00:00");
+		Date h = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/04 15:00:00");
+		Date i = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/05 09:59:59");
+		Date j = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/06 12:00:00");
+
+		Calendar calendar = new Assignment();
+		calendar.add("A", a, "A");
+		calendar.add("C", a, "A");
+		calendar.add("F", a, "A");
+		calendar.add("D", a, "A");
+		calendar.add("Z", a, "A");
+		calendar.add("G", a, "A");
+		calendar.add("B", a, "A");
+		calendar.add("Z", a, "A");
+
+		assertEquals("A", calendar.getNextAppointment(a, "A").getDescription());
 
 	}
 

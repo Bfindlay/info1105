@@ -47,7 +47,7 @@ public class Assignment implements Calendar {
 		if (when == null || location == null) {
 			throw new IllegalArgumentException("time was null");
 		}
-		return (when != null) ? tree.getNextEntry(when, location) : null;
+		return tree.getNextEntry(when, location);
 	}
 
 	// TODO Throws IllegalArgumentException if any argument is null

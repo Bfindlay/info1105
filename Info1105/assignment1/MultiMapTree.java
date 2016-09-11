@@ -52,6 +52,7 @@ public class MultiMapTree extends TreeMap<Object, Object> {
 
 	public void removeEntry(Appointment appointment) {
 		// TODO add null checks & Add case for list === 0
+		// remove from the tree
 		List<Appointment> list = tree.get(appointment.getStartTime());
 		if (list.size() == 1)
 			tree.remove(appointment.getStartTime());
@@ -68,12 +69,20 @@ public class MultiMapTree extends TreeMap<Object, Object> {
 
 	// TODO handle no event error
 	public Appointment getNextEntry(Date when) {
-		return (tree.higherEntry(when) != null) ? tree.higherEntry(when).getValue().get(0) : null;
+		// return (tree.get(when) != null) ? tree.get(when).get(0) :
+		// tree.higherEntry(when).getValue().get(0);
+		if (tree.containsKey(when))
+			return tree.get(when).get(0);
+		else
+			return (tree.higherEntry(when) != null) ? tree.higherEntry(when).getValue().get(0) : null;
 	}
 
 	public Appointment getNextEntry(Date when, String location) {
-		List<Appointment> list = tree.higherEntry(when).getValue();
 
+		List<Appointment> list = (tree.get(when) != null) ? tree.get(when)
+				: (tree.higherEntry(when).getValue() == null) ? null : tree.higherEntry(when).getValue();
+		if (list == null)
+			return null;
 		List<Appointment> result = list.stream().filter(entry -> entry.getLocation() == location)
 				.collect(Collectors.toList());
 		return (result.size() == 0) ? null : result.get(0);
