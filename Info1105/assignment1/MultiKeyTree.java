@@ -90,19 +90,20 @@ public class MultiKeyTree {
 		if (list.size() == 1)
 			tree.remove(appointment.getStartTime());
 		else
-			tree.get(appointment.getStartTime()).remove(list.indexOf(appointment));
+			list.remove(list.indexOf(appointment));
 
 		// Remove from location Map
 		List<Appointment> locList = map.get(appointment.getLocation());
 		if (locList.size() == 1)
 			map.remove(appointment.getLocation());
 		else
-			map.get(appointment.getLocation()).remove(locList.indexOf(appointment));
+			locList.remove(locList.indexOf(appointment));
 	}
 
 	public Appointment getNextEntry(Date when) {
-		if (tree.containsKey(when))
+		if (tree.containsKey(when)) {
 			return tree.get(when).get(0);
+		}
 
 		return (tree.higherEntry(when) != null) ? tree.higherEntry(when).getValue().get(0) : null;
 	}
@@ -114,9 +115,10 @@ public class MultiKeyTree {
 		}
 		if (tree.containsKey(when)) {
 			List<Appointment> list = tree.get(when);
-			List<Appointment> result = list.stream().filter(entry -> entry.getLocation() == location)
-					.collect(Collectors.toList());
-			return (result.size() != 0) ? result.get(0) : getNextEntry(tree.higherKey(when), location);
+			List<Appointment> result = list.stream()
+					.filter(entry -> entry.getLocation() == location).collect(Collectors.toList());
+			return (result.size() != 0) ? result.get(0)
+					: getNextEntry(tree.higherKey(when), location);
 		} else {
 			return getNextEntry(tree.higherKey(when), location);
 		}
