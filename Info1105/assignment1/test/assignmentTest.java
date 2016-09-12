@@ -15,6 +15,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import assignment1.Appointment;
+import assignment1.Assignment;
 import assignment1.OLDAssignment;
 import assignment1.Calendar;
 
@@ -29,7 +30,7 @@ public class assignmentTest {
 
 	// Helper method to build the example calendar
 	private Calendar buildTinyExample() {
-		Calendar calendar = new OLDAssignment();
+		Calendar calendar = new Assignment();
 		try {
 			calendar.add("A", df.parse("2016/09/03 09:00:00"), "SIT lab 117");
 			calendar.add("B", df.parse("2016/09/03 16:00:00"), "SIT lab 117");
@@ -52,7 +53,7 @@ public class assignmentTest {
 		Date f = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 13:00:00");
 		Date g = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2014/01/03 13:00:00");
 
-		Calendar calendar = new OLDAssignment();
+		Calendar calendar = new Assignment();
 		calendar.add("Exam", a, "SIT");
 		calendar.add("Lunch", b, "SIT");
 		calendar.add("Second lunch", b, "Uni");
@@ -68,7 +69,7 @@ public class assignmentTest {
 		Date d = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 09:59:59");
 		Date e = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("1968/01/03 12:00:00");
 
-		Calendar calendar = new OLDAssignment();
+		Calendar calendar = new Assignment();
 		calendar.add("Exam", e, "SIT");
 		calendar.add("Lunch", b, "SIT");
 		assertEquals(2, calendar.getAppointments("SIT").size());
@@ -104,7 +105,7 @@ public class assignmentTest {
 		Date d = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 09:59:59");
 		Date e = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 12:00:00");
 
-		OLDAssignment calendar = new OLDAssignment();
+		Calendar calendar = new Assignment();
 		calendar.add("Exam", a, "SIT");
 		calendar.add("Exam", b, "SIT");
 		calendar.add("Exam", b, "SIT");
@@ -158,7 +159,8 @@ public class assignmentTest {
 
 		// This should return Appointment B
 		try {
-			Appointment appointment = calendar.getNextAppointment(df.parse("2016/09/03 13:00:00"), "SIT lab 117");
+			Appointment appointment = calendar.getNextAppointment(df.parse("2016/09/03 13:00:00"),
+					"SIT lab 117");
 			String description = appointment.getDescription();
 			assertTrue(description.equals("B"));
 		} catch (ParseException e) {
