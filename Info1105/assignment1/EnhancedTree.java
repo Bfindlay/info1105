@@ -1,6 +1,7 @@
 package assignment1;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.TreeMap;
 import java.util.ArrayList;
@@ -64,7 +65,8 @@ public class EnhancedTree {
 	/* BEGIN MULTIKEY TREE IMPLEMENTATION */
 	// TODO finish implementing compareTO method
 	public TreeMap<Date, TreeMap<String, TreeSet<Appointment>>> tree;
-	private HashMap<String, List<Appointment>> map;
+	private HashMap<String, TreeSet<Appointment>> map;
+
 	private int createID = 0;
 
 	public EnhancedTree() {
@@ -98,10 +100,10 @@ public class EnhancedTree {
 		}
 		// Insert locations
 		if (map.containsKey(location)) {
-			List<Appointment> loc = map.get(location);
+			TreeSet<Appointment> loc = map.get(location);
 			loc.add(entry);
 		} else {
-			List<Appointment> locList = new ArrayList<>();
+			TreeSet<Appointment> locList = new TreeSet<>();
 			locList.add(entry);
 			map.put(location, locList);
 		}
@@ -118,16 +120,15 @@ public class EnhancedTree {
 			return;
 		}
 		if (list != null) {
-
 			list.remove(appointment);
 		}
 
 		// Remove from location Map
-		List<Appointment> locList = map.get(appointment.getLocation());
+		TreeSet<Appointment> locList = map.get(appointment.getLocation());
 		if (locList.size() == 1)
 			map.remove(appointment.getLocation());
 		else
-			locList.remove(locList.indexOf(appointment));
+			locList.remove(locList.remove(appointment));
 	}
 
 	public Appointment getNextEntry(Date when) {
@@ -166,6 +167,8 @@ public class EnhancedTree {
 	}
 
 	public List<Appointment> getMapValue(String location) {
-		return map.get(location);
+
+		return new ArrayList<>(map.get(location));
+
 	}
 }

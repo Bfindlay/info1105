@@ -69,6 +69,7 @@ public class EnhancedTreeTest {
 		Date g = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2014/01/03 13:00:00");
 
 		Calendar calendar = new EnhancedAssignment();
+		List<String> list = new SetList<>();
 		calendar.add("Exam", a, "SIT");
 		calendar.add("Lunch", b, "SIT");
 		calendar.add("Second lunch", b, "Uni");
