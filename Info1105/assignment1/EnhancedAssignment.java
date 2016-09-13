@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
+import com.sun.org.apache.bcel.internal.generic.INSTANCEOF;
+
 public class EnhancedAssignment implements Calendar {
 
 	// The default constructor for the class should be public
