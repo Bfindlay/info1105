@@ -276,7 +276,58 @@ public class EnhancedTreeTest {
 
 		List<Appointment> appointments = calendar.getAppointments("SIT");
 
-		appointments.stream().forEach(event -> System.out.println(event.getDescription()));
+	}
+
+	@Test
+	public void testEnhancedBasicRetrieve() throws ParseException {
+		Date a = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/02 08:00:00");
+		Date b = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/02 10:00:00");
+		Date c = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/02 15:00:00");
+		Date d = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 09:59:59");
+		Date e = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 12:00:00");
+
+		Calendar calendar = new EnhancedAssignment();
+		calendar.add("Exam", a, "SIT");
+		calendar.add("Exam", b, "SIT");
+		calendar.add("Exam", b, "SIT");
+		calendar.add("DERP", b, "HOME");
+		calendar.add("Exam", b, "SIT");
+		calendar.add("REMOVE", c, "Broadway");
+		calendar.add("Lunch", d, "SIT");
+		calendar.add("Exam", d, "HOME");
+		calendar.add("Lunch", e, "Carslaw");
+		assertEquals(1, calendar.getAppointments("Carslaw").size());
+		Appointment app = calendar.getNextAppointment(e);
+		System.out.println(app.getDescription());
+		calendar.remove(app);
+		Appointment app2 = calendar.getNextAppointment(d);
+
+	}
+
+	@Test
+	public void testRemoveAll() throws ParseException {
+
+		Date a = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/02 08:00:00");
+		Date b = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/02 10:00:00");
+		Date c = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/02 15:00:00");
+		Date d = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 09:59:59");
+		Date e = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 12:00:00");
+
+		Calendar calendar = new EnhancedAssignment();
+		calendar.add("Exam1", a, "SIT1");
+		calendar.add("Exam2", b, "SIT2");
+		calendar.add("Exam3", c, "SIT3");
+
+		Appointment app = calendar.getNextAppointment(a);
+		assertEquals("Exam1", app.getDescription());
+		calendar.remove(app);
+
+		Appointment app2 = calendar.getNextAppointment(a);
+		assertEquals("Exam2", app2.getDescription());
+		calendar.remove(app2);
+
+		Appointment app3 = calendar.getNextAppointment(a);
+		assertEquals("Exam3", app3.getDescription());
 
 	}
 
