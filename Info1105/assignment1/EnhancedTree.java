@@ -21,7 +21,7 @@ import java.util.Date;
 public class EnhancedTree {
 
 	/* NESTED APPOINTMENT CLASS IMPLEMENTATION */
-	private class Entry implements Comparable<Integer>, Appointment {
+	private class Entry implements Comparable<Entry>, Appointment {
 
 		private final String DESCRIPTION;
 		private final String LOCATION;
@@ -55,8 +55,8 @@ public class EnhancedTree {
 		}
 
 		@Override
-		public int compareTo(Integer o) {
-			return this.id.compareTo(o);
+		public int compareTo(Entry o) {
+			return this.id.compareTo(o.id);
 		}
 
 	}
@@ -73,7 +73,8 @@ public class EnhancedTree {
 	}
 
 	public void insertEntry(String description, Date when, String location) {
-		Entry entry = new Entry(description, location, when, createID++);
+		Entry entry = new Entry(description, location, when, createID);
+		this.createID++;
 		if (tree.containsKey(when)) {
 			TreeSet<Appointment> l = tree.get(when).get(location);
 			TreeMap<String, TreeSet<Appointment>> tr = tree.get(when);
@@ -117,39 +118,30 @@ public class EnhancedTree {
 			return;
 		}
 		if (list != null) {
-			if (list.size() == 1) {
-				tree.get(time).remove(loc);
-			} else {
 
-				list.remove(appointment);
-			}
-
-			// Remove from location Map
-			List<Appointment> locList = map.get(appointment.getLocation());
-			if (locList.size() == 1)
-				map.remove(appointment.getLocation());
-			else
-				locList.remove(locList.indexOf(appointment));
+			list.remove(appointment);
 		}
+
+		// Remove from location Map
+		List<Appointment> locList = map.get(appointment.getLocation());
+		if (locList.size() == 1)
+			map.remove(appointment.getLocation());
+		else
+			locList.remove(locList.indexOf(appointment));
 	}
 
 	public Appointment getNextEntry(Date when) {
 		if (tree.containsKey(when)) {
 			TreeMap<String, TreeSet<Appointment>> tr = tree.get(when);
 			if (tr.firstEntry() != null) {
-				String ls = tr.firstEntry().getKey();
-				TreeSet<Appointment> lss = tr.firstEntry().getValue();
-				return lss.first();
+				return tr.firstEntry().getValue().first();
 			}
 		}
 		if (tree.higherEntry(when) != null) {
 			TreeMap<String, TreeSet<Appointment>> tr = tree.higherEntry(when).getValue();
 			if (tr.firstEntry() != null) {
-				String ls = tr.firstEntry().getKey();
-				TreeSet<Appointment> lss = tr.firstEntry().getValue();
-				return lss.first();
+				return tr.firstEntry().getValue().first();
 			}
-			return null;
 		}
 		return null;
 	}
