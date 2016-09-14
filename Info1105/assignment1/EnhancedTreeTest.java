@@ -605,4 +605,23 @@ public class EnhancedTreeTest {
 		// A5.stream().forEach(en -> calendar.remove(en));
 	}
 
+	@Test
+	public void testGetNextAppointment_RemoveAll() throws ParseException {
+
+		Date a = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/02 08:00:00");
+
+		Calendar calendar = new EnhancedAssignment();
+
+		for (int i = 0; i < 10; i++) {
+			calendar.add("A", a, "A");
+		}
+		Appointment appt = calendar.getNextAppointment(a, "A");
+
+		while (appt != null) {
+			calendar.remove(appt);
+			appt = calendar.getNextAppointment(a, "A");
+		}
+
+	}
+
 }
