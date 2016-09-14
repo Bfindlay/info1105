@@ -254,4 +254,62 @@ public class AssignmentTest {
 
 	}
 
+	@Test
+	public void testInsertRemoveMany() throws ParseException {
+
+		Date a = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/02 08:00:00");
+		Date b = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/02 10:00:00");
+		Date c = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/02 15:00:00");
+		Date d = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 09:59:59");
+		Date e = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 12:00:00");
+
+		Calendar calendar = new EnhancedAssignment();
+
+		calendar.add("A", e, "SIT");
+		Appointment app = calendar.getNextAppointment(a);
+		assertEquals("A", app.getDescription());
+		assertNotNull(app);
+		calendar.remove(app);
+		assertNull(calendar.getNextAppointment(e));
+
+		// Add elements to the calendar
+		for (int i = 0; i < 20; i++) {
+			calendar.add("A", a, "Sydney");
+		}
+
+		List<Appointment> list = calendar.getAppointments("Sydney");
+		assertEquals(20, list.size());
+
+		Appointment a20 = list.get(19);
+
+		list.stream().forEach(en -> {
+			calendar.remove(en);
+		});
+
+		assertEquals(0, list.size());
+		// Appointment a0 = list.get(0);
+		// Appointment a1 = list.get(1);
+		// Appointment a2 = list.get(2);
+		// Appointment a3 = list.get(3);
+		// Appointment a4 = list.get(4);
+		// Appointment a5 = list.get(5);
+		// Appointment a6 = list.get(6);
+		// Appointment a7 = list.get(7);
+		//
+		// calendar.remove(a0);
+		// calendar.remove(a1);
+		// calendar.remove(a2);
+		// calendar.remove(a3);
+		// calendar.remove(a4);
+		// calendar.remove(a5);
+		// calendar.remove(a6);
+		// calendar.remove(a7);
+		//
+		// list.stream().forEach(element -> {
+		// System.out.println("deleted");
+		// calendar.remove(element);
+		// });
+
+	}
+
 }
