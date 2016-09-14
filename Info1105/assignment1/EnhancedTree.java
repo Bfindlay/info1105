@@ -1,7 +1,6 @@
 package assignment1;
 
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.TreeMap;
 import java.util.ArrayList;
@@ -74,7 +73,7 @@ public class EnhancedTree {
 
 	/* BEGIN MULTIKEY TREE IMPLEMENTATION */
 
-	public TreeMap<Date, TreeMap<String, TreeSet<Appointment>>> tree;
+	private TreeMap<Date, TreeMap<String, TreeSet<Appointment>>> tree;
 	private HashMap<String, List<Appointment>> map;
 
 	// Auto incrementing ID used to reference entry objects in a TreeSet
@@ -103,59 +102,86 @@ public class EnhancedTree {
 			// Retrieve the TreeSet and add the new entry to the existing Set
 			// or create a new Set
 			TreeMap<String, TreeSet<Appointment>> tr = tree.get(when);
-			TreeSet<Appointment> l = tree.get(when).get(location);
-			if (l != null) {
-				l.add(entry);
-				tr.put(location, l);
+			TreeSet<Appointment> s = tree.get(when).get(location);
+			if (s != null) {
+				s.add(entry);
+				tr.put(location, s);
+				System.out.println("added new element to the list, size is " + s.size());
 			} else {
-				TreeSet<Appointment> ls = new TreeSet<>();
-				ls.add(entry);
-				tr.put(location, ls);
+				TreeSet<Appointment> ts = new TreeSet<>();
+				ts.add(entry);
+				tr.put(location, ts);
+				System.out.println("added first element to the list, size is");
+
 			}
 			// Replace the new TreeSet elements back into the main Tree
 			tree.put(when, tr);
 
 		} else {
 			// Lets add a new event to this Current date key
-			TreeSet<Appointment> event = new TreeSet<>();
-			event.add(entry);
+			TreeSet<Appointment> eventSet = new TreeSet<>();
+			eventSet.add(entry);
 			TreeMap<String, TreeSet<Appointment>> t = new TreeMap<>();
-			t.put(location, event);
+			t.put(location, eventSet);
 			tree.put(when, t);
+			System.out.println(
+					"created new tree node at " + when + " and set size is now " + eventSet.size());
 		}
-		// Insert locations
+		// Insert locations into the HashMap
 		if (map.containsKey(location)) {
-			List<Appointment> loc = map.get(location);
-			loc.add(entry);
+			map.get(location).add(entry);
 		} else {
-			List<Appointment> locList = new ArrayList<>();
-			locList.add(entry);
-			map.put(location, locList);
+			List<Appointment> set = new ArrayList<>();
+			set.add(entry);
+			map.put(location, set);
 		}
 	}
 
+	/**
+	 * 
+	 * @param appointment
+	 */
 	public void removeEntry(Appointment appointment) {
+
+		// Remove from location Map
+		List<Appointment> locList = map.get(appointment.getLocation());
+		if (locList.size() == 1) {
+			System.out.println("Size was 1, removing only element in the list");
+			locList.remove(locList.indexOf(appointment));
+			System.out.println("Element removed from list, size is " + locList.size());
+			map.remove(appointment.getLocation());
+			System.out.println("Element list removed from map");
+		} else {
+			locList.remove(locList.indexOf(appointment));
+			System.out.println(
+					"more than one existed, just deleted the current node from list size is "
+							+ locList.size());
+		}
+
 		// TODO add null checks & Add case for list === 0
 		// remove from the tree
 		Date time = appointment.getStartTime();
 		String loc = appointment.getLocation();
-		TreeSet<Appointment> list = tree.get(time).get(loc);
-		if (tree.get(time).size() == 1) {
-			tree.remove(time);
-			return;
-		}
-		if (list != null) {
-			list.remove(appointment);
-		}
 
-		// Remove from location Map
-		List<Appointment> locList = map.get(appointment.getLocation());
-		if (locList.size() == 1)
-			map.remove(appointment.getLocation());
-		else
-			locList.remove(locList.indexOf(appointment));
+		TreeSet<Appointment> set = tree.get(time).get(loc);
+		if (tree.get(time).get(loc).size() == 1) {
+			System.out.println("Only one node exits in tree, removing it from the set");
+			set.remove(appointment);
+			tree.get(time).remove(loc);
+			System.out.println("removing the set from tree now size is " + set.size());
+			return;
+		} else if (set != null) {
+			set.remove(appointment);
+			System.out.println("element > 1, remove the elemnt, set size is " + set.size());
+		}
+		return;
 	}
 
+	/**
+	 * 
+	 * @param when
+	 * @return
+	 */
 	public Appointment getNextEntry(Date when) {
 		if (tree.containsKey(when)) {
 			TreeMap<String, TreeSet<Appointment>> tr = tree.get(when);
@@ -173,27 +199,40 @@ public class EnhancedTree {
 	}
 
 	// TODO make sure it finds the next event at that location
+	/**
+	 * 
+	 * @param when
+	 * @param location
+	 * @return
+	 */
 	public Appointment getNextEntry(Date when, String location) {
 		if (when == null) {
 			return null;
 		}
 		if (tree.containsKey(when)) {
 			TreeMap<String, TreeSet<Appointment>> tr = tree.get(when);
-			TreeSet<Appointment> result = tr.get(location);
-			return (result != null && result.size() != 0) ? result.first()
-					: getNextEntry(tree.higherKey(when), location);
-		} else {
-			return getNextEntry(tree.higherKey(when), location);
+			TreeSet<Appointment> res = tr.get(location);
+			if (res != null && res.size() != 0)
+				return res.first();
 		}
+		return getNextEntry(tree.higherKey(when), location);
 	}
 
+	/**
+	 * 
+	 * @param location
+	 * @return
+	 */
 	public boolean containsMapKey(String location) {
 		return map.containsKey(location);
 	}
 
+	/**
+	 * 
+	 * @param location
+	 * @return
+	 */
 	public List<Appointment> getMapValue(String location) {
-
 		return map.get(location);
-
 	}
 }
