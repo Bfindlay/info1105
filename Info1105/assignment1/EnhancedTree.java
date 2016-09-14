@@ -74,7 +74,7 @@ public class EnhancedTree {
 	/* BEGIN MULTIKEY TREE IMPLEMENTATION */
 
 	private TreeMap<Date, TreeMap<String, TreeSet<Appointment>>> tree;
-	private HashMap<String, List<Appointment>> map;
+	private HashMap<String, TreeSet<Appointment>> map;
 
 	// Auto incrementing ID used to reference entry objects in a TreeSet
 	private int createID = 0;
@@ -106,12 +106,10 @@ public class EnhancedTree {
 			if (s != null) {
 				s.add(entry);
 				tr.put(location, s);
-				System.out.println("added new element to the list, size is " + s.size());
 			} else {
 				TreeSet<Appointment> ts = new TreeSet<>();
 				ts.add(entry);
 				tr.put(location, ts);
-				System.out.println("added first element to the list, size is");
 
 			}
 			// Replace the new TreeSet elements back into the main Tree
@@ -124,14 +122,12 @@ public class EnhancedTree {
 			TreeMap<String, TreeSet<Appointment>> t = new TreeMap<>();
 			t.put(location, eventSet);
 			tree.put(when, t);
-			System.out.println(
-					"created new tree node at " + when + " and set size is now " + eventSet.size());
 		}
 		// Insert locations into the HashMap
 		if (map.containsKey(location)) {
 			map.get(location).add(entry);
 		} else {
-			List<Appointment> set = new ArrayList<>();
+			TreeSet<Appointment> set = new TreeSet<>();
 			set.add(entry);
 			map.put(location, set);
 		}
@@ -143,38 +139,28 @@ public class EnhancedTree {
 	 */
 	public void removeEntry(Appointment appointment) {
 
-		// Remove from location Map
-		List<Appointment> locList = map.get(appointment.getLocation());
-		if (locList.size() == 1) {
-			System.out.println("Size was 1, removing only element in the list");
-			locList.remove(locList.indexOf(appointment));
-			System.out.println("Element removed from list, size is " + locList.size());
-			map.remove(appointment.getLocation());
-			System.out.println("Element list removed from map");
-		} else {
-			locList.remove(locList.indexOf(appointment));
-			System.out.println(
-					"more than one existed, just deleted the current node from list size is "
-							+ locList.size());
-		}
-
-		// TODO add null checks & Add case for list === 0
-		// remove from the tree
 		Date time = appointment.getStartTime();
 		String loc = appointment.getLocation();
 
-		TreeSet<Appointment> set = tree.get(time).get(loc);
+		// System.out.println(loc);
+
+		TreeSet<Appointment> list = tree.get(time).get(loc);
 		if (tree.get(time).get(loc).size() == 1) {
-			System.out.println("Only one node exits in tree, removing it from the set");
-			set.remove(appointment);
-			tree.get(time).remove(loc);
-			System.out.println("removing the set from tree now size is " + set.size());
-			return;
-		} else if (set != null) {
-			set.remove(appointment);
-			System.out.println("element > 1, remove the elemnt, set size is " + set.size());
+			list.remove(appointment);
+			tree.remove(time);
+		} else {
+			list.remove(appointment);
 		}
-		return;
+
+		// Remove from location Map
+		TreeSet<Appointment> locSet = map.get(appointment.getLocation());
+		if (locSet.size() == 1) {
+			locSet.remove(appointment);
+			map.remove(appointment.getLocation());
+		} else {
+			locSet.remove(appointment);
+		}
+
 	}
 
 	/**
@@ -233,6 +219,6 @@ public class EnhancedTree {
 	 * @return
 	 */
 	public List<Appointment> getMapValue(String location) {
-		return map.get(location);
+		return new ArrayList<>(map.get(location));
 	}
 }
