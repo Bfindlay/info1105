@@ -139,28 +139,28 @@ public class EnhancedTree {
 	 */
 	public void removeEntry(Appointment appointment) {
 
+		if (appointment == null)
+			return;
+
 		Date time = appointment.getStartTime();
 		String loc = appointment.getLocation();
 
 		// System.out.println(loc);
 
 		TreeSet<Appointment> list = tree.get(time).get(loc);
-		if (tree.get(time).get(loc).size() == 1) {
-			list.remove(appointment);
-			tree.remove(time);
-		} else {
-			list.remove(appointment);
+		list.remove(appointment);
+		if (tree.get(time).get(loc).size() == 0) {
+			tree.get(time).remove(loc);
 		}
+		if (tree.get(time).size() == 0)
+			tree.remove(time);
 
 		// Remove from location Map
 		TreeSet<Appointment> locSet = map.get(appointment.getLocation());
-		if (locSet.size() == 1) {
-			locSet.remove(appointment);
+		locSet.remove(appointment);
+		if (locSet.size() == 0) {
 			map.remove(appointment.getLocation());
-		} else {
-			locSet.remove(appointment);
 		}
-
 	}
 
 	/**
