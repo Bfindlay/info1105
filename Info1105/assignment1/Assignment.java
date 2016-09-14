@@ -25,7 +25,8 @@ public class Assignment implements Calendar {
 		if (location == null) {
 			throw new IllegalArgumentException("Location was null");
 		}
-		return (tree.containsMapKey(location)) ? tree.getMapValue(location) : new ArrayList<Appointment>();
+		return (tree.containsMapKey(location)) ? tree.getMapValue(location)
+				: new ArrayList<Appointment>();
 	}
 
 	// TODO Return the next appointment at or after the given time (in any
