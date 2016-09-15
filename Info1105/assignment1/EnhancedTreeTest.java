@@ -771,4 +771,38 @@ public class EnhancedTreeTest {
 
 	}
 
+	@Test
+	public void testSearchComplexity() throws ParseException {
+		Date a = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/02 08:00:00");
+		Date b = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/02 10:00:00");
+		Date c = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/02 15:00:00");
+		Date d = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 09:59:59");
+		Date e = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 12:00:00");
+
+		Calendar calendar = new EnhancedAssignment();
+
+		calendar.add("A", a, "A");
+		calendar.add("A", b, "A");
+		calendar.add("A", c, "A");
+		calendar.add("A", d, "A");
+		calendar.add("A", e, "B");
+
+		calendar.getNextAppointment(a, "B");
+
+	}
+
+	@Test
+	public void testInvalidInput() throws ParseException {
+		Date a = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/02 08:00:00");
+		Date b = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/02 10:00:00");
+		Date c = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/02 15:00:00");
+		Date d = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 09:59:59");
+		Date e = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 12:00:00");
+		Date f = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 13:00:00");
+		Date g = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2014/01/03 13:00:00");
+
+		Calendar calendar = new EnhancedAssignment();
+
+	}
+
 }

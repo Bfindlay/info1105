@@ -191,7 +191,10 @@ public class EnhancedTree {
 	 * @param location
 	 * @return
 	 */
+	public int count = 0;
+
 	public Appointment getNextEntry(Date when, String location) {
+		System.out.println("Search");
 		if (when == null) {
 			return null;
 		}
