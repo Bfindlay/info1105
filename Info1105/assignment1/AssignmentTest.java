@@ -764,12 +764,98 @@ public class AssignmentTest {
 
 		calendar.add(new String(), new Date(1), new String());
 
-		calendar.remove((Appointment) new Object());
-
+		// Test all methods throw exceptions for the required inputs
 		thrown.expect(IllegalArgumentException.class);
 		calendar.remove(null);
-		calendar.getNextAppointment(null);
 
+	}
+
+	@Test
+	public void testInvalidRemove() {
+		Calendar calendar = new Assignment();
+		try {
+			calendar.remove(null);
+
+			fail("Exception was expected!");
+		} catch (IllegalArgumentException e) {
+			assertEquals(e.getMessage(), "Appointment was null");
+		}
+	}
+
+	@Test
+	public void testInvalidGetNext() {
+		Calendar calendar = new Assignment();
+		try {
+			calendar.getNextAppointment(null);
+
+			fail("Exception was expected!");
+		} catch (IllegalArgumentException e) {
+			assertEquals(e.getMessage(), "time was null");
+		}
+	}
+
+	@Test
+	public void testInvalidGetList() {
+		Calendar calendar = new Assignment();
+		try {
+			calendar.getAppointments(null);
+
+			fail("Exception was expected!");
+		} catch (IllegalArgumentException e) {
+			assertEquals(e.getMessage(), "Location was null");
+		}
+	}
+
+	@Test
+	public void testInvalidGetNextDateLocation() {
+		Calendar calendar = new Assignment();
+
+		try {
+			calendar.getNextAppointment(null, new String());
+
+			fail("Exception was expected!");
+		} catch (IllegalArgumentException e) {
+			assertEquals(e.getMessage(), "argument was null");
+		}
+		try {
+			calendar.getNextAppointment(new Date(), null);
+
+			fail("Exception was expected!");
+		} catch (IllegalArgumentException e) {
+			assertEquals(e.getMessage(), "argument was null");
+		}
+
+	}
+
+	@Test
+	public void testInvalidAdd() {
+		Calendar calendar = new Assignment();
+
+		try {
+			calendar.add(null, null, null);
+			fail("Exception was expected!");
+		} catch (IllegalArgumentException e) {
+			assertEquals(e.getMessage(), "Argument was null");
+		}
+
+		try {
+			calendar.add(new String(), new Date(), null);
+			fail("Exception was expected!");
+		} catch (IllegalArgumentException e) {
+			assertEquals(e.getMessage(), "Argument was null");
+		}
+		try {
+			calendar.add(new String(), null, new String());
+			fail("Exception was expected!");
+		} catch (IllegalArgumentException e) {
+			assertEquals(e.getMessage(), "Argument was null");
+		}
+		try {
+			calendar.add(null, new Date(), new String());
+			fail("Exception was expected!");
+		} catch (IllegalArgumentException e) {
+			assertEquals(e.getMessage(), "Argument was null");
+		}
 	}
 
 	@Test
@@ -796,6 +882,7 @@ public class AssignmentTest {
 
 			calendar.add(desc, date, loc);
 
+			fail("not yet implemented");
 		}
 
 	}

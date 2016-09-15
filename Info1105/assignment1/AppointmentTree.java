@@ -137,12 +137,9 @@ public class AppointmentTree {
 	 * @param appointment
 	 *            obtained from getNextAppointment(*) methods
 	 * 
+	 *
 	 */
 	public void removeEntry(Appointment appointment) {
-
-		if (appointment == null) {
-			return;
-		}
 
 		Date time = appointment.getStartTime();
 		String loc = appointment.getLocation();
