@@ -116,7 +116,7 @@ public class EnhancedTreeTest {
 	}
 
 	@Test
-	public void testRemove() throws ParseException {
+	public void testBasicRemove() throws ParseException {
 		Date a = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/02 08:00:00");
 		Date b = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/02 10:00:00");
 		Date c = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/02 15:00:00");
@@ -160,10 +160,6 @@ public class EnhancedTreeTest {
 
 		thrown.expect(IllegalArgumentException.class);
 		calendar.remove(null);
-
-		// TODO remove appointment not in the list;
-
-		// TODO remove appointment not in the list;
 
 	}
 
@@ -534,7 +530,7 @@ public class EnhancedTreeTest {
 	}
 
 	@Test
-	public void testRandomInsertionsRemoveAll() throws ParseException {
+	public void testRandomInsertionsRemoveAllFromList() throws ParseException {
 		Date a = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/02 08:00:00");
 		Date b = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/02 10:00:00");
 		Date c = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/02 15:00:00");
@@ -573,6 +569,11 @@ public class EnhancedTreeTest {
 		System.out.println("A5 size " + A5.size());
 
 		A1.stream().forEach(en -> calendar.remove(en));
+		A2.stream().forEach(en -> calendar.remove(en));
+
+		A3.stream().forEach(en -> calendar.remove(en));
+		A4.stream().forEach(en -> calendar.remove(en));
+		A5.stream().forEach(en -> calendar.remove(en));
 
 		assertEquals(0, calendar.getAppointments("SIT 123").size());
 
@@ -590,37 +591,183 @@ public class EnhancedTreeTest {
 		System.out.println("A4 size " + A4D.size());
 		System.out.println("A5 size " + A5D.size());
 
-		System.out.println("_____________________");
-		System.out.println(A1.get(0).getLocation());
-		System.out.println(A2.get(0).getLocation());
-		System.out.println(A3.get(0).getLocation());
-		System.out.println(A4.get(0).getLocation());
-		System.out.println(A5.get(0).getLocation());
-		System.out.println("_____________________");
+		assertEquals(0, A1D.size() + A2D.size() + A3D.size() + A4D.size() + A5D.size());
 
-		A2.stream().forEach(en -> calendar.remove(en));
+	}
 
-		// A3.stream().forEach(en -> calendar.remove(en));
-		// A4.stream().forEach(en -> calendar.remove(en));
-		// A5.stream().forEach(en -> calendar.remove(en));
+	@Test
+	public void testRandomInsertionsRemoveGetNext() throws ParseException {
+		Date a = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/02 08:00:00");
+		Date b = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/02 10:00:00");
+		Date c = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/02 15:00:00");
+		Date d = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 09:59:59");
+		Date e = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 12:00:00");
+
+		Calendar calendar = new EnhancedAssignment();
+
+		String[] locations = { "SIT 123", "SIT", "SIT 121", "SIT 117", "SIT 119", "SIT Boardroom" };
+		String[] descriptions = { "Exam", "Lunch", "Homework", "Assignment", "Quiz", "Meeting" };
+		Date[] dates = { a, b, c, d, e };
+
+		Random generator = new Random();
+		for (int i = 0; i < 10000; i++) {
+
+			Date date = dates[generator.nextInt(dates.length)];
+			String desc = descriptions[generator.nextInt(descriptions.length)];
+			String loc = locations[generator.nextInt(locations.length)];
+
+			calendar.add(desc, date, loc);
+
+		}
+
+		List<Appointment> A1 = calendar.getAppointments("SIT 123");
+		List<Appointment> A2 = calendar.getAppointments("SIT");
+		List<Appointment> A3 = calendar.getAppointments("SIT 121");
+		List<Appointment> A4 = calendar.getAppointments("SIT 117");
+		List<Appointment> A5 = calendar.getAppointments("SIT 119");
+		List<Appointment> A6 = calendar.getAppointments("SIT Boardroom");
+
+		// Verify all entries are in the list
+		assertEquals(10000, A1.size() + A2.size() + A3.size() + A4.size() + A5.size() + A6.size());
+
+		System.out.println("A1 size " + A1.size());
+		System.out.println("A2 size " + A2.size());
+		System.out.println("A3 size " + A3.size());
+		System.out.println("A4 size " + A4.size());
+		System.out.println("A5 size " + A5.size());
+		System.out.println("A5 size " + A6.size());
+		// Test removing from outside in,
+		Appointment E = calendar.getNextAppointment(e);
+		while (E != null) {
+			calendar.remove(E);
+			E = calendar.getNextAppointment(e);
+		}
+
+		Appointment D = calendar.getNextAppointment(d);
+		while (D != null) {
+			calendar.remove(D);
+			D = calendar.getNextAppointment(d);
+		}
+
+		Appointment C = calendar.getNextAppointment(c);
+		while (C != null) {
+			calendar.remove(C);
+			C = calendar.getNextAppointment(c);
+		}
+
+		Appointment B = calendar.getNextAppointment(b);
+		while (B != null) {
+			calendar.remove(B);
+			B = calendar.getNextAppointment(b);
+		}
+
+		Appointment A = calendar.getNextAppointment(a);
+		while (A != null) {
+			calendar.remove(A);
+			A = calendar.getNextAppointment(a);
+		}
+
+		/* Verify sizes after deletion */
+
+		List<Appointment> A1D = calendar.getAppointments("SIT 123");
+		List<Appointment> A2D = calendar.getAppointments("SIT");
+		List<Appointment> A3D = calendar.getAppointments("SIT 121");
+		List<Appointment> A4D = calendar.getAppointments("SIT 117");
+		List<Appointment> A5D = calendar.getAppointments("SIT 119");
+
+		System.out.println("A1 size " + A1D.size());
+		System.out.println("A2 size " + A2D.size());
+		System.out.println("A3 size " + A3D.size());
+		System.out.println("A4 size " + A4D.size());
+		System.out.println("A5 size " + A5D.size());
+
+		assertEquals(0, A1D.size() + A2D.size() + A3D.size() + A4D.size() + A5D.size());
+
 	}
 
 	@Test
 	public void testGetNextAppointment_RemoveAll() throws ParseException {
 
 		Date a = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/02 08:00:00");
+		Date b = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/02 10:00:00");
+		Date c = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/02 15:00:00");
+		Date d = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 09:59:59");
+		Date e = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 12:00:00");
 
 		Calendar calendar = new EnhancedAssignment();
 
-		for (int i = 0; i < 10; i++) {
-			calendar.add("A", a, "A");
-		}
-		Appointment appt = calendar.getNextAppointment(a, "A");
+		String[] locations = { "SIT 123", "SIT", "SIT 121", "SIT 117", "SIT 119", "SIT Boardroom" };
+		String[] descriptions = { "Exam", "Lunch", "Homework", "Assignment", "Quiz", "Meeting" };
+		Date[] dates = { a, b, c, d, e };
 
-		while (appt != null) {
-			calendar.remove(appt);
-			appt = calendar.getNextAppointment(a, "A");
+		Random generator = new Random();
+		for (int i = 0; i < 100000; i++) {
+
+			Date date = dates[generator.nextInt(dates.length)];
+			String desc = descriptions[generator.nextInt(descriptions.length)];
+			String loc = locations[generator.nextInt(locations.length)];
+
+			calendar.add(desc, date, loc);
+
 		}
+
+		List<Appointment> A1 = calendar.getAppointments("SIT 123");
+		List<Appointment> A2 = calendar.getAppointments("SIT");
+		List<Appointment> A3 = calendar.getAppointments("SIT 121");
+		List<Appointment> A4 = calendar.getAppointments("SIT 117");
+		List<Appointment> A5 = calendar.getAppointments("SIT 119");
+		List<Appointment> A6 = calendar.getAppointments("SIT Boardroom");
+
+		// Verify all entries are in the list
+		assertEquals(100000, A1.size() + A2.size() + A3.size() + A4.size() + A5.size() + A6.size());
+
+		System.out.println("A1 size " + A1.size());
+		System.out.println("A2 size " + A2.size());
+		System.out.println("A3 size " + A3.size());
+		System.out.println("A4 size " + A4.size());
+		System.out.println("A5 size " + A5.size());
+		System.out.println("A5 size " + A6.size());
+
+		// Test removing from outside in,
+
+		Appointment A = calendar.getNextAppointment(a, "SIT 123");
+
+		while (true) {
+
+			A1 = calendar.getAppointments("SIT 123");
+			A2 = calendar.getAppointments("SIT");
+			A3 = calendar.getAppointments("SIT 121");
+			A4 = calendar.getAppointments("SIT 117");
+			A5 = calendar.getAppointments("SIT 119");
+			A6 = calendar.getAppointments("SIT Boardroom");
+			Date date = dates[generator.nextInt(dates.length)];
+			String desc = descriptions[generator.nextInt(descriptions.length)];
+			String loc = locations[generator.nextInt(locations.length)];
+
+			if (A != null) {
+				calendar.remove(A);
+			}
+			A = calendar.getNextAppointment(date, loc);
+			if (A1.size() + A2.size() + A3.size() + A4.size() + A5.size() + A6.size() == 0)
+				break;
+		}
+
+		/* Verify sizes after deletion */
+
+		List<Appointment> A1D = calendar.getAppointments("SIT 123");
+		List<Appointment> A2D = calendar.getAppointments("SIT");
+		List<Appointment> A3D = calendar.getAppointments("SIT 121");
+		List<Appointment> A4D = calendar.getAppointments("SIT 117");
+		List<Appointment> A5D = calendar.getAppointments("SIT 119");
+
+		System.out.println("A1 size " + A1D.size());
+		System.out.println("A2 size " + A2D.size());
+		System.out.println("A3 size " + A3D.size());
+		System.out.println("A4 size " + A4D.size());
+		System.out.println("A5 size " + A5D.size());
+
+		// All elements have been deleted
+		assertEquals(0, A1D.size() + A2D.size() + A3D.size() + A4D.size() + A5D.size());
 
 	}
 
