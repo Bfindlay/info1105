@@ -1,4 +1,4 @@
-package assignment1;
+package assignment1.test;
 
 import static org.junit.Assert.*;
 
@@ -14,7 +14,11 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-public class AssignmentTest {
+import assignment1.Appointment;
+import assignment1.Calendar;
+import assignment1.Assignment;
+
+public class AssignmentTestOLD {
 
 	// Set up JUnit to be able to check for expected exceptions
 	@Rule
@@ -25,7 +29,7 @@ public class AssignmentTest {
 
 	// Helper method to build the example calendar
 	private Calendar buildTinyExample() {
-		Calendar calendar = new Assignment();
+		Calendar calendar = new AssignmentOLD();
 		try {
 			calendar.add("A", df.parse("2016/09/03 09:00:00"), "SIT lab 117");
 			calendar.add("B", df.parse("2016/09/03 16:00:00"), "SIT lab 117");
@@ -68,7 +72,7 @@ public class AssignmentTest {
 		Date f = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 13:00:00");
 		Date g = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2014/01/03 13:00:00");
 
-		Calendar calendar = new Assignment();
+		Calendar calendar = new AssignmentOLD();
 		calendar.add("Exam", a, "SIT");
 		calendar.add("Lunch", b, "SIT");
 		calendar.add("Second lunch", b, "Uni");
@@ -91,7 +95,7 @@ public class AssignmentTest {
 		Date d = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 09:59:59");
 		Date e = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 12:00:00");
 
-		Calendar calendar = new Assignment();
+		Calendar calendar = new AssignmentOLD();
 		calendar.add("Exam", a, "SIT");
 		calendar.add("Exam", b, "SIT");
 		calendar.add("Exam", b, "SIT");
@@ -119,7 +123,7 @@ public class AssignmentTest {
 		Date d = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 09:59:59");
 		Date e = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 12:00:00");
 
-		Calendar calendar = new Assignment();
+		Calendar calendar = new AssignmentOLD();
 		calendar.add("Exam", a, "SIT");
 		calendar.add("Exam", b, "SIT");
 		calendar.add("Exam", b, "SIT");
@@ -216,7 +220,7 @@ public class AssignmentTest {
 		Date i = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/05 09:59:59");
 		Date j = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/06 12:00:00");
 
-		Calendar calendar = new Assignment();
+		Calendar calendar = new AssignmentOLD();
 
 		calendar.add("A", a, "A");
 		calendar.add("C", a, "A");
@@ -263,7 +267,7 @@ public class AssignmentTest {
 		Date d = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 09:59:59");
 		Date e = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 12:00:00");
 
-		Calendar calendar = new EnhancedAssignment();
+		Calendar calendar = new Assignment();
 
 		calendar.add("A", e, "SIT");
 		Appointment app = calendar.getNextAppointment(a);

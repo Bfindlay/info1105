@@ -29,7 +29,7 @@ public class EnhancedTreeTest {
 
 	// Helper method to build the example calendar
 	private Calendar buildTinyExample() {
-		Calendar calendar = new EnhancedAssignment();
+		Calendar calendar = new Assignment();
 		try {
 			calendar.add("A", df.parse("2016/09/03 09:00:00"), "SIT lab 117");
 			calendar.add("B", df.parse("2016/09/03 16:00:00"), "SIT lab 117");
@@ -72,7 +72,7 @@ public class EnhancedTreeTest {
 		Date f = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 13:00:00");
 		Date g = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2014/01/03 13:00:00");
 
-		Calendar calendar = new EnhancedAssignment();
+		Calendar calendar = new Assignment();
 		calendar.add("Exam", a, "SIT");
 		calendar.add("Lunch", b, "SIT");
 		calendar.add("Second lunch", b, "Uni");
@@ -95,7 +95,7 @@ public class EnhancedTreeTest {
 		Date d = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 09:59:59");
 		Date e = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 12:00:00");
 
-		Calendar calendar = new EnhancedAssignment();
+		Calendar calendar = new Assignment();
 		calendar.add("Exam", a, "SIT");
 		calendar.add("Exam", b, "SIT");
 		calendar.add("Exam", b, "SIT");
@@ -123,7 +123,7 @@ public class EnhancedTreeTest {
 		Date d = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 09:59:59");
 		Date e = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 12:00:00");
 
-		Calendar calendar = new EnhancedAssignment();
+		Calendar calendar = new Assignment();
 		calendar.add("Exam", a, "SIT");
 		calendar.add("Exam", b, "SIT");
 		calendar.add("Exam", b, "SIT");
@@ -233,7 +233,7 @@ public class EnhancedTreeTest {
 		Date i = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/05 09:59:59");
 		Date j = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/06 12:00:00");
 
-		Calendar calendar = new EnhancedAssignment();
+		Calendar calendar = new Assignment();
 
 		calendar.add("A", a, "A");
 		calendar.add("C", a, "A");
@@ -278,7 +278,7 @@ public class EnhancedTreeTest {
 		Date d = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 09:59:59");
 		Date e = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 12:00:00");
 
-		Calendar calendar = new EnhancedAssignment();
+		Calendar calendar = new Assignment();
 		calendar.add("Exam", a, "SIT");
 		calendar.add("Exam", b, "SIT");
 		calendar.add("Exam", b, "SIT");
@@ -302,7 +302,7 @@ public class EnhancedTreeTest {
 		Date d = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 09:59:59");
 		Date e = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 12:00:00");
 
-		Calendar calendar = new EnhancedAssignment();
+		Calendar calendar = new Assignment();
 		calendar.add("Exam", a, "SIT");
 		calendar.add("Exam", b, "SIT");
 		calendar.add("Exam", b, "SIT");
@@ -329,7 +329,7 @@ public class EnhancedTreeTest {
 		Date d = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 09:59:59");
 		Date e = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 12:00:00");
 
-		Calendar calendar = new EnhancedAssignment();
+		Calendar calendar = new Assignment();
 		calendar.add("Exam1", a, "SIT1");
 		calendar.add("Exam2", b, "SIT2");
 		calendar.add("Exam3", c, "SIT3");
@@ -354,7 +354,7 @@ public class EnhancedTreeTest {
 		Date d = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 09:59:59");
 		Date e = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 12:00:00");
 
-		Calendar calendar = new EnhancedAssignment();
+		Calendar calendar = new Assignment();
 
 		for (int i = 0; i < 100; i++) {
 			calendar.add("A", a, "Sydney");
@@ -385,7 +385,7 @@ public class EnhancedTreeTest {
 		Date d = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 09:59:59");
 		Date e = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 12:00:00");
 
-		Calendar calendar = new EnhancedAssignment();
+		Calendar calendar = new Assignment();
 
 		calendar.add("A", e, "SIT");
 		Appointment app = calendar.getNextAppointment(a);
@@ -421,7 +421,7 @@ public class EnhancedTreeTest {
 		Date d = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 09:59:59");
 		Date e = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 12:00:00");
 
-		Calendar calendar = new EnhancedAssignment();
+		Calendar calendar = new Assignment();
 
 		calendar.add("A", a, "A");
 		calendar.add("A", a, "A");
@@ -443,7 +443,7 @@ public class EnhancedTreeTest {
 		Date d = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 09:59:59");
 		Date e = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 12:00:00");
 
-		Calendar calendar = new EnhancedAssignment();
+		Calendar calendar = new Assignment();
 
 		calendar.add("A", a, "A");
 		calendar.add("A", a, "A");
@@ -480,7 +480,7 @@ public class EnhancedTreeTest {
 		Date d = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 09:59:59");
 		Date e = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 12:00:00");
 
-		Calendar calendar = new EnhancedAssignment();
+		Calendar calendar = new Assignment();
 
 		calendar.add("A", a, "A");
 
@@ -503,7 +503,7 @@ public class EnhancedTreeTest {
 		Date d = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 09:59:59");
 		Date e = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 12:00:00");
 
-		Calendar calendar = new EnhancedAssignment();
+		Calendar calendar = new Assignment();
 
 		String[] locations = { "SIT 123", "SIT", "SIT 121", "SIT 117", "SIT 119" };
 		String[] descriptions = { "Exam", "Lunch", "Homework", "Assignment", "Quiz" };
@@ -537,7 +537,7 @@ public class EnhancedTreeTest {
 		Date d = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 09:59:59");
 		Date e = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 12:00:00");
 
-		Calendar calendar = new EnhancedAssignment();
+		Calendar calendar = new Assignment();
 
 		String[] locations = { "SIT 123", "SIT", "SIT 121", "SIT 117", "SIT 119" };
 		String[] descriptions = { "Exam", "Lunch", "Homework", "Assignment", "Quiz" };
@@ -562,12 +562,6 @@ public class EnhancedTreeTest {
 		// Verify all entries are in the list
 		assertEquals(10000, A1.size() + A2.size() + A3.size() + A4.size() + A5.size());
 
-		System.out.println("A1 size " + A1.size());
-		System.out.println("A2 size " + A2.size());
-		System.out.println("A3 size " + A3.size());
-		System.out.println("A4 size " + A4.size());
-		System.out.println("A5 size " + A5.size());
-
 		A1.stream().forEach(en -> calendar.remove(en));
 		A2.stream().forEach(en -> calendar.remove(en));
 
@@ -585,12 +579,6 @@ public class EnhancedTreeTest {
 		List<Appointment> A4D = calendar.getAppointments("SIT 117");
 		List<Appointment> A5D = calendar.getAppointments("SIT 119");
 
-		System.out.println("A1 size " + A1D.size());
-		System.out.println("A2 size " + A2D.size());
-		System.out.println("A3 size " + A3D.size());
-		System.out.println("A4 size " + A4D.size());
-		System.out.println("A5 size " + A5D.size());
-
 		assertEquals(0, A1D.size() + A2D.size() + A3D.size() + A4D.size() + A5D.size());
 
 	}
@@ -603,7 +591,7 @@ public class EnhancedTreeTest {
 		Date d = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 09:59:59");
 		Date e = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 12:00:00");
 
-		Calendar calendar = new EnhancedAssignment();
+		Calendar calendar = new Assignment();
 
 		String[] locations = { "SIT 123", "SIT", "SIT 121", "SIT 117", "SIT 119", "SIT Boardroom" };
 		String[] descriptions = { "Exam", "Lunch", "Homework", "Assignment", "Quiz", "Meeting" };
@@ -630,12 +618,6 @@ public class EnhancedTreeTest {
 		// Verify all entries are in the list
 		assertEquals(10000, A1.size() + A2.size() + A3.size() + A4.size() + A5.size() + A6.size());
 
-		System.out.println("A1 size " + A1.size());
-		System.out.println("A2 size " + A2.size());
-		System.out.println("A3 size " + A3.size());
-		System.out.println("A4 size " + A4.size());
-		System.out.println("A5 size " + A5.size());
-		System.out.println("A5 size " + A6.size());
 		// Test removing from outside in,
 		Appointment E = calendar.getNextAppointment(e);
 		while (E != null) {
@@ -694,7 +676,7 @@ public class EnhancedTreeTest {
 		Date d = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 09:59:59");
 		Date e = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 12:00:00");
 
-		Calendar calendar = new EnhancedAssignment();
+		Calendar calendar = new Assignment();
 
 		String[] locations = { "SIT 123", "SIT", "SIT 121", "SIT 117", "SIT 119", "SIT Boardroom" };
 		String[] descriptions = { "Exam", "Lunch", "Homework", "Assignment", "Quiz", "Meeting" };
@@ -720,13 +702,6 @@ public class EnhancedTreeTest {
 
 		// Verify all entries are in the list
 		assertEquals(100000, A1.size() + A2.size() + A3.size() + A4.size() + A5.size() + A6.size());
-
-		System.out.println("A1 size " + A1.size());
-		System.out.println("A2 size " + A2.size());
-		System.out.println("A3 size " + A3.size());
-		System.out.println("A4 size " + A4.size());
-		System.out.println("A5 size " + A5.size());
-		System.out.println("A5 size " + A6.size());
 
 		// Test removing from outside in,
 
@@ -760,12 +735,6 @@ public class EnhancedTreeTest {
 		List<Appointment> A4D = calendar.getAppointments("SIT 117");
 		List<Appointment> A5D = calendar.getAppointments("SIT 119");
 
-		System.out.println("A1 size " + A1D.size());
-		System.out.println("A2 size " + A2D.size());
-		System.out.println("A3 size " + A3D.size());
-		System.out.println("A4 size " + A4D.size());
-		System.out.println("A5 size " + A5D.size());
-
 		// All elements have been deleted
 		assertEquals(0, A1D.size() + A2D.size() + A3D.size() + A4D.size() + A5D.size());
 
@@ -779,7 +748,7 @@ public class EnhancedTreeTest {
 		Date d = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 09:59:59");
 		Date e = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 12:00:00");
 
-		Calendar calendar = new EnhancedAssignment();
+		Calendar calendar = new Assignment();
 
 		calendar.add("A", a, "A");
 		calendar.add("A", b, "A");
@@ -801,7 +770,7 @@ public class EnhancedTreeTest {
 		Date f = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 13:00:00");
 		Date g = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2014/01/03 13:00:00");
 
-		Calendar calendar = new EnhancedAssignment();
+		Calendar calendar = new Assignment();
 
 	}
 

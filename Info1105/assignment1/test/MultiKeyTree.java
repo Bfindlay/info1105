@@ -1,9 +1,12 @@
-package assignment1;
+package assignment1.test;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
+
+import assignment1.Appointment;
+
 import java.util.ArrayList;
 import java.util.Date;
 

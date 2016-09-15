@@ -42,11 +42,16 @@ public class EnhancedTree {
 		 *            Unique identifier used to identify and sort an Entry in a
 		 *            set
 		 */
-		public Entry(String description, String location, Date date, int id) {
+		private Entry(String description, String location, Date date, int id) {
 			this.DESCRIPTION = description;
 			this.LOCATION = location;
 			this.DATE = date;
 			this.id = id;
+		}
+
+		@Override
+		public int compareTo(Entry o) {
+			return this.id.compareTo(o.id);
 		}
 
 		@Override
@@ -62,11 +67,6 @@ public class EnhancedTree {
 		@Override
 		public Date getStartTime() {
 			return this.DATE;
-		}
-
-		@Override
-		public int compareTo(Entry o) {
-			return this.id.compareTo(o.id);
 		}
 
 	}
@@ -191,10 +191,8 @@ public class EnhancedTree {
 	 * @param location
 	 * @return
 	 */
-	public int count = 0;
 
 	public Appointment getNextEntry(Date when, String location) {
-		System.out.println("Search");
 		if (when == null) {
 			return null;
 		}

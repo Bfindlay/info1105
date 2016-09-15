@@ -15,7 +15,6 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import assignment1.Appointment;
-import assignment1.Assignment;
 import assignment1.OLDAssignment;
 import assignment1.Calendar;
 

@@ -1,4 +1,4 @@
-package assignment1;
+package assignment1.test;
 
 import java.util.Date;
 import java.util.List;
@@ -6,17 +6,18 @@ import java.util.ArrayList;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
-import com.sun.org.apache.bcel.internal.generic.INSTANCEOF;
+import assignment1.Appointment;
+import assignment1.Calendar;
 
-public class EnhancedAssignment implements Calendar {
+public class AssignmentOLD implements Calendar {
 
 	// The default constructor for the class should be public
 	// We will use this when we test your code!
 
-	private EnhancedTree tree;
+	private MultiKeyTree tree;
 
-	public EnhancedAssignment() {
-		tree = new EnhancedTree();
+	public AssignmentOLD() {
+		tree = new MultiKeyTree();
 	}
 
 	// TODO handle no event errors
