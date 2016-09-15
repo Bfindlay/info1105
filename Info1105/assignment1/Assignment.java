@@ -4,32 +4,49 @@ import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
 
+/**
+ * 
+ * @author Brett Findlay
+ * @SID 450258163
+ * 
+ *      This is the solution to Assignment 1, With all of the main methods being
+ *      Abstracted to the Enhanced Tree Class
+ * 
+ *
+ */
 public class Assignment implements Calendar {
-
-	// The default constructor for the class should be public
-	// We will use this when we test your code!
 
 	private EnhancedTree tree;
 
+	/**
+	 * Initialization of a new Enhanced Tree for the Calendar
+	 */
 	public Assignment() {
 		tree = new EnhancedTree();
 	}
 
-	// TODO handle no event errors
-	// TODO No event => Empty list
-	// TODO THrows illegal Argument excetion if any argument is null
+	/**
+	 * Returns a list of Appointments at the given location, or an empty list if
+	 * no appointments occur at that location.
+	 * 
+	 * @throws IllegalArgumentException
+	 *             when a null value is input as a parameter
+	 */
 	@Override
 	public List<Appointment> getAppointments(String location) {
 		if (location == null) {
 			throw new IllegalArgumentException("Location was null");
 		}
-		return (tree.containsMapKey(location)) ? tree.getMapValue(location)
-				: new ArrayList<Appointment>();
+		return (tree.hasMapKey(location)) ? tree.getMap(location) : new ArrayList<Appointment>();
 	}
 
-	// TODO Return the next appointment at or after the given time (in any
-	// location) // If there is no such appointment, return null
-	// TODO Throws IllegalArgumentException if the argument is null
+	/**
+	 * Returns the next appointment at or after the given time, or null if no
+	 * appointment exists within this time frame
+	 * 
+	 * @throws IllegalArgumentException
+	 *             when a null value is input as a parameter
+	 */
 	@Override
 	public Appointment getNextAppointment(Date when) {
 		if (when == null) {
@@ -38,9 +55,13 @@ public class Assignment implements Calendar {
 		return tree.getNextEntry(when);
 	}
 
-	// TODO Return the next appointment at or after the given time,
-	// If there is no such appointment, return null
-	// Throws IllegalArgumentException if any argument is null
+	/**
+	 * Returns the next appointment that occurs at or after the given time, and
+	 * at the given location, or null if no appointments exist
+	 * 
+	 * @throws IllegalArgumentException
+	 *             when a null value is input as a parameter
+	 */
 	@Override
 	public Appointment getNextAppointment(Date when, String location) {
 		if (when == null || location == null) {
@@ -49,7 +70,6 @@ public class Assignment implements Calendar {
 		return tree.getNextEntry(when, location);
 	}
 
-	// TODO Throws IllegalArgumentException if any argument is null
 	@Override
 	public void add(String desc, Date when, String loc) {
 		if (desc == null || when == null || loc == null) {
@@ -58,7 +78,13 @@ public class Assignment implements Calendar {
 		tree.insertEntry(desc, when, loc);
 	}
 
-	// TODO // Throws IllegalArgumentException if the argument is null
+	/**
+	 * Removes the exact appointment that is passed as a parameter from the
+	 * Calendar.
+	 * 
+	 * @throws IllegalArgumentException
+	 *             when a null value is input as a parameter
+	 */
 	@Override
 	public void remove(Appointment appointment) {
 		if (appointment == null) {
