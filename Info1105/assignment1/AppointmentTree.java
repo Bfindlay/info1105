@@ -18,7 +18,7 @@ import java.util.Date;
  *
  */
 
-public class EnhancedTree {
+public class AppointmentTree {
 
 	/* NESTED APPOINTMENT CLASS IMPLEMENTATION */
 
@@ -27,7 +27,7 @@ public class EnhancedTree {
 		private final String DESCRIPTION;
 		private final String LOCATION;
 		private final Date DATE;
-		private Integer id;
+		private final Integer ID;
 
 		/**
 		 * Entry Node implementation of Appointment
@@ -39,19 +39,19 @@ public class EnhancedTree {
 		 * @param date
 		 *            Time of the scheduled appointmen
 		 * @param id
-		 *            Unique identifier used to identify and sort an Entry in a
+		 *            Unique identifier used to compare and sort an Entry into a
 		 *            set
 		 */
 		private Entry(String description, String location, Date date, int id) {
 			this.DESCRIPTION = description;
 			this.LOCATION = location;
 			this.DATE = date;
-			this.id = id;
+			this.ID = id;
 		}
 
 		@Override
 		public int compareTo(Entry o) {
-			return this.id.compareTo(o.id);
+			return this.ID.compareTo(o.ID);
 		}
 
 		@Override
@@ -80,7 +80,7 @@ public class EnhancedTree {
 	private int createID = 0;
 
 	// Default constructor to initialize both TreeMap and HashMap structures
-	public EnhancedTree() {
+	public AppointmentTree() {
 		tree = new TreeMap<>();
 		map = new HashMap<>();
 	}
@@ -99,29 +99,27 @@ public class EnhancedTree {
 		this.createID++;
 		// Checks if an Key with Date 'when' exists in the TreeMap
 		if (tree.containsKey(when)) {
-			// Retrieve the TreeSet and add the new entry to the existing Set
-			// or create a new Set
+			// get and add the new entry to the existing Set or create a new Set
 			TreeMap<String, TreeSet<Appointment>> tr = tree.get(when);
-			TreeSet<Appointment> s = tree.get(when).get(location);
-			if (s != null) {
-				s.add(entry);
-				tr.put(location, s);
+			TreeSet<Appointment> set = tree.get(when).get(location);
+			if (set != null) {
+				set.add(entry);
+				tr.put(location, set);
 			} else {
+				// make a new set, add the entry and append to the sub tree
 				TreeSet<Appointment> ts = new TreeSet<>();
 				ts.add(entry);
 				tr.put(location, ts);
-
 			}
-			// Replace the new TreeSet elements back into the main Tree
+			// Append the new sub tree to the main tree
 			tree.put(when, tr);
-
 		} else {
 			// Lets add a new event to this Current date key
 			TreeSet<Appointment> eventSet = new TreeSet<>();
 			eventSet.add(entry);
-			TreeMap<String, TreeSet<Appointment>> t = new TreeMap<>();
-			t.put(location, eventSet);
-			tree.put(when, t);
+			TreeMap<String, TreeSet<Appointment>> tr = new TreeMap<>();
+			tr.put(location, eventSet);
+			tree.put(when, tr);
 		}
 		// Insert locations into the HashMap
 		if (map.containsKey(location)) {
@@ -134,27 +132,32 @@ public class EnhancedTree {
 	}
 
 	/**
+	 * Removes the exact given appointment from the calendar
 	 * 
 	 * @param appointment
+	 *            obtained from getNextAppointment(*) methods
+	 * 
 	 */
 	public void removeEntry(Appointment appointment) {
 
-		if (appointment == null)
+		if (appointment == null) {
 			return;
+		}
 
 		Date time = appointment.getStartTime();
 		String loc = appointment.getLocation();
-
-		// System.out.println(loc);
-
-		TreeSet<Appointment> list = tree.get(time).get(loc);
-		list.remove(appointment);
+		// Retrieve the set corresponding to this time/location
+		TreeSet<Appointment> set = tree.get(time).get(loc);
+		// Remove the appointment in O(log n) time through comparable ID
+		set.remove(appointment);
+		// If the exist is now empty, delete the list and remove from the tree
 		if (tree.get(time).get(loc).size() == 0) {
 			tree.get(time).remove(loc);
 		}
-		if (tree.get(time).size() == 0)
+		// If the entire subtree is now empty, delete this time from the tree
+		if (tree.get(time).size() == 0) {
 			tree.remove(time);
-
+		}
 		// Remove from location Map
 		TreeSet<Appointment> locSet = map.get(appointment.getLocation());
 		locSet.remove(appointment);
@@ -165,34 +168,44 @@ public class EnhancedTree {
 
 	/**
 	 * 
+	 * 
 	 * @param when
-	 * @return
+	 *            time at which Appointment starts, or after
+	 * @return Returns a valid appointment at or after the given time or null if
+	 *         none exist
 	 */
 	public Appointment getNextEntry(Date when) {
+		// If the given date exists, return the first entry
 		if (tree.containsKey(when)) {
 			TreeMap<String, TreeSet<Appointment>> tr = tree.get(when);
 			if (tr.firstEntry() != null) {
+				// Return the first appointment found
 				return tr.firstEntry().getValue().first();
 			}
 		}
+		// No appointments existed at the given time, check the next time
 		if (tree.higherEntry(when) != null) {
 			TreeMap<String, TreeSet<Appointment>> tr = tree.higherEntry(when).getValue();
 			if (tr.firstEntry() != null) {
 				return tr.firstEntry().getValue().first();
 			}
 		}
+		// No appointments found after this time
 		return null;
 	}
 
-	// TODO make sure it finds the next event at that location
 	/**
 	 * 
 	 * @param when
+	 *            time at which to begin searching for an appointment
 	 * @param location
-	 * @return
+	 *            Place at which the Appointment must occur
+	 * @return A valid appointment at or after the given time and location or
+	 *         null
 	 */
 
 	public Appointment getNextEntry(Date when, String location) {
+		// Base case, no more appointments or exist in the tree
 		if (when == null) {
 			return null;
 		}
@@ -202,24 +215,29 @@ public class EnhancedTree {
 			if (res != null && res.size() != 0)
 				return res.first();
 		}
+		// No appointment found at this time and location, recursively itself
 		return getNextEntry(tree.higherKey(when), location);
 	}
 
 	/**
+	 * Helper access method for use in Assignment class
 	 * 
 	 * @param location
-	 * @return
+	 * @return true if the HashMap contains the given location
 	 */
-	public boolean containsMapKey(String location) {
+	public boolean hasMapKey(String location) {
 		return map.containsKey(location);
 	}
 
 	/**
+	 * Instantiates and constructs a new ArrayList from the set of location
+	 * appointments
 	 * 
 	 * @param location
-	 * @return
+	 *            place at which the appointments must occur to be returned
+	 * @return a list of Appointments that occur at the given location
 	 */
-	public List<Appointment> getMapValue(String location) {
+	public List<Appointment> getMap(String location) {
 		return new ArrayList<>(map.get(location));
 	}
 }

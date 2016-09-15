@@ -8,17 +8,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
-
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import sun.util.locale.LocaleUtils;
-
-public class EnhancedTreeTest {
+public class AssignmentTest {
 
 	// Set up JUnit to be able to check for expected exceptions
 	@Rule
@@ -40,127 +36,6 @@ public class EnhancedTreeTest {
 			fail("The test case is broken, invalid SimpleDateFormat parse");
 		}
 		return calendar;
-	}
-
-	@Test
-	public void testGetAppointmentsExample() {
-
-		Calendar calendar = buildTinyExample();
-
-		// This should be a list containing Appointments A, B and D
-		List<Appointment> appointments = calendar.getAppointments("SIT lab 117");
-
-		// For this example, we'll just check the descriptions.
-		// Good testing should be more thorough!
-		List<String> descriptions = new ArrayList<String>();
-		for (Appointment a : appointments) {
-			descriptions.add(a.getDescription());
-		}
-		// Sorting the objects before we compare the list, since the assignment
-		// doesn't require the output to be in any particular order
-		Collections.sort(descriptions);
-		assertEquals(Arrays.asList("A", "B", "D"), descriptions);
-	}
-
-	@Test
-	public void testGetNextAppointment() throws ParseException {
-		Date a = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/02 08:00:00");
-		Date b = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/02 10:00:00");
-		Date c = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/02 15:00:00");
-		Date d = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 09:59:59");
-		Date e = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 12:00:00");
-		Date f = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 13:00:00");
-		Date g = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2014/01/03 13:00:00");
-
-		Calendar calendar = new Assignment();
-		calendar.add("Exam", a, "SIT");
-		calendar.add("Lunch", b, "SIT");
-		calendar.add("Second lunch", b, "Uni");
-		calendar.add("Home Time", c, "BUS");
-		assertEquals("SIT", calendar.getNextAppointment(a, "SIT").getLocation());
-		assertEquals("SIT", calendar.getNextAppointment(b).getLocation());
-		assertNull(calendar.getNextAppointment(g));
-		assertNull(calendar.getNextAppointment(b, "HOME"));
-		thrown.expect(IllegalArgumentException.class);
-		calendar.getNextAppointment(null, null);
-		calendar.add("Test", g, "Home");
-		assertEquals("Home", calendar.getNextAppointment(g));
-	}
-
-	@Test
-	public void testLocations() throws ParseException {
-		Date a = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/02 08:00:00");
-		Date b = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/02 10:00:00");
-		Date c = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/02 15:00:00");
-		Date d = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 09:59:59");
-		Date e = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 12:00:00");
-
-		Calendar calendar = new Assignment();
-		calendar.add("Exam", a, "SIT");
-		calendar.add("Exam", b, "SIT");
-		calendar.add("Exam", b, "SIT");
-		calendar.add("DERP", b, "HOME");
-		calendar.add("Exam", b, "SIT");
-		calendar.add("Lunch", c, "Broadway");
-		calendar.add("Lunch", d, "SIT");
-		calendar.add("Exam", d, "HOME");
-		calendar.add("Lunch", e, "Carslaw");
-		assertEquals(5, calendar.getAppointments("SIT").size());
-		assertEquals(1, calendar.getAppointments("Carslaw").size());
-		Appointment app = calendar.getNextAppointment(d);
-		calendar.remove(app);
-		assertEquals(1, calendar.getAppointments("Broadway").size());
-		Appointment ap = calendar.getNextAppointment(c);
-		calendar.remove(ap);
-
-	}
-
-	@Test
-	public void testBasicRemove() throws ParseException {
-		Date a = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/02 08:00:00");
-		Date b = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/02 10:00:00");
-		Date c = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/02 15:00:00");
-		Date d = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 09:59:59");
-		Date e = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 12:00:00");
-
-		Calendar calendar = new Assignment();
-		calendar.add("Exam", a, "SIT");
-		calendar.add("Exam", b, "SIT");
-		calendar.add("Exam", b, "SIT");
-		calendar.add("DERP", b, "HOME");
-		calendar.add("Exam", b, "SIT");
-		calendar.add("REMOVE", c, "Broadway");
-		calendar.add("Lunch", d, "SIT");
-		calendar.add("Exam", d, "HOME");
-		calendar.add("Lunch", e, "Carslaw");
-		assertEquals(1, calendar.getAppointments("Carslaw").size());
-
-		Appointment app = calendar.getNextAppointment(e);
-		calendar.remove(app);
-
-		Appointment app2 = calendar.getNextAppointment(c);
-		assertEquals("REMOVE", app2.getDescription());
-		calendar.remove(app2);
-		assertEquals("Exam", calendar.getNextAppointment(c).getDescription());
-		// Check for null argument exception
-
-		calendar.add("Lunch", e, "Carslaw");
-		calendar.add("Lunch", e, "Carslaw");
-		calendar.add("Lunch", e, "Carslaw");
-
-		Appointment lunch = calendar.getNextAppointment(e);
-		assertEquals("Lunch", lunch.getDescription());
-
-		Appointment ap3 = calendar.getNextAppointment(e);
-		calendar.remove(ap3);
-		List<Appointment> lis = calendar.getAppointments("Carslaw");
-		assertEquals(2, lis.size());
-		calendar.remove(lunch);
-		assertEquals(2, lis.size());
-
-		thrown.expect(IllegalArgumentException.class);
-		calendar.remove(null);
-
 	}
 
 	@Test
@@ -220,6 +95,131 @@ public class EnhancedTreeTest {
 	}
 
 	@Test
+	public void testGetAppointmentsExample() {
+
+		Calendar calendar = buildTinyExample();
+
+		// This should be a list containing Appointments A, B and D
+		List<Appointment> appointments = calendar.getAppointments("SIT lab 117");
+
+		// For this example, we'll just check the descriptions.
+		// Good testing should be more thorough!
+		List<String> descriptions = new ArrayList<String>();
+		for (Appointment a : appointments) {
+			descriptions.add(a.getDescription());
+		}
+		// Sorting the objects before we compare the list, since the assignment
+		// doesn't require the output to be in any particular order
+		Collections.sort(descriptions);
+		assertEquals(Arrays.asList("A", "B", "D"), descriptions);
+	}
+
+	@Test
+	public void testGetNextAppointment() throws ParseException {
+		Date a = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/02 08:00:00");
+		Date b = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/02 10:00:00");
+		Date c = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/02 15:00:00");
+		Date d = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 09:59:59");
+		Date e = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 12:00:00");
+		Date f = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 13:00:00");
+		Date g = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2014/01/03 13:00:00");
+
+		Calendar calendar = new Assignment();
+		calendar.add("Exam", a, "SIT");
+		calendar.add("Lunch", b, "SIT");
+		calendar.add("Second lunch", b, "Uni");
+		calendar.add("Home Time", c, "BUS");
+		assertEquals("SIT", calendar.getNextAppointment(a, "SIT").getLocation());
+		assertEquals("SIT", calendar.getNextAppointment(b).getLocation());
+		assertNull(calendar.getNextAppointment(g));
+		assertNull(calendar.getNextAppointment(b, "HOME"));
+		thrown.expect(IllegalArgumentException.class);
+		calendar.getNextAppointment(null, null);
+		calendar.add("Test", g, "Home");
+		assertEquals("Home", calendar.getNextAppointment(g));
+	}
+
+	// Test that locations are stored in the list correctly
+	@Test
+	public void testLocations() throws ParseException {
+		Date a = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/02 08:00:00");
+		Date b = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/02 10:00:00");
+		Date c = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/02 15:00:00");
+		Date d = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 09:59:59");
+		Date e = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 12:00:00");
+
+		Calendar calendar = new Assignment();
+		calendar.add("Exam", a, "SIT");
+		calendar.add("Exam", b, "SIT");
+		calendar.add("Exam", b, "SIT");
+		calendar.add("DERP", b, "HOME");
+		calendar.add("Exam", b, "SIT");
+		calendar.add("Lunch", c, "Broadway");
+		calendar.add("Lunch", d, "SIT");
+		calendar.add("Exam", d, "HOME");
+		calendar.add("Lunch", e, "Carslaw");
+		assertEquals(5, calendar.getAppointments("SIT").size());
+		assertEquals(1, calendar.getAppointments("Carslaw").size());
+		Appointment app = calendar.getNextAppointment(d);
+		calendar.remove(app);
+		assertEquals(1, calendar.getAppointments("Broadway").size());
+		Appointment ap = calendar.getNextAppointment(c);
+		calendar.remove(ap);
+
+	}
+
+	// Validate the basic removal operation on a small sample of appointments
+	@Test
+	public void testBasicRemove() throws ParseException {
+		Date a = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/02 08:00:00");
+		Date b = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/02 10:00:00");
+		Date c = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/02 15:00:00");
+		Date d = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 09:59:59");
+		Date e = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 12:00:00");
+
+		Calendar calendar = new Assignment();
+		calendar.add("Exam", a, "SIT");
+		calendar.add("Exam", b, "SIT");
+		calendar.add("Exam", b, "SIT");
+		calendar.add("DERP", b, "HOME");
+		calendar.add("Exam", b, "SIT");
+		calendar.add("REMOVE", c, "Broadway");
+		calendar.add("Lunch", d, "SIT");
+		calendar.add("Exam", d, "HOME");
+		calendar.add("Lunch", e, "Carslaw");
+		assertEquals(1, calendar.getAppointments("Carslaw").size());
+
+		Appointment app = calendar.getNextAppointment(e);
+		calendar.remove(app);
+
+		Appointment app2 = calendar.getNextAppointment(c);
+		assertEquals("REMOVE", app2.getDescription());
+		calendar.remove(app2);
+		assertEquals("Exam", calendar.getNextAppointment(c).getDescription());
+		// Check for null argument exception
+
+		calendar.add("Lunch", e, "Carslaw");
+		calendar.add("Lunch", e, "Carslaw");
+		calendar.add("Lunch", e, "Carslaw");
+
+		Appointment lunch = calendar.getNextAppointment(e);
+		assertEquals("Lunch", lunch.getDescription());
+
+		Appointment ap3 = calendar.getNextAppointment(e);
+		calendar.remove(ap3);
+		List<Appointment> lis = calendar.getAppointments("Carslaw");
+		assertEquals(2, lis.size());
+		calendar.remove(lunch);
+		assertEquals(2, lis.size());
+
+		thrown.expect(IllegalArgumentException.class);
+		calendar.remove(null);
+
+	}
+
+	// Tests retrieval of a small sample of appointments from the time and
+	// location
+	@Test
 	public void testGetNextAPpointmentLocation() throws ParseException {
 
 		Date a = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/02 08:00:00");
@@ -270,30 +270,7 @@ public class EnhancedTreeTest {
 
 	}
 
-	@Test
-	public void testEnhancedInsertion() throws ParseException {
-		Date a = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/02 08:00:00");
-		Date b = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/02 10:00:00");
-		Date c = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/02 15:00:00");
-		Date d = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 09:59:59");
-		Date e = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 12:00:00");
-
-		Calendar calendar = new Assignment();
-		calendar.add("Exam", a, "SIT");
-		calendar.add("Exam", b, "SIT");
-		calendar.add("Exam", b, "SIT");
-		calendar.add("DERP", b, "HOME");
-		calendar.add("Exam", b, "SIT");
-		calendar.add("REMOVE", c, "Broadway");
-		calendar.add("Lunch", d, "SIT");
-		calendar.add("Exam", d, "HOME");
-		calendar.add("Lunch", e, "Carslaw");
-		assertEquals(1, calendar.getAppointments("Carslaw").size());
-
-		List<Appointment> appointments = calendar.getAppointments("SIT");
-
-	}
-
+	// Testing basic insertion and get methods are working
 	@Test
 	public void testEnhancedBasicRetrieve() throws ParseException {
 		Date a = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/02 08:00:00");
@@ -319,7 +296,7 @@ public class EnhancedTreeTest {
 
 	}
 
-	// TODO check this
+	// Tests null output after inserting and removing all appointments
 	@Test
 	public void testRemoveAll() throws ParseException {
 
@@ -343,9 +320,12 @@ public class EnhancedTreeTest {
 		calendar.remove(app2);
 
 		Appointment app3 = calendar.getNextAppointment(a);
+		calendar.remove(app3);
+		assertNull(calendar.getNextAppointment(a));
 
 	}
 
+	// Tests insertion of many duplicates
 	@Test
 	public void testInsertMany() throws ParseException {
 		Date a = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/02 08:00:00");
@@ -376,6 +356,7 @@ public class EnhancedTreeTest {
 
 	}
 
+	// Tests the insertion of many duplicate items and then removes them
 	@Test
 	public void testInsertRemoveMany() throws ParseException {
 
@@ -413,6 +394,7 @@ public class EnhancedTreeTest {
 
 	}
 
+	// Tests the insertion of duplicates and the retrieval of location list
 	@Test
 	public void testInsertionInOrder() throws ParseException {
 		Date a = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/02 08:00:00");
@@ -435,6 +417,7 @@ public class EnhancedTreeTest {
 
 	}
 
+	// Validates Appointments are deleted in the correct order
 	@Test
 	public void testDeletionInOrder() throws ParseException {
 		Date a = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/02 08:00:00");
@@ -472,6 +455,8 @@ public class EnhancedTreeTest {
 
 	}
 
+	// Tests a small sample of appointments are successfully deleted by calling
+	// getNextAppointment
 	@Test
 	public void testgetNextRemoveAll() throws ParseException {
 		Date a = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/02 08:00:00");
@@ -495,6 +480,8 @@ public class EnhancedTreeTest {
 
 	}
 
+	// Tests that the calendar performs as required with 1000 randomly generated
+	// appointments and that the resulting size of the tree elements is correct
 	@Test
 	public void testRandomInsertionsMany() throws ParseException {
 		Date a = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/02 08:00:00");
@@ -529,6 +516,9 @@ public class EnhancedTreeTest {
 		assertEquals(1000, A1.size() + A2.size() + A3.size() + A4.size() + A5.size());
 	}
 
+	// Tests the insertion of 10,000 randomly generated appointments, verifies
+	// that they are in the calendar, and then deletes them using the
+	// Appointments references obtained from getAppointments list
 	@Test
 	public void testRandomInsertionsRemoveAllFromList() throws ParseException {
 		Date a = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/02 08:00:00");
@@ -583,6 +573,9 @@ public class EnhancedTreeTest {
 
 	}
 
+	// Tests the insertion of 10,000 randomly created appointments, validates
+	// they are in the correct place and then deletes them from the outside in
+	// (newest date to oldest) by calling getNextAppointment(time)
 	@Test
 	public void testRandomInsertionsRemoveGetNext() throws ParseException {
 		Date a = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/02 08:00:00");
@@ -667,6 +660,9 @@ public class EnhancedTreeTest {
 
 	}
 
+	// Randomly generates 100,000 objects to simulate the use of a real calendat
+	// application, verifies their list sizes and then deletes them randomy one
+	// at a time and validates that this was successful without errors
 	@Test
 	public void testGetNextAppointment_RemoveAll() throws ParseException {
 
@@ -740,26 +736,7 @@ public class EnhancedTreeTest {
 
 	}
 
-	@Test
-	public void testSearchComplexity() throws ParseException {
-		Date a = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/02 08:00:00");
-		Date b = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/02 10:00:00");
-		Date c = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/02 15:00:00");
-		Date d = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 09:59:59");
-		Date e = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 12:00:00");
-
-		Calendar calendar = new Assignment();
-
-		calendar.add("A", a, "A");
-		calendar.add("A", b, "A");
-		calendar.add("A", c, "A");
-		calendar.add("A", d, "A");
-		calendar.add("A", e, "B");
-
-		calendar.getNextAppointment(a, "B");
-
-	}
-
+	// Asserting the correct behaviour with invalid inputs
 	@Test
 	public void testInvalidInput() throws ParseException {
 		Date a = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/02 08:00:00");
@@ -771,6 +748,55 @@ public class EnhancedTreeTest {
 		Date g = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2014/01/03 13:00:00");
 
 		Calendar calendar = new Assignment();
+
+		calendar.add("A", a, "A");
+		Appointment app = calendar.getNextAppointment(a);
+		calendar.remove(app);
+		assertNull(calendar.getNextAppointment(a));
+
+		calendar.add(new String(), new Date(), new String());
+		List<Appointment> list = calendar.getAppointments(new String());
+		assertEquals(1, list.size());
+		assertEquals("", list.get(0).getDescription());
+		Appointment removable = list.get(0);
+		calendar.remove(removable);
+		assertNull(calendar.getNextAppointment(new Date()));
+
+		calendar.add(new String(), new Date(1), new String());
+
+		calendar.remove((Appointment) new Object());
+
+		thrown.expect(IllegalArgumentException.class);
+		calendar.remove(null);
+		calendar.getNextAppointment(null);
+
+	}
+
+	@Test
+	public void testInsertOneRemoveTwo() throws ParseException {
+
+		Date a = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/02 08:00:00");
+		Date b = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/02 10:00:00");
+		Date c = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/02 15:00:00");
+		Date d = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 09:59:59");
+		Date e = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 12:00:00");
+
+		Calendar calendar = new Assignment();
+
+		String[] locations = { "SIT 123", "SIT", "SIT 121", "SIT 117", "SIT 119", "SIT Boardroom" };
+		String[] descriptions = { "Exam", "Lunch", "Homework", "Assignment", "Quiz", "Meeting" };
+		Date[] dates = { a, b, c, d, e };
+
+		Random generator = new Random();
+		for (int i = 0; i < 10000; i++) {
+
+			Date date = dates[generator.nextInt(dates.length)];
+			String desc = descriptions[generator.nextInt(descriptions.length)];
+			String loc = locations[generator.nextInt(locations.length)];
+
+			calendar.add(desc, date, loc);
+
+		}
 
 	}
 

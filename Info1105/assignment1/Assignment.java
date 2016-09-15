@@ -10,19 +10,19 @@ import java.util.ArrayList;
  * @SID 450258163
  * 
  *      This is the solution to Assignment 1, With all of the main methods being
- *      Abstracted to the Enhanced Tree Class
+ *      Abstracted to the Appointment Tree Class
  * 
  *
  */
 public class Assignment implements Calendar {
 
-	private EnhancedTree tree;
+	private AppointmentTree tree;
 
 	/**
 	 * Initialization of a new Enhanced Tree for the Calendar
 	 */
 	public Assignment() {
-		tree = new EnhancedTree();
+		tree = new AppointmentTree();
 	}
 
 	/**
