@@ -764,6 +764,7 @@ public class AssignmentTest {
 
 		calendar.add(new String(), new Date(1), new String());
 
+		calendar.getNextAppointment(a, "");
 		// Test all methods throw exceptions for the required inputs
 		thrown.expect(IllegalArgumentException.class);
 		calendar.remove(null);
@@ -856,35 +857,6 @@ public class AssignmentTest {
 		} catch (IllegalArgumentException e) {
 			assertEquals(e.getMessage(), "Argument was null");
 		}
-	}
-
-	@Test
-	public void testInsertOneRemoveTwo() throws ParseException {
-
-		Date a = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/02 08:00:00");
-		Date b = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/02 10:00:00");
-		Date c = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/02 15:00:00");
-		Date d = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 09:59:59");
-		Date e = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2010/01/03 12:00:00");
-
-		Calendar calendar = new Assignment();
-
-		String[] locations = { "SIT 123", "SIT", "SIT 121", "SIT 117", "SIT 119", "SIT Boardroom" };
-		String[] descriptions = { "Exam", "Lunch", "Homework", "Assignment", "Quiz", "Meeting" };
-		Date[] dates = { a, b, c, d, e };
-
-		Random generator = new Random();
-		for (int i = 0; i < 10000; i++) {
-
-			Date date = dates[generator.nextInt(dates.length)];
-			String desc = descriptions[generator.nextInt(descriptions.length)];
-			String loc = locations[generator.nextInt(locations.length)];
-
-			calendar.add(desc, date, loc);
-
-			fail("not yet implemented");
-		}
-
 	}
 
 }
