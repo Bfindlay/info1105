@@ -21,7 +21,6 @@ package week8;
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 /**
  * An interface for a graph structure. A graph can be declared as either directed or undirected.
  * In the case of an undirected graph, methods outgoingEdges and incomingEdges return the same collection,
