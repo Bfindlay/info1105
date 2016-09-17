@@ -106,6 +106,8 @@ public interface Graph<V,E> {
   /** Removes a vertex and all its incident edges from the graph. */
   void removeVertex(Vertex<V> v) throws IllegalArgumentException;
 
+
+
   /** Removes an edge from the graph. */
   void removeEdge(Edge<E> e) throws IllegalArgumentException;
 }
