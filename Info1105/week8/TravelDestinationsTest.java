@@ -31,13 +31,15 @@ public class TravelDestinationsTest {
 		List<String> dest = destinations.getDirectDestinations("Australia");
 		List<String> destF = destinations.getDirectDestinations("France");
 		List<String> empty = destinations.getDirectDestinations("China");
+		List<String> destUS = destinations.getDirectDestinations("USA");
 
 		assertEquals(0, empty.size());
 		assertEquals(2, dest.size());
-		assertEquals("Australia", dest.get(0));
 
 		assertEquals(0, destF.size());
-		assertEquals("France", destF.get(0));
+
+		assertEquals(2, destUS.size());
+
 	}
 
 }

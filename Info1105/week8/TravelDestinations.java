@@ -3,6 +3,8 @@ package week8;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class TravelDestinations<V> {
 
@@ -22,7 +24,7 @@ public class TravelDestinations<V> {
 	 * 
 	 * @param <V>
 	 */
-	@SuppressWarnings("unchecked")
+
 	public List<String> getDirectDestinations(String str) {
 
 		List<String> verts = new ArrayList<>();
@@ -32,14 +34,18 @@ public class TravelDestinations<V> {
 			Vertex<String> ver = iter.next();
 			// System.out.println(ver.getElement());
 			if (ver.getElement().equals(str)) {
-				System.out.println("Found the vertex");
+				System.out.println("Found the vertex " + ver.getElement());
 				Iterable<Edge<Integer>> ites = graph.outgoingEdges(ver);
 				Iterator<Edge<Integer>> it = ites.iterator();
 				while (it.hasNext()) {
 					Edge<Integer> edge = it.next();
-					Vertex<String>[] found = graph.endVertices(edge);
-					System.out.println(found[0].getElement());
-					verts.add(found[0].getElement());
+					if (edge != null) {
+						if (graph.endVertices(edge) != null && graph.endVertices(edge).length > 0) {
+							Vertex<String>[] found = graph.endVertices(edge);
+							System.out.println(found[1].getElement());
+							verts.add(found[1].getElement());
+						}
+					}
 				}
 			}
 		}
@@ -51,8 +57,11 @@ public class TravelDestinations<V> {
 	 * 'toCountry'. Otherwise, return false.
 	 */
 	public boolean isDirectFlight(String fromCountry, String toCountry) {
-		// TODO: implement this method
-		return false;
+		List<String> dest = getDirectDestinations(fromCountry);
+
+		List<String> res = dest.stream().filter(d -> d == toCountry).collect(Collectors.toList());
+		return (res.size() > 0) ? true : false;
+
 	}
 
 	/* Exercise 2 methods */
@@ -63,7 +72,25 @@ public class TravelDestinations<V> {
 	 */
 	public List<String> getReachableDestinations(String country) {
 		// TODO: implement this method
-		return null;
+
+		List<String> visited = new ArrayList<>();
+		search(null, visited);
+
+		return visited;
+	}
+
+	public void search(Vertex<String> vert, List<String> visited) {
+		// check if vert is in the visitd list
+		List<String> res = visited.stream().filter(d -> d == vert.getElement())
+				.collect(Collectors.toList());
+		// end search if it is found in the list
+		if (res.size() > 0)
+			return;
+		visited.add(vert.getElement());
+		for (String s : getReachableDestinations(vert.getElement())) {
+			search(s, visited);
+		}
+
 	}
 
 	/* Exercise 3 methods */
