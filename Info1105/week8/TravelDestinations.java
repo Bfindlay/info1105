@@ -1,8 +1,10 @@
 package week8;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
-public class TravelDestinations {
+public class TravelDestinations<V> {
 
 	private Graph<String, Integer> graph;
 
@@ -17,10 +19,31 @@ public class TravelDestinations {
 	 * Return all the countries that are a single direct flight away from the
 	 * given country, in any order. If no flights depart this country, return an
 	 * empty List.
+	 * 
+	 * @param <V>
 	 */
-	public List<String> getDirectDestinations(String fromCountry) {
-		// TODO: implement this method
-		return null;
+	@SuppressWarnings("unchecked")
+	public List<String> getDirectDestinations(String str) {
+
+		List<String> verts = new ArrayList<>();
+		Iterable<Vertex<String>> ite = graph.vertices();
+		Iterator<Vertex<String>> iter = ite.iterator();
+		while (iter.hasNext()) {
+			Vertex<String> ver = iter.next();
+			// System.out.println(ver.getElement());
+			if (ver.getElement().equals(str)) {
+				System.out.println("Found the vertex");
+				Iterable<Edge<Integer>> ites = graph.outgoingEdges(ver);
+				Iterator<Edge<Integer>> it = ites.iterator();
+				while (it.hasNext()) {
+					Edge<Integer> edge = it.next();
+					Vertex<String>[] found = graph.endVertices(edge);
+					System.out.println(found[0].getElement());
+					verts.add(found[0].getElement());
+				}
+			}
+		}
+		return verts;
 	}
 
 	/**
