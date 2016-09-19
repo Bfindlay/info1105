@@ -34,7 +34,6 @@ public class TravelDestinations<V> {
 			Vertex<String> ver = iter.next();
 			// System.out.println(ver.getElement());
 			if (ver.getElement().equals(str)) {
-				System.out.println("Found the vertex " + ver.getElement());
 				Iterable<Edge<Integer>> ites = graph.outgoingEdges(ver);
 				Iterator<Edge<Integer>> it = ites.iterator();
 				while (it.hasNext()) {
@@ -42,7 +41,6 @@ public class TravelDestinations<V> {
 					if (edge != null) {
 						if (graph.endVertices(edge) != null && graph.endVertices(edge).length > 0) {
 							Vertex<String>[] found = graph.endVertices(edge);
-							System.out.println(found[1].getElement());
 							verts.add(found[1].getElement());
 						}
 					}
@@ -74,23 +72,26 @@ public class TravelDestinations<V> {
 		// TODO: implement this method
 
 		List<String> visited = new ArrayList<>();
-		search(null, visited);
+		visited = search(country, visited, country);
 
+		visited.forEach(v -> System.out.println(v));
 		return visited;
 	}
 
-	public void search(Vertex<String> vert, List<String> visited) {
+	public List<String> search(String vert, List<String> visited, String start) {
+		// System.out.println("called search on " + vert);
 		// check if vert is in the visitd list
-		List<String> res = visited.stream().filter(d -> d == vert.getElement())
-				.collect(Collectors.toList());
-		// end search if it is found in the list
-		if (res.size() > 0)
-			return;
-		visited.add(vert.getElement());
-		for (String s : getReachableDestinations(vert.getElement())) {
-			search(s, visited);
+		if (visited.contains(vert)) {
+			// System.out.println("ended");
+			return visited;
 		}
-
+		// System.out.println("added to visited " + vert);
+		if (vert != start)
+			visited.add(vert);
+		for (String s : getDirectDestinations(vert)) {
+			search(s, visited, start);
+		}
+		return visited;
 	}
 
 	/* Exercise 3 methods */
