@@ -1,8 +1,12 @@
 package week8;
 
+import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.PriorityQueue;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -101,7 +105,72 @@ public class TravelDestinations<V> {
 	 * fewer flights to travel to from country 'current'
 	 */
 	public String closerDestination(String current, String destinationA, String destinationB) {
-		// TODO: implement this method
+
 		return null;
 	}
+
+	public String cheapestDirectFlight(String fromCountry) {
+		String value = null;
+		for (Vertex<String> vert : graph.vertices()) {
+			if (vert.getElement().equals(fromCountry)) {
+				int cost = Integer.MAX_VALUE;
+				for (Edge<Integer> edge : graph.outgoingEdges(vert)) {
+					if (edge.getElement() < cost) {
+						cost = edge.getElement();
+						value = graph.opposite(vert, edge).getElement();
+					}
+				}
+				return value;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Return the minimal cost to get to toCountry from fromCountry. If
+	 * fromCountry cannot be reached, then return Integer.MAX_VALUE
+	 */
+	public int shortestPathCost(String fromCountry, String toCountry) {
+		Vertex<String> origin = null, destination = null;
+		for (Vertex<String> vert : graph.vertices()) {
+			if (vert.getElement().equals(fromCountry)) {
+				origin = vert;
+			}
+			if (vert.getElement().equals(toCountry)) {
+				destination = vert;
+			}
+		}
+
+		HashMap<Vertex<String>, Integer> map = new HashMap<Vertex<String>, Integer>();
+		PriorityQueue<SimpleEntry<Integer, Vertex<String>>> queue = new PriorityQueue<SimpleEntry<Integer, Vertex<String>>>(
+				Comparator.comparing(SimpleEntry::getKey));
+		int i = 0;
+		for (Vertex<String> v : graph.vertices()) {
+			if (v == origin) {
+				map.put(v, 0);
+				queue.add(new SimpleEntry<Integer, Vertex<String>>(0, v));
+			} else {
+				map.put(v, Integer.MAX_VALUE);
+				queue.add(new SimpleEntry<Integer, Vertex<String>>(i, v));
+				i++;
+			}
+		}
+
+		while (!queue.isEmpty()) {
+			Vertex<String> u = queue.remove().getValue();
+			for (Edge<Integer> edge : graph.outgoingEdges(u)) {
+				Vertex<String> v = graph.opposite(u, edge);
+				if (map.get(u) < (map.get(v) - edge.getElement())) {
+					map.replace(v, edge.getElement() + map.get(u));
+					queue.add(new SimpleEntry<Integer, Vertex<String>>(queue.size() - 1, v));
+				}
+			}
+		}
+		if (!(map.get(destination) == null)) {
+			return map.get(destination);
+		} else {
+			return Integer.MAX_VALUE;
+		}
+	}
+
 }
