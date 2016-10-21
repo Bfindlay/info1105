@@ -21,11 +21,11 @@ public class Assignment implements PrefixMap {
 				this.data = null;
 			}
 
-			public void setKey(char c) throws Exception {
+			public void setKey(char c) {
+				System.out.println("setkeychar " + c);
 				int i = parseIndex(c);
-				if (keys[i] != 0) {
-					keys[i] = c;
-				}
+				System.out.println("set key " + i);
+				keys[i] = c;
 
 			}
 
@@ -49,30 +49,52 @@ public class Assignment implements PrefixMap {
 			this.root.setData("");
 		}
 
-		public void add(String key, String value) throws Exception {
+		public int size() {
+			return this.size;
+		}
 
-			add(key, 0, 0, this.root.getChildren());
+		public void add(String key, String value) {
+			System.out.println(key + " " + value);
+			add(key, 0, this.root.getChildren(), value);
 
 		}
 
-		private void add(String k, int lvl, int i, Node[] nodes) {
-			if (k.length() > lvl) {
+		private void add(String k, int i, Node[] nodes, String value) {
+			System.out.println("level " + i);
+			if (i >= k.length()) {
 				return;
 			}
 			int index = parseIndex(k.charAt(i));
 
-			if (node[index] != null) {
+			System.out.println("index " + index);
+
+			if (nodes[index] != null) {
 				// handle the recursion;
-				add(k, lvl++, index, i++);
+				System.out.println("index not null");
+				add(k, i += 1, nodes[index].getChildren(), value);
 			} else {
+				System.out.println("index null, adding the value");
+				Node current = new Node();
+				nodes[index] = current;
 				// Add the index to the root
-				root[index[i]].setKey(k.charAt(i));
-				add(k, lvl++, index, i++);
+				current.setKey(k.charAt(index));
+				this.size++;
+				System.out.println("size is " + size);
+				if (i + 1 >= k.length() - 1) {
+					System.out.println("set the data");
+					current.setData(value);
+				}
+				add(k, i += 1, nodes[index].getChildren(), value);
 			}
 		}
 
-		public int parseIndex(char k) throws Exception {
+		private String get(String key) {
 
+			return null;
+		}
+
+		public int parseIndex(char k) {
+			System.out.println(k);
 			switch (k) {
 			case 'A':
 				return 0;
@@ -93,15 +115,18 @@ public class Assignment implements PrefixMap {
 	/*
 	 * The default constructor will be called by the tests on Ed
 	 */
+
+	private Trie trie;
+
 	public Assignment() {
 		// TODO Initialise your data structure here
-		Trie t = new Trie();
+		trie = new Trie();
+
 	}
 
 	@Override
 	public int size() {
-		// TODO Implement this, then remove this comment
-		return 0;
+		return trie.size();
 	}
 
 	@Override
@@ -118,7 +143,12 @@ public class Assignment implements PrefixMap {
 
 	@Override
 	public String put(String key, String value) {
+		System.out.println("adding " + key);
+		System.out.println("adding " + value);
 		// TODO Implement this, then remove this comment
+
+		trie.add(key, value);
+
 		return null;
 	}
 
