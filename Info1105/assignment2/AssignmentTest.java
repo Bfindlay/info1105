@@ -13,9 +13,9 @@ public class AssignmentTest {
 		a.put("", "empty");
 		assertEquals("empty", a.get(""));
 		assertNull(a.put("ACGT", "D"));
-		assertEquals(4, a.size());
+		assertEquals(1, a.size());
 		a.put("A", "D");
-		assertEquals(4, a.size());
+		assertEquals(2, a.size());
 		assertEquals("D", a.put("A", "DERP"));
 		a.put("AA", "AA");
 		a.put("CC", "CC");
@@ -63,24 +63,61 @@ public class AssignmentTest {
 		Assignment a = new Assignment();
 		assertEquals(0, a.size());
 		a.put("ACGT", "D");
-		assertEquals(4, a.size());
+		assertEquals(1, a.size());
+		a.put("TAGA", "Derp");
+		a.put("T", "Derp1");
+		a.put("TA", "Derp2");
+		a.put("GA", "Derp4");
+		a.put("A", "Derp5");
+		assertEquals("Derp2", a.get("TA"));
+		assertEquals(6, a.size());
 	}
 
 	@Test
 	public void testRemove() {
 		Assignment a = new Assignment();
+		System.out.println(a.size());
 		a.put("ACGT", "John");
+		a.put("A", "Aohn");
+		a.put("C", "JCohn");
+		a.put("G", "Gohn");
+		a.put("T", "Tohn");
+
+		assertEquals(5, a.size());
 		assertEquals("John", a.get("ACGT"));
 		assertEquals("John", a.remove("ACGT"));
+		assertEquals(4, a.size());
 		assertNull(a.get("ACGT"));
+		a.remove("A");
+		assertNull(a.get("A"));
+		a.remove("C");
+		assertNull(a.get("C"));
+		a.remove("G");
+		assertNull(a.get("G"));
+		a.remove("T");
+		assertNull(a.get("T"));
+		assertEquals(0, a.size());
+		a.put("T", "NEW");
+		assertEquals(1, a.size());
+
 	}
 
 	@Test
-	public void test() {
+	public void testGetRemove() {
 		Assignment a = new Assignment();
 		a.put("ACGT", "John");
-		String s = "";
-		char[] c = s.toCharArray();
-		System.out.println(c.length);
+		a.put("ACGTA", "TEST");
+		a.remove("ACGT");
+		assertEquals("TEST", a.get("ACGTA"));
+	}
+
+	@Test
+	public void testSum() {
+		// GAT , GATTC , GATTACA
+		Assignment a = new Assignment();
+		a.put("GAT", "A");
+		a.put("GATTC", "B");
+		a.put("GATTACA", "C");
+		assertEquals(15, a.sumKeyLengths());
 	}
 }

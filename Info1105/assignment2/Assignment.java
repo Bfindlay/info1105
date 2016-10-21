@@ -13,18 +13,10 @@ public class Assignment implements PrefixMap {
 			// TODO implement this
 			private Node[] children;
 			private String data;
-			private char[] keys;
 
 			public Node() {
-				this.keys = new char[4];
 				this.children = new Node[4];
 				this.data = null;
-			}
-
-			public void setKey(char c) {
-				int i = parseIndex(c);
-				keys[i] = c;
-
 			}
 
 			public Node[] getChildren() {
@@ -43,18 +35,24 @@ public class Assignment implements PrefixMap {
 		/********* TRIE CLASS *************/
 
 		private Node root;
-		// private int size;
 		private int size;
+		private int prefix;
+		private int preFixLength;
 
 		public Trie() {
 			this.root = new Node();
 			this.size = 0;
-			// this.prefix = 0;
+			this.prefix = 0;
+			this.preFixLength = 0;
 			this.root.setData("");
 		}
 
 		public int size() {
 			return this.size;
+		}
+
+		public int prefixSum() {
+			return this.preFixLength;
 		}
 
 		public String add(String key, String value) {
@@ -70,7 +68,7 @@ public class Assignment implements PrefixMap {
 		}
 
 		private String add(String k, int i, Node[] nodes, String value) {
-
+			this.preFixLength++;
 			int index = parseIndex(k.charAt(i));
 			if (nodes[index] != null) {
 				// Index was not null (Value existed)
@@ -85,14 +83,11 @@ public class Assignment implements PrefixMap {
 				return add(k, i += 1, nodes[index].getChildren(), value);
 			} else {
 				Node current = new Node();
+				this.prefix++;
 				nodes[index] = current;
 				// Add the index to the root
-				current.setKey(k.charAt(i));
-				this.size++;
 				if (i + 1 >= k.length()) {
-					// Store old data;
 					// Set new data
-					// this.size++;
 					current.setData(value);
 					return null;
 				}
@@ -135,13 +130,11 @@ public class Assignment implements PrefixMap {
 					// Return the data at the last value of the string;
 					String oldData = current.getData();
 					current.setData(null);
-					nodes[index] = null;
-					this.size--;
+					current = null;
 					return oldData;
 				}
-				return remove(key, i += 1, current);
 			}
-			return null;
+			return remove(key, i += 1, current);
 		}
 
 		public int parseIndex(char k) {
@@ -160,6 +153,10 @@ public class Assignment implements PrefixMap {
 			}
 		}
 
+		public int countPrefix() {
+			return this.prefix;
+		}
+
 	}
 
 	/*
@@ -169,9 +166,7 @@ public class Assignment implements PrefixMap {
 	private Trie trie;
 
 	public Assignment() {
-		// TODO Initialise your data structure here
 		trie = new Trie();
-
 	}
 
 	@Override
@@ -195,7 +190,11 @@ public class Assignment implements PrefixMap {
 	public String put(String key, String value) {
 		if (key == null || value == null)
 			throw new IllegalArgumentException();
-		return trie.add(key, value);
+		String res = trie.add(key, value);
+		if (res == null) {
+			trie.size++;
+		}
+		return res;
 
 	}
 
@@ -203,7 +202,10 @@ public class Assignment implements PrefixMap {
 	public String remove(String key) {
 		if (key == null)
 			throw new IllegalArgumentException();
-		return trie.remove(key);
+		String res = trie.remove(key);
+		if (res != null)
+			trie.size--;
+		return res;
 	}
 
 	@Override
@@ -214,20 +216,18 @@ public class Assignment implements PrefixMap {
 
 	@Override
 	public List<String> getKeysMatchingPrefix(String prefix) {
-		// TODO Implement this, then remove this comment
+		// return trie.getKeys(prefix);
 		return null;
 	}
 
 	@Override
 	public int countPrefixes() {
-		// TODO Implement this, then remove this comment
-		return 0;
+		return trie.countPrefix();
 	}
 
 	@Override
 	public int sumKeyLengths() {
-		// TODO Implement this, then remove this comment
-		return 0;
+		return trie.prefixSum();
 	}
 
 }
