@@ -22,9 +22,7 @@ public class Assignment implements PrefixMap {
 			}
 
 			public void setKey(char c) {
-				System.out.println("setkeychar " + c);
 				int i = parseIndex(c);
-				System.out.println("set key " + i);
 				keys[i] = c;
 
 			}
@@ -45,11 +43,13 @@ public class Assignment implements PrefixMap {
 		/********* TRIE CLASS *************/
 
 		private Node root;
+		// private int size;
 		private int size;
 
 		public Trie() {
 			this.root = new Node();
 			this.size = 0;
+			// this.prefix = 0;
 			this.root.setData("");
 		}
 
@@ -60,6 +60,11 @@ public class Assignment implements PrefixMap {
 		public String add(String key, String value) {
 			if (key == null || value == null)
 				throw new IllegalArgumentException();
+			if (key.toCharArray().length == 0) {
+				String old = this.root.getData();
+				this.root.setData(value);
+				return old;
+			}
 			return add(key, 0, this.root.getChildren(), value);
 
 		}
@@ -67,15 +72,12 @@ public class Assignment implements PrefixMap {
 		private String add(String k, int i, Node[] nodes, String value) {
 
 			int index = parseIndex(k.charAt(i));
-			System.out.println("index " + index);
-
 			if (nodes[index] != null) {
 				// Index was not null (Value existed)
 				// Check if last key in string
 				if (i + 1 >= k.length()) {
 					Node current = nodes[index];
 					String oldData = current.getData();
-					System.out.println("old data " + oldData);
 					// Set new data
 					current.setData(value);
 					return oldData;
@@ -85,15 +87,12 @@ public class Assignment implements PrefixMap {
 				Node current = new Node();
 				nodes[index] = current;
 				// Add the index to the root
-				current.setKey(k.charAt(index));
+				current.setKey(k.charAt(i));
 				this.size++;
-				System.out.println("size is " + size);
 				if (i + 1 >= k.length()) {
-					System.out.println("set the data");
 					// Store old data;
-					String oldData = current.getData();
-					System.out.println("old data " + oldData);
 					// Set new data
+					// this.size++;
 					current.setData(value);
 					return null;
 				}
@@ -102,18 +101,17 @@ public class Assignment implements PrefixMap {
 		}
 
 		public String get(String key) {
-
+			if (key.toCharArray().length == 0)
+				return this.root.getData();
 			return get(key, 0, this.root);
 		}
 
 		private String get(String key, int i, Node current) {
 
 			int index = parseIndex(key.charAt(i));
-			System.out.println("Get Index is" + index);
 			Node[] nodes = current.getChildren();
 			if (nodes[index] != null) {
 				current = nodes[index];
-				System.out.println("Get current node val is " + current.getData());
 				if (i + 1 >= key.length()) {
 					// Return the data at the last value of the string;
 					return (current.getData() != null) ? current.getData() : null;
@@ -124,8 +122,29 @@ public class Assignment implements PrefixMap {
 
 		}
 
+		public String remove(String key) {
+			return remove(key, 0, this.root);
+		}
+
+		public String remove(String key, int i, Node current) {
+			int index = parseIndex(key.charAt(i));
+			Node[] nodes = current.getChildren();
+			if (nodes[index] != null) {
+				current = nodes[index];
+				if (i + 1 >= key.length()) {
+					// Return the data at the last value of the string;
+					String oldData = current.getData();
+					current.setData(null);
+					nodes[index] = null;
+					this.size--;
+					return oldData;
+				}
+				return remove(key, i += 1, current);
+			}
+			return null;
+		}
+
 		public int parseIndex(char k) {
-			System.out.println(k);
 			switch (k) {
 			case 'A':
 				return 0;
@@ -167,20 +186,24 @@ public class Assignment implements PrefixMap {
 
 	@Override
 	public String get(String key) {
-		// TODO Implement this, then remove this comment
+		if (key == null)
+			throw new IllegalArgumentException();
 		return trie.get(key);
 	}
 
 	@Override
 	public String put(String key, String value) {
+		if (key == null || value == null)
+			throw new IllegalArgumentException();
 		return trie.add(key, value);
 
 	}
 
 	@Override
 	public String remove(String key) {
-		// TODO Implement this, then remove this comment
-		return null;
+		if (key == null)
+			throw new IllegalArgumentException();
+		return trie.remove(key);
 	}
 
 	@Override
