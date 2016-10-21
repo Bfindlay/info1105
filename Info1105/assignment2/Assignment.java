@@ -1,5 +1,6 @@
 package assignment2;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -137,6 +138,49 @@ public class Assignment implements PrefixMap {
 			return remove(key, i += 1, current);
 		}
 
+		public List<String> getKeys(String pre) {
+
+			List<String> list = new ArrayList<String>();
+			String s = get(pre);
+			if (s != null)
+				list.add(pre);
+			Node node = getNode(pre, 0, this.root);
+			return getKeys(pre, list, node, new String(), new String(), 0);
+		}
+
+		public List<String> getKeys(String pre, List<String> list, Node current, String build,
+				String lvl, int j) {
+			Node[] arr = current.getChildren();
+			for (int i = 0; i < arr.length; i++) {
+				Node e = arr[i];
+				build += getChar(i);
+				lvl += getChar(i);
+				if (e != null) {
+					lvl = build;
+					if (e.getData() != null) {
+						list.add(build);
+					}
+					getKeys(pre, list, e, lvl.substring(0, j), lvl, j++);
+				}
+			}
+			return list;
+		}
+
+		public Node getNode(String key, int i, Node current) {
+			// GA
+			int index = parseIndex(key.charAt(i));
+			Node[] nodes = current.getChildren();
+			if (nodes[index] != null) {
+				current = nodes[index];
+				if (i + 1 >= key.length()) {
+					// Return the data at the last value of the string;
+					return (current != null) ? current : null;
+				}
+				return getNode(key, i += 1, current);
+			}
+			return null;
+		}
+
 		public int parseIndex(char k) {
 			switch (k) {
 			case 'A':
@@ -147,6 +191,22 @@ public class Assignment implements PrefixMap {
 				return 2;
 			case 'T':
 				return 3;
+			default:
+				throw new MalformedKeyException();
+
+			}
+		}
+
+		public char getChar(int i) {
+			switch (i) {
+			case 0:
+				return 'A';
+			case 1:
+				return 'C';
+			case 2:
+				return 'G';
+			case 3:
+				return 'T';
 			default:
 				throw new MalformedKeyException();
 
@@ -210,14 +270,16 @@ public class Assignment implements PrefixMap {
 
 	@Override
 	public int countKeysMatchingPrefix(String prefix) {
-		// TODO Implement this, then remove this comment
-		return 0;
+		if (prefix == null)
+			throw new IllegalArgumentException();
+		return trie.getKeys(prefix).size();
 	}
 
 	@Override
 	public List<String> getKeysMatchingPrefix(String prefix) {
-		// return trie.getKeys(prefix);
-		return null;
+		if (prefix == null)
+			throw new IllegalArgumentException();
+		return trie.getKeys(prefix);
 	}
 
 	@Override

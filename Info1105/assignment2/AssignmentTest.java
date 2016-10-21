@@ -2,6 +2,8 @@ package assignment2;
 
 import static org.junit.Assert.*;
 
+import java.util.List;
+
 import org.junit.Test;
 
 public class AssignmentTest {
@@ -47,7 +49,6 @@ public class AssignmentTest {
 		assertEquals("GCA", a.get("GCA"));
 		a.put("GGGCCCAAATTT", "long");
 		assertEquals("long", a.get("GGGCCCAAATTT"));
-		System.out.println(a.get("GGGCCCAAATTT"));
 	}
 
 	@Test
@@ -76,7 +77,6 @@ public class AssignmentTest {
 	@Test
 	public void testRemove() {
 		Assignment a = new Assignment();
-		System.out.println(a.size());
 		a.put("ACGT", "John");
 		a.put("A", "Aohn");
 		a.put("C", "JCohn");
@@ -120,4 +120,45 @@ public class AssignmentTest {
 		a.put("GATTACA", "C");
 		assertEquals(15, a.sumKeyLengths());
 	}
+
+	@Test
+	public void testRemoveNstuff() {
+		Assignment DNAmodel = new Assignment();
+
+		DNAmodel.put("ACAC", "intron");
+		DNAmodel.put("ACACCCACCTGG", "rerograde virus");
+		assertEquals(4 + 8, DNAmodel.countPrefixes());
+		assertEquals(4 + 12, DNAmodel.sumKeyLengths());
+		DNAmodel.remove("ACACCCACCTGG");
+		assertEquals(4, DNAmodel.countPrefixes());
+		assertEquals(4, DNAmodel.sumKeyLengths());
+	}
+
+	@Test
+	public void testGetKeysMatchingPrefix() {
+		Assignment a = new Assignment();
+		a.put("A", "1");
+		a.put("AT", "2");
+		// a.put("AC", "2");
+		// a.put("AT", "T");
+		// a.put("ACG", "3");
+		// a.put("ATT", "4");
+		// a.put("ACTA", "4");
+		// a.put("ACTA", "5");
+		// a.put("ACTT", "6");
+		List<String> test = a.getKeysMatchingPrefix("A");
+		// assertEquals(1, test.size());
+		for (String s : test) {
+			System.out.println(s);
+		}
+		// List<String> t = a.getKeysMatchingPrefix("G");
+		// for (String s : t) {
+		// System.out.println(t);
+		// }
+		// assertEquals(2, t.size());
+		// List<String> t2 = a.getKeysMatchingPrefix("ACT");
+		// assertEquals(3, t2.size());
+
+	}
+
 }
