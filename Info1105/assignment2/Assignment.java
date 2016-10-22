@@ -146,21 +146,22 @@ public class Assignment implements PrefixMap {
 				if (i + 1 >= key.length()) {
 					// Return the data at the last value of the string;
 					String oldData = current.getData();
-					Node parent = current.getParent();
-					removeAll(current.getParent());
+					System.out.println(isExternal(current));
+					if (isExternal(current)) {
+						if (key.length() % 2 == 0) {
+							prefix--;
+						}
+						removeAll(current.getParent());
+					}
 					current.setData(null);
-					current = null;
-					prefix--;
 					return oldData;
 				}
 			}
 			return remove(key, i += 1, current);
 		}
 
+		// Remove the prefixes when there are no nodes dependant on them
 		public void removeAll(Node current) {
-			if (current.getData() != null) {
-				return;
-			}
 			if (current.getData() == null) {
 				Node parent = current.getParent();
 				current.setData(null);
@@ -168,6 +169,21 @@ public class Assignment implements PrefixMap {
 				prefix--;
 				removeAll(parent);
 			}
+		}
+
+		public boolean isExternal(Node node) {
+			if (node == null || node.getChildren() == null)
+				return true;
+			Node[] arr = node.getChildren();
+			for (int i = 0; i < arr.length; i++) {
+				if (arr[i] != null) {
+					if (arr[i].getData() != null) {
+						return false;
+					}
+					isExternal(arr[i]);
+				}
+			}
+			return true;
 		}
 
 		public List<String> getKeys(String pre) {
@@ -275,6 +291,10 @@ public class Assignment implements PrefixMap {
 	public String get(String key) {
 		if (key == null)
 			throw new IllegalArgumentException();
+		char[] c = key.toCharArray();
+		for (char b : c) {
+			trie.parseIndex(b);
+		}
 		return trie.get(key);
 	}
 

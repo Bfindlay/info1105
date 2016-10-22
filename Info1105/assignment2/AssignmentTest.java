@@ -129,19 +129,6 @@ public class AssignmentTest {
 	}
 
 	@Test
-	public void testRemoveNstuff() {
-		Assignment DNAmodel = new Assignment();
-
-		DNAmodel.put("ACAC", "intron");
-		DNAmodel.put("ACACCCACCTGG", "rerograde virus");
-		assertEquals(12, DNAmodel.countPrefixes());
-		assertEquals(16, DNAmodel.sumKeyLengths());
-		DNAmodel.remove("ACACCCACCTGG");
-		assertEquals(4, DNAmodel.countPrefixes());
-		assertEquals(4, DNAmodel.sumKeyLengths());
-	}
-
-	@Test
 	public void testRemoveSumKeys() {
 		Assignment a = new Assignment();
 		a.put("GAT", "g");
@@ -181,4 +168,341 @@ public class AssignmentTest {
 
 	}
 
+	@Test
+	public void testGetMatchingNullKey() {
+		Assignment a = new Assignment();
+		try {
+			a.getKeysMatchingPrefix(null);
+			fail("didnt throw exception");
+		} catch (Exception e) {
+
+		}
+	}
+
+	@Test
+	public void testCOuntMatchingMalformedKey() {
+		Assignment a = new Assignment();
+		try {
+			a.countKeysMatchingPrefix("P");
+			fail("didnt throw exception");
+		} catch (Exception e) {
+			// assert e == malformed key exception
+		}
+	}
+
+	@Test
+	public void testGetKeysMatchingAfterPutOverwrite() {
+		Assignment a = new Assignment();
+		a.put("A", "1");
+		a.put("AC", "2");
+		a.put("AT", "3");
+		a.put("AG", "F");
+		a.put("AAA", "F");
+		a.put("AAC", "F");
+
+		assertEquals(6, a.getKeysMatchingPrefix("A").size());
+		a.put("A", "gggg");
+		assertEquals(6, a.getKeysMatchingPrefix("A").size());
+	}
+
+	@Test
+	public void testCountMatchingNullKey() {
+		Assignment a = new Assignment();
+		try {
+			a.countKeysMatchingPrefix(null);
+			fail("didnt throw exception");
+		} catch (Exception e) {
+			// assert e == illegal argument exception
+		}
+	}
+
+	@Test
+	public void testConstruction() {
+		Assignment a = new Assignment();
+		assertEquals(0, a.size());
+		assertEquals(0, a.getKeysMatchingPrefix("").size());
+
+	}
+
+	@Test
+	public void testGetMatchingMalformedKey() {
+		Assignment a = new Assignment();
+		try {
+			a.getKeysMatchingPrefix("P");
+			fail("didnt throw exception");
+		} catch (Exception e) {
+			// assert e == malformed exception
+		}
+	}
+
+	@Test
+	public void testPutReturnValue() {
+		Assignment a = new Assignment();
+		a.put("A", "a");
+		assertEquals("a", a.put("A", "b"));
+		assertNull(a.put("T", "t"));
+	}
+
+	@Test
+	public void testGetKeysMatchingAfterRemove() {
+		Assignment a = new Assignment();
+		a.put("A", "1");
+		a.put("AC", "2");
+		a.put("AT", "3");
+		a.put("AG", "F");
+		a.put("AAA", "F");
+		a.put("AAC", "F");
+		assertEquals(6, a.countKeysMatchingPrefix("A"));
+		a.remove("AAC");
+		assertEquals(5, a.countKeysMatchingPrefix("A"));
+
+	}
+
+	@Test
+	public void testPutReturnNull() {
+		Assignment a = new Assignment();
+		assertNull(a.put("A", "test"));
+		assertNotNull(a.put("A", "not null"));
+	}
+
+	@Test
+	public void testCountKeysMatchingExample() {
+		fail("not yet done");
+	}
+
+	@Test
+	public void testPutNullKey() {
+		Assignment a = new Assignment();
+		try {
+			a.put(null, "A");
+			fail("didnt throw exception");
+		} catch (Exception e) {
+			// assert e == illegal argument exception
+		}
+
+		try {
+			a.put("A", null);
+			fail("didnt throw exception");
+		} catch (Exception e) {
+			// assert e == illegal argument exception
+		}
+	}
+
+	@Test
+	public void testRemovePrefixDoesnNotBreakCounts() {
+		fail("not yet done");
+	}
+
+	@Test
+	public void testCountPrefixesExample() {
+		fail("not yet done");
+	}
+
+	@Test
+	public void testRemoveReturnValue() {
+		fail("not yet done");
+	}
+
+	@Test
+	public void testSumKeyLengthsExample() {
+		fail("not yet done");
+	}
+
+	@Test
+	public void testOverWriteKeyDoesNotBreakCounts() {
+		fail("not yet done");
+	}
+
+	@Test
+	public void testGetNullKey() {
+		Assignment a = new Assignment();
+		try {
+			a.get(null);
+			fail("didnt throw exception");
+		} catch (Exception e) {
+			// assert e == illegal argument exception
+		}
+
+	}
+
+	@Test
+	public void testPutMalformedKey() {
+		Assignment a = new Assignment();
+		try {
+			a.put("P", "A");
+			fail("didnt throw exception");
+		} catch (Exception e) {
+			// assert e == illegal argument exception
+		}
+
+	}
+
+	@Test
+	public void testMixOfPutGetRemove() {
+		fail("not yet done");
+	}
+
+	@Test
+	public void testRemoveNonExistentKeyDoesNotBreakCounts() {
+		Assignment a = new Assignment();
+		a.put("A", "1");
+		a.put("AC", "2");
+		a.put("AT", "3");
+		a.put("AG", "F");
+		a.put("AAA", "F");
+		a.put("AAC", "F");
+
+		assertEquals(6, a.countKeysMatchingPrefix("A"));
+		assertEquals(6, a.size());
+		assertEquals(7, a.countPrefixes());
+		assertEquals(7, a.sumKeyLengths());
+		fail("test these more");
+	}
+
+	@Test
+	public void testRemoveNullKey() {
+		Assignment a = new Assignment();
+		a.put("G", "G");
+		try {
+			a.remove(null);
+			fail("didnt throw exception");
+		} catch (Exception e) {
+			// assert e == malformed key exception
+		}
+	}
+
+	@Test
+	public void testGetMalformedKey() {
+		Assignment a = new Assignment();
+		a.put("G", "G");
+		try {
+			a.get("p");
+			fail("didnt throw exception");
+		} catch (Exception e) {
+			// assert e == malformed key exception
+		}
+	}
+
+	@Test
+	public void testRemoveReturnNull() {
+		Assignment a = new Assignment();
+		assertNull(a.remove("A"));
+	}
+
+	@Test
+	public void testGetExample() {
+		Assignment a = new Assignment();
+		a.put("A", "1");
+		a.put("ACAT", "2");
+		a.put("ACCCTGTCA", "3");
+		a.put("C", "4");
+		a.put("CAT", "5");
+		a.put("CATTAGAT", "6");
+		a.put("G", "7");
+		a.put("GATCGAT", "8");
+		a.put("T", "9");
+		a.put("TAGAGT", "10");
+
+		assertEquals("1", a.get("A"));
+		assertEquals("2", a.get("ACAT"));
+		assertEquals("3", a.get("ACCCTGTCA"));
+		assertEquals("4", a.get("C"));
+		assertEquals("5", a.get("CAT"));
+		assertEquals("6", a.get("CATTAGAT"));
+		assertEquals("7", a.get("G"));
+		assertEquals("8", a.get("GATCGAT"));
+		assertEquals("9", a.get("T"));
+		assertEquals("10", a.get("TAGAGT"));
+		assertNull(a.get("TAGAGCTGA"));
+	}
+
+	@Test
+	public void testRemovePrefixDoesNotBreakGet() {
+		Assignment a = new Assignment();
+		a.put("A", "1");
+		a.put("ACAT", "2");
+		a.put("ACCCTGTCA", "test");
+		assertEquals("2", a.remove("ACAT"));
+		assertEquals("test", a.get("ACCCTGTCA"));
+
+	}
+
+	@Test
+	public void testGetKeysMatchingExamle() {
+		Assignment a = new Assignment();
+		a.put("A", "1");
+		a.put("AC", "2");
+		a.put("ACCCTGTCA", "test");
+
+		List<String> list = a.getKeysMatchingPrefix("A");
+		assertEquals("A", list.get(0));
+		assertEquals("AC", list.get(1));
+		assertEquals("ACCCTGTCA", list.get(2));
+	}
+
+	@Test
+	public void testPutNullValue() {
+		Assignment a = new Assignment();
+		try {
+			a.put("A", null);
+			fail("didnt throw exception");
+		} catch (Exception e) {
+			// assert e == illegal argument exception
+		}
+	}
+
+	@Test
+	public void testRemoveMalformedKey() {
+		Assignment a = new Assignment();
+		try {
+			a.remove("K");
+			fail("didnt throw exception");
+		} catch (Exception e) {
+			// assert e == malformed key exception
+		}
+	}
+
+	@Test
+	public void countPrefixes() {
+		Assignment map = new Assignment();
+
+		map.put("GAT", "zzzz");
+		map.put("GATTACA", "zzzz");
+		map.put("GATTC", "zzzz");
+		assertEquals(8, map.countPrefixes());
+		map.remove("GATTACA");
+		assertEquals(5, map.countPrefixes());
+
+		Assignment m = new Assignment();
+		m.put("ACA", "a");
+		m.put("ACATA", "a");
+		assertEquals(5, m.countPrefixes());
+
+	}
+
+	@Test
+	public void testRemoveNstuff() {
+		Assignment DNAmodel = new Assignment();
+
+		DNAmodel.put("ACAC", "intron");
+		DNAmodel.put("ACACCCACCTGG", "rerograde virus");
+		assertEquals(12, DNAmodel.countPrefixes());
+		assertEquals(16, DNAmodel.sumKeyLengths());
+		DNAmodel.remove("ACACCCACCTGG");
+		assertEquals(4, DNAmodel.countPrefixes());
+		assertEquals(4, DNAmodel.sumKeyLengths());
+	}
+
+	@Test
+	public void testMoreRemove() {
+		Assignment a = new Assignment();
+		a.put("GATT", "x");
+		a.put("GATTC", "y");
+		a.put("GATTACA", "z");
+
+		assertEquals(8, a.countPrefixes());
+		a.remove("GATT");
+		assertEquals(8, a.countPrefixes());
+
+	}
 }
