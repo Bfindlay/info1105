@@ -1,7 +1,6 @@
 package assignment2;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Assignment implements PrefixMap {
@@ -130,10 +129,16 @@ public class Assignment implements PrefixMap {
 		}
 
 		public String remove(String key) {
+			if (get(key) != null) {
+				preFixLength -= key.length();
+			}
 			return remove(key, 0, this.root);
 		}
 
 		public String remove(String key, int i, Node current) {
+			if (i >= key.length()) {
+				return null;
+			}
 			int index = parseIndex(key.charAt(i));
 			Node[] nodes = current.getChildren();
 			if (nodes[index] != null) {
@@ -141,13 +146,11 @@ public class Assignment implements PrefixMap {
 				if (i + 1 >= key.length()) {
 					// Return the data at the last value of the string;
 					String oldData = current.getData();
-					current.setData(null);
 					Node parent = current.getParent();
+					removeAll(current.getParent());
 					current.setData(null);
 					current = null;
 					prefix--;
-					preFixLength--;
-					removeAll(parent);
 					return oldData;
 				}
 			}
@@ -155,8 +158,9 @@ public class Assignment implements PrefixMap {
 		}
 
 		public void removeAll(Node current) {
-			preFixLength--;
-			Node[] currents = current.getChildren();
+			if (current.getData() != null) {
+				return;
+			}
 			if (current.getData() == null) {
 				Node parent = current.getParent();
 				current.setData(null);
@@ -164,7 +168,6 @@ public class Assignment implements PrefixMap {
 				prefix--;
 				removeAll(parent);
 			}
-
 		}
 
 		public List<String> getKeys(String pre) {
@@ -174,29 +177,29 @@ public class Assignment implements PrefixMap {
 			if (s != null)
 				list.add(pre);
 			Node node = getNode(pre, 0, this.root);
-			return getKeys(pre, list, node, new String(), 0);
+			return getKeys(pre, list, node, new String());
 		}
 
-		public List<String> getKeys(String pre, List<String> list, Node current, String build,
-				int j) {
-			Node[] arr = current.getChildren();
-			for (int i = 0; i < arr.length; i++) {
-				Node e = arr[i];
-				build += getChar(i);
-				if (e != null) {
-					System.out.println(build);
-					if (e.getData() != null) {
-						list.add(build);
-						j += 1;
+		public List<String> getKeys(String pre, List<String> list, Node current, String build) {
+			if (current != null) {
+				Node[] arr = current.getChildren();
+				for (int i = 0; i < arr.length; i++) {
+					build = pre + getChar(i);
+					if (arr[i] != null) {
+						if (arr[i].getData() != null) {
+							list.add(build);
+						}
+						getKeys(build, list, arr[i], build);
 					}
-					getKeys(pre, list, e, build, j);
 				}
 			}
 			return list;
 		}
 
 		public Node getNode(String key, int i, Node current) {
-			// GA
+			if (key == "") {
+				return this.root;
+			}
 			int index = parseIndex(key.charAt(i));
 			Node[] nodes = current.getChildren();
 			if (nodes[index] != null) {
@@ -312,11 +315,14 @@ public class Assignment implements PrefixMap {
 	public List<String> getKeysMatchingPrefix(String prefix) {
 		if (prefix == null)
 			throw new IllegalArgumentException();
-		char[] c = prefix.toCharArray();
-		for (char b : c) {
+		for (char b : prefix.toCharArray()) {
 			trie.parseIndex(b);
 		}
-		return trie.getKeys(prefix);
+		List<String> list = trie.getKeys(prefix);
+		if (prefix == "") {
+			list.remove(list.indexOf(""));
+		}
+		return list;
 	}
 
 	@Override

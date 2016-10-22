@@ -134,28 +134,50 @@ public class AssignmentTest {
 
 		DNAmodel.put("ACAC", "intron");
 		DNAmodel.put("ACACCCACCTGG", "rerograde virus");
-		assertEquals(4 + 8, DNAmodel.countPrefixes());
-		assertEquals(4 + 12, DNAmodel.sumKeyLengths());
+		assertEquals(12, DNAmodel.countPrefixes());
+		assertEquals(16, DNAmodel.sumKeyLengths());
 		DNAmodel.remove("ACACCCACCTGG");
 		assertEquals(4, DNAmodel.countPrefixes());
 		assertEquals(4, DNAmodel.sumKeyLengths());
 	}
 
 	@Test
+	public void testRemoveSumKeys() {
+		Assignment a = new Assignment();
+		a.put("GAT", "g");
+		a.put("GATTC", "gg");
+		a.put("GATTACA", "ggg");
+		assertEquals(15, a.sumKeyLengths());
+		a.remove("GATTACA");
+		assertEquals(8, a.sumKeyLengths());
+	}
+
+	@Test
 	public void testGetKeysMatchingPrefix() {
 		Assignment a = new Assignment();
 		a.put("A", "1");
-		a.put("AA", "2");
-		a.put("AC", "3");
-		a.put("AG", "4");
-		a.put("AT", "5");
+		a.put("AC", "2");
+		a.put("AT", "3");
+		a.put("AG", "F");
+		a.put("AAA", "F");
+		a.put("AAC", "F");
+		a.put("ACT", "F");
+		a.put("AGT", "F");
+		a.put("AGA", "F");
+		a.put("ACTA", "F");
+		a.put("AGTA", "F");
+		a.put("AGTC", "F");
+		a.put("AGTG", "F");
 
-		List<String> test = a.getKeysMatchingPrefix("A");
+		List<String> test = a.getKeysMatchingPrefix("");
 		// assertEquals(1, test.size());
 		for (String s : test) {
-			// System.out.println(s);
+			System.out.println(s);
 		}
-		assertEquals(5, test.size());
+		assertEquals(13, test.size());
+
+		List<String> fail = a.getKeysMatchingPrefix("TTTT");
+		assertEquals(0, fail.size());
 
 	}
 
