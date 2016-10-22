@@ -122,6 +122,13 @@ public class AssignmentTest {
 	}
 
 	@Test
+	public void testRemoveCount() {
+		Assignment a = new Assignment();
+		assertEquals(0, a.countPrefixes());
+		assertEquals(0, a.sumKeyLengths());
+	}
+
+	@Test
 	public void testRemoveNstuff() {
 		Assignment DNAmodel = new Assignment();
 
@@ -138,26 +145,17 @@ public class AssignmentTest {
 	public void testGetKeysMatchingPrefix() {
 		Assignment a = new Assignment();
 		a.put("A", "1");
-		a.put("AT", "2");
-		// a.put("AC", "2");
-		// a.put("AT", "T");
-		// a.put("ACG", "3");
-		// a.put("ATT", "4");
-		// a.put("ACTA", "4");
-		// a.put("ACTA", "5");
-		// a.put("ACTT", "6");
+		a.put("AA", "2");
+		a.put("AC", "3");
+		a.put("AG", "4");
+		a.put("AT", "5");
+
 		List<String> test = a.getKeysMatchingPrefix("A");
 		// assertEquals(1, test.size());
 		for (String s : test) {
-			System.out.println(s);
+			// System.out.println(s);
 		}
-		// List<String> t = a.getKeysMatchingPrefix("G");
-		// for (String s : t) {
-		// System.out.println(t);
-		// }
-		// assertEquals(2, t.size());
-		// List<String> t2 = a.getKeysMatchingPrefix("ACT");
-		// assertEquals(3, t2.size());
+		assertEquals(5, test.size());
 
 	}
 
