@@ -78,7 +78,7 @@ public class Assignment implements PrefixMap {
 		}
 
 		private String add(String k, int i, Node[] nodes, String value, Node parent) {
-			this.preFixLength++;
+
 			int index = parseIndex(k.charAt(i));
 			if (nodes[index] != null) {
 				// Index was not null (Value existed)
@@ -146,12 +146,11 @@ public class Assignment implements PrefixMap {
 				if (i + 1 >= key.length()) {
 					// Return the data at the last value of the string;
 					String oldData = current.getData();
-					System.out.println(isExternal(current));
 					if (isExternal(current)) {
-						if (key.length() % 2 == 0) {
-							prefix--;
-						}
-						removeAll(current.getParent());
+						// if (key.length() % 2 == 0) {
+						// prefix--;
+						// }
+						removeAll(current.getParent(), current);
 					}
 					current.setData(null);
 					return oldData;
@@ -161,13 +160,30 @@ public class Assignment implements PrefixMap {
 		}
 
 		// Remove the prefixes when there are no nodes dependant on them
-		public void removeAll(Node current) {
+		public void removeAll(Node current, Node prev) {
+			System.out.println("count");
+
 			if (current.getData() == null) {
+				prefix--;
 				Node parent = current.getParent();
 				current.setData(null);
 				current = null;
+
+				removeAll(parent, current);
+			} else {
 				prefix--;
-				removeAll(parent);
+				// Remove the children from the data node to remove all links
+				if (current.getParent() != null) {
+					Node parent = current.getParent();
+					Node[] arr = parent.getChildren();
+					for (int i = 0; i < 4; i++) {
+						System.out.println(arr[i]);
+						if (arr[i] == prev) {
+							System.out.println("found the node");
+							arr[i] = null;
+						}
+					}
+				}
 			}
 		}
 
@@ -352,7 +368,8 @@ public class Assignment implements PrefixMap {
 
 	@Override
 	public int sumKeyLengths() {
-		return trie.prefixSum();
+		// LOL DONT ASK.....
+		return String.join("", this.getKeysMatchingPrefix("")).length();
 	}
 
 }

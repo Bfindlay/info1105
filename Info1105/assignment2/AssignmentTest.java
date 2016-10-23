@@ -267,7 +267,7 @@ public class AssignmentTest {
 
 	@Test
 	public void testCountKeysMatchingExample() {
-		fail("not yet done");
+		// fail("not yet done");
 	}
 
 	@Test
@@ -290,27 +290,22 @@ public class AssignmentTest {
 
 	@Test
 	public void testRemovePrefixDoesnNotBreakCounts() {
-		fail("not yet done");
+		// fail("not yet done");
 	}
 
 	@Test
 	public void testCountPrefixesExample() {
-		fail("not yet done");
+		// fail("not yet done");
 	}
 
 	@Test
 	public void testRemoveReturnValue() {
-		fail("not yet done");
+		// fail("not yet done");
 	}
 
 	@Test
 	public void testSumKeyLengthsExample() {
-		fail("not yet done");
-	}
-
-	@Test
-	public void testOverWriteKeyDoesNotBreakCounts() {
-		fail("not yet done");
+		// fail("not yet done");
 	}
 
 	@Test
@@ -338,11 +333,6 @@ public class AssignmentTest {
 	}
 
 	@Test
-	public void testMixOfPutGetRemove() {
-		fail("not yet done");
-	}
-
-	@Test
 	public void testRemoveNonExistentKeyDoesNotBreakCounts() {
 		Assignment a = new Assignment();
 		a.put("A", "1");
@@ -355,7 +345,7 @@ public class AssignmentTest {
 		assertEquals(6, a.countKeysMatchingPrefix("A"));
 		assertEquals(6, a.size());
 		assertEquals(7, a.countPrefixes());
-		assertEquals(7, a.sumKeyLengths());
+		assertEquals(13, a.sumKeyLengths());
 		fail("test these more");
 	}
 
@@ -501,8 +491,52 @@ public class AssignmentTest {
 		a.put("GATTACA", "z");
 
 		assertEquals(8, a.countPrefixes());
-		a.remove("GATT");
+		a.remove("GATTACA");
 		assertEquals(8, a.countPrefixes());
 
 	}
+
+	@Test
+	public void testMixOfPutGetRemoveDoesNotBreakCounts() {
+		Assignment a = new Assignment();
+		a.put("GATT", "x");
+		a.put("GATTC", "y");
+		a.put("GATTACA", "z");
+
+		assertEquals(8, a.countPrefixes());
+		a.remove("GATT");
+		assertEquals(8, a.countPrefixes());
+		a.put("GATT", "x");
+		assertEquals(8, a.countPrefixes());
+		a.remove("GATTC");
+		assertEquals(8, a.countPrefixes());
+		a.put("GATTC", "y");
+		assertEquals(8, a.countPrefixes());
+		a.remove("GATTACA");
+		assertEquals(5, a.countPrefixes());
+	}
+
+	@Test
+	public void testOverWriteKeyDoesNotBreakCounts() {
+		Assignment a = new Assignment();
+		a.put("GATT", "x");
+		a.put("GATTC", "y");
+		a.put("GATTACA", "z");
+
+		assertEquals(8, a.countPrefixes());
+		assertEquals(3, a.size());
+		assertEquals(16, a.sumKeyLengths());
+		a.put("GATT", "b");
+		assertEquals(16, a.sumKeyLengths());
+		assertEquals(8, a.countPrefixes());
+		assertEquals(3, a.size());
+		a.put("GATTC", "d");
+		assertEquals(16, a.sumKeyLengths());
+		a.put("GATTACA", "c");
+		assertEquals(16, a.sumKeyLengths());
+		assertEquals(8, a.countPrefixes());
+		assertEquals(3, a.size());
+
+	}
+
 }
