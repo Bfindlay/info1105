@@ -147,9 +147,9 @@ public class Assignment implements PrefixMap {
 					// Return the data at the last value of the string;
 					String oldData = current.getData();
 					if (isExternal(current)) {
-						// if (key.length() % 2 == 0) {
-						// prefix--;
-						// }
+						if (key.length() % 2 == 0) {
+							prefix--;
+						}
 						removeAll(current.getParent(), current);
 					}
 					current.setData(null);
@@ -161,18 +161,15 @@ public class Assignment implements PrefixMap {
 
 		// Remove the prefixes when there are no nodes dependant on them
 		public void removeAll(Node current, Node prev) {
-			System.out.println("count");
-
 			if (current.getData() == null) {
-				prefix--;
 				Node parent = current.getParent();
 				current.setData(null);
-				current = null;
-
+				// current = null;
+				prefix--;
 				removeAll(parent, current);
 			} else {
-				prefix--;
 				// Remove the children from the data node to remove all links
+				System.out.println("data" + current.getData());
 				if (current.getParent() != null) {
 					Node parent = current.getParent();
 					Node[] arr = parent.getChildren();
@@ -368,8 +365,9 @@ public class Assignment implements PrefixMap {
 
 	@Override
 	public int sumKeyLengths() {
-		// LOL DONT ASK.....
 		return String.join("", this.getKeysMatchingPrefix("")).length();
+		// System.out.println(count);
+		// return trie.prefixSum();
 	}
 
 }

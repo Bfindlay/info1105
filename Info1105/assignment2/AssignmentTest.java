@@ -103,6 +103,18 @@ public class AssignmentTest {
 	}
 
 	@Test
+	public void testMoreRemoves() {
+		Assignment a = new Assignment();
+		a.put("GATT", "gatt");
+		a.put("GATTC", "gattc");
+		a.put("GATTACA", "gattaca");
+
+		a.remove("GATTACA");
+		assertEquals(2, a.size());
+		assertEquals(5, a.countPrefixes());
+	}
+
+	@Test
 	public void testGetRemove() {
 		Assignment a = new Assignment();
 		a.put("ACGT", "John");
@@ -294,6 +306,32 @@ public class AssignmentTest {
 	}
 
 	@Test
+	public void testRemovePrefixDoesnNotBreakGet() {
+		Assignment a = new Assignment();
+		a.put("GATT", "gatt");
+		a.put("GATTC", "gattc");
+		a.put("GATTACA", "gattaca");
+
+		// a.remove("GATTACA");
+		// assertEquals(2, a.size());
+		// assertEquals(5, a.countPrefixes());
+		// assertEquals("gatt", a.get("GATT"));
+		// assertEquals("gattc", a.get("GATTC"));
+		// a.put("GATTACA", "gattaca");
+		// assertEquals(3, a.size());
+		// assertEquals(8, a.countPrefixes());
+		a.remove("GATTC");
+		assertEquals("gatt", a.get("GATT"));
+		assertEquals("gattaca", a.get("GATTACA"));
+		a.put("GAT", "gat");
+		// a.remove("GATT");
+		assertEquals("gattaca", a.get("GATTACA"));
+		// assertEquals("gattc", a.get("GATTC"));
+		assertEquals("gattaca", a.get("GATTACA"));
+
+	}
+
+	@Test
 	public void testCountPrefixesExample() {
 		// fail("not yet done");
 	}
@@ -329,7 +367,6 @@ public class AssignmentTest {
 		} catch (Exception e) {
 			// assert e == illegal argument exception
 		}
-
 	}
 
 	@Test
@@ -346,7 +383,12 @@ public class AssignmentTest {
 		assertEquals(6, a.size());
 		assertEquals(7, a.countPrefixes());
 		assertEquals(13, a.sumKeyLengths());
-		fail("test these more");
+		a.remove("ACACA");
+		assertEquals(6, a.countKeysMatchingPrefix("A"));
+		assertEquals(6, a.size());
+		assertEquals(7, a.countPrefixes());
+		assertEquals(13, a.sumKeyLengths());
+
 	}
 
 	@Test
@@ -409,9 +451,10 @@ public class AssignmentTest {
 	@Test
 	public void testRemovePrefixDoesNotBreakGet() {
 		Assignment a = new Assignment();
-		a.put("A", "1");
+		a.put("AGA", "1");
 		a.put("ACAT", "2");
 		a.put("ACCCTGTCA", "test");
+		assertEquals("test", a.get("ACCCTGTCA"));
 		assertEquals("2", a.remove("ACAT"));
 		assertEquals("test", a.get("ACCCTGTCA"));
 
@@ -453,15 +496,26 @@ public class AssignmentTest {
 	}
 
 	@Test
+	public void basicCount() {
+		Assignment a = new Assignment();
+		a.put("GAT", "g");
+		assertEquals(3, a.countPrefixes());
+		a.put("GATACA", "g");
+		assertEquals(6, a.countPrefixes());
+		a.put("GAC", "gac");
+		assertEquals(7, a.countPrefixes());
+	}
+
+	@Test
 	public void countPrefixes() {
 		Assignment map = new Assignment();
 
-		map.put("GAT", "zzzz");
-		map.put("GATTACA", "zzzz");
-		map.put("GATTC", "zzzz");
+		map.put("GAT", "GAT");
+		map.put("GATTACA", "GATTACA");
+		map.put("GATTC", "GATTC");
 		assertEquals(8, map.countPrefixes());
 		map.remove("GATTACA");
-		assertEquals(5, map.countPrefixes());
+		assertEquals(5, map.countPrefixes()); //
 
 		Assignment m = new Assignment();
 		m.put("ACA", "a");
@@ -489,29 +543,33 @@ public class AssignmentTest {
 		a.put("GATT", "x");
 		a.put("GATTC", "y");
 		a.put("GATTACA", "z");
+		a.put("GATTACA", "z");
 
 		assertEquals(8, a.countPrefixes());
 		a.remove("GATTACA");
-		assertEquals(8, a.countPrefixes());
+		assertEquals(5, a.countPrefixes());
 
 	}
 
 	@Test
 	public void testMixOfPutGetRemoveDoesNotBreakCounts() {
 		Assignment a = new Assignment();
-		a.put("GATT", "x");
-		a.put("GATTC", "y");
-		a.put("GATTACA", "z");
+		a.put("GATT", "GATT");
+		a.put("GATTC", "GATTC");
+		a.put("GATTACA", "GATTACA");
 
 		assertEquals(8, a.countPrefixes());
 		a.remove("GATT");
 		assertEquals(8, a.countPrefixes());
-		a.put("GATT", "x");
+		a.put("GATT", "xGATT");
 		assertEquals(8, a.countPrefixes());
 		a.remove("GATTC");
+		assertEquals(7, a.countPrefixes());
+		System.out.println(a.put("GATTC", "yGATTC"));
+		assertNotNull(a.put("GATTC", "yGATTC"));
+		assertEquals("yGATTC", a.get("GATTC"));
 		assertEquals(8, a.countPrefixes());
-		a.put("GATTC", "y");
-		assertEquals(8, a.countPrefixes());
+		System.out.println("remove gattaca");
 		a.remove("GATTACA");
 		assertEquals(5, a.countPrefixes());
 	}
@@ -537,6 +595,24 @@ public class AssignmentTest {
 		assertEquals(8, a.countPrefixes());
 		assertEquals(3, a.size());
 
+	}
+
+	@Test
+	public void testRemove2() {
+		// Let's say you initialise a new Assignment trie, as such:
+		Assignment aTrie = new Assignment();
+
+		// Then you put in a key that is 15 characters long, and another that is
+		// 12
+		// characters long.
+		aTrie.put("GATGATGATGATGAT", "Watson");
+		aTrie.put("GATGATGATGAT", "Crick");
+
+		// Now you call the remove method on the 15-letter long key.
+		aTrie.remove("GATGATGATGATGAT");
+
+		// You expect the only remaining key to be GATGATGATGAT
+		assertEquals(12, aTrie.countPrefixes());
 	}
 
 }
