@@ -3,14 +3,19 @@ package assignment2;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 
+ * @author Brett Findlay
+ * @SID 450258163
+ *
+ */
 public class Assignment implements PrefixMap {
 
-	// TODO implement a nested Node class for your linked tree structure
+	/*** TRIE DATA STRUCTURE ***/
 	private class Trie {
 
 		/********** NESTED NODE CLASS ************/
 		protected class Node {
-			// TODO implement this
 			private Node[] children;
 			private String data;
 			private Node parent;
@@ -21,22 +26,44 @@ public class Assignment implements PrefixMap {
 				this.parent = null;
 			}
 
+			/**
+			 * 
+			 * @return the children of the current node
+			 */
 			public Node[] getChildren() {
 				return this.children;
 			}
 
+			/**
+			 * 
+			 * @return data of a current node, or null
+			 */
 			public String getData() {
 				return this.data;
 			}
 
-			public void setData(String d) {
-				this.data = d;
+			/**
+			 * 
+			 * @param d
+			 *            Sets the nodes data to the paramater given
+			 */
+			public void setData(String data) {
+				this.data = data;
 			}
 
+			/**
+			 * 
+			 * @return the parent of the current node
+			 */
 			public Node getParent() {
 				return this.parent;
 			}
 
+			/**
+			 * 
+			 * @param node
+			 *            Sets the parent of a node to a Node
+			 */
 			public void setParent(Node node) {
 				this.parent = node;
 			}
@@ -49,6 +76,9 @@ public class Assignment implements PrefixMap {
 		private int prefix;
 		private int preFixLength;
 
+		/**
+		 * Initializes an empty Trie data structure of size 0
+		 */
 		public Trie() {
 			this.root = new Node();
 			this.size = 0;
@@ -57,14 +87,23 @@ public class Assignment implements PrefixMap {
 			this.root.setData("");
 		}
 
+		/**
+		 * 
+		 * @return the number of key/value pairs input to the trie
+		 */
 		public int size() {
 			return this.size;
 		}
 
-		public int prefixSum() {
-			return this.preFixLength;
-		}
-
+		/**
+		 * 
+		 * @param key
+		 *            The data to be added as key in the tri (or the prefix)
+		 * @param value
+		 *            The data to be set as the value of the string
+		 * @return Null if the entry did not exist, or data if data was
+		 *         overwritten
+		 */
 		public String add(String key, String value) {
 			if (key == null || value == null)
 				throw new IllegalArgumentException();
@@ -77,6 +116,9 @@ public class Assignment implements PrefixMap {
 
 		}
 
+		/**
+		 * Recursive helper function for add method
+		 */
 		private String add(String k, int i, Node[] nodes, String value, Node parent) {
 
 			int index = parseIndex(k.charAt(i));
@@ -88,6 +130,7 @@ public class Assignment implements PrefixMap {
 					String oldData = current.getData();
 					// Set new data
 					current.setData(value);
+					// return the data that was replaced
 					return oldData;
 				}
 				return add(k, i += 1, nodes[index].getChildren(), value, parent);
@@ -106,12 +149,25 @@ public class Assignment implements PrefixMap {
 			}
 		}
 
+		/**
+		 * 
+		 * @param key
+		 *            String to query the trie with
+		 * @return the data associated with the string, or null if it doesnt
+		 *         exist
+		 */
 		public String get(String key) {
 			if (key.toCharArray().length == 0)
 				return this.root.getData();
 			return get(key, 0, this.root);
 		}
 
+		/**
+		 * Recursive helper function to traverse the sub tries to find the data
+		 * of the query string
+		 * 
+		 * @return the Data or null if none is found
+		 */
 		private String get(String key, int i, Node current) {
 
 			int index = parseIndex(key.charAt(i));
@@ -128,6 +184,12 @@ public class Assignment implements PrefixMap {
 
 		}
 
+		/**
+		 * 
+		 * @param key
+		 *            prefix of the data to be removed from the Trie
+		 * @return the data that is removed, or null if no value was removed
+		 */
 		public String remove(String key) {
 			if (get(key) != null) {
 				preFixLength -= key.length();
@@ -135,6 +197,10 @@ public class Assignment implements PrefixMap {
 			return remove(key, 0, this.root);
 		}
 
+		/**
+		 * Recursive helper function to search each subtrie to find the data
+		 * that is associated with the prefix
+		 */
 		public String remove(String key, int i, Node current) {
 			if (i >= key.length()) {
 				return null;
@@ -159,7 +225,13 @@ public class Assignment implements PrefixMap {
 			return remove(key, i += 1, current);
 		}
 
-		// Remove the prefixes when there are no nodes dependant on them
+		/**
+		 * Recursive function used to trail back up the trie to remove the child
+		 * node from its parent
+		 * 
+		 * @param current
+		 * @param prev
+		 */
 		public void removeAll(Node current, Node prev) {
 			if (current.getData() == null) {
 				Node parent = current.getParent();
@@ -184,6 +256,13 @@ public class Assignment implements PrefixMap {
 			}
 		}
 
+		/**
+		 * Function used to identify if any given node is internal to the trie
+		 * or if it has no further children dependencies
+		 * 
+		 * @param node
+		 * @return true if it is external node, else returns false
+		 */
 		public boolean isExternal(Node node) {
 			if (node == null || node.getChildren() == null)
 				return true;
@@ -199,8 +278,14 @@ public class Assignment implements PrefixMap {
 			return true;
 		}
 
+		/**
+		 * Returns the List of keys matching the prefix input
+		 * 
+		 * @param pre
+		 *            The prefix to search for
+		 * @return List of prefixes, or an empty lsit if none exist
+		 */
 		public List<String> getKeys(String pre) {
-
 			List<String> list = new ArrayList<String>();
 			String s = get(pre);
 			if (s != null)
@@ -209,11 +294,19 @@ public class Assignment implements PrefixMap {
 			return getKeys(pre, list, node, new String());
 		}
 
+		/**
+		 * Recursive helper function to search each subtrie to find each prefix
+		 */
 		public List<String> getKeys(String pre, List<String> list, Node current, String build) {
 			if (current != null) {
 				Node[] arr = current.getChildren();
+				// Search each node cell of the current node
 				for (int i = 0; i < arr.length; i++) {
+					// Append the current levels common prefix to the prefix
+					// obtained from the current cell
 					build = pre + getChar(i);
+					// Check if data is present in the cell, and then recursivly
+					// traverse down the sub trie
 					if (arr[i] != null) {
 						if (arr[i].getData() != null) {
 							list.add(build);
@@ -225,6 +318,9 @@ public class Assignment implements PrefixMap {
 			return list;
 		}
 
+		/**
+		 * Helper function used to obtain the node from any level of the trie
+		 */
 		public Node getNode(String key, int i, Node current) {
 			if (key == "") {
 				return this.root;
@@ -242,6 +338,12 @@ public class Assignment implements PrefixMap {
 			return null;
 		}
 
+		/**
+		 * Parses a character into its corresponding array index
+		 * 
+		 * @param k
+		 *            Character to be parsed into integer
+		 */
 		public int parseIndex(char k) {
 			switch (k) {
 			case 'A':
@@ -258,6 +360,8 @@ public class Assignment implements PrefixMap {
 			}
 		}
 
+		// Returns the character that is relevent to the index of the ith array
+		// cell
 		public char getChar(int i) {
 			switch (i) {
 			case 0:
@@ -274,15 +378,14 @@ public class Assignment implements PrefixMap {
 			}
 		}
 
+		/**
+		 * returns the number of prefix in the trie
+		 */
 		public int countPrefix() {
 			return this.prefix;
 		}
 
 	}
-
-	/*
-	 * The default constructor will be called by the tests on Ed
-	 */
 
 	private Trie trie;
 
@@ -290,16 +393,25 @@ public class Assignment implements PrefixMap {
 		trie = new Trie();
 	}
 
+	/**
+	 * returns the number of key value pairs in the trie
+	 */
 	@Override
 	public int size() {
 		return trie.size();
 	}
 
+	/**
+	 * returns true or false depending on the trie state
+	 */
 	@Override
 	public boolean isEmpty() {
 		return (trie.size == 0);
 	}
 
+	/**
+	 * returns the value assosciated with the key, or null
+	 */
 	@Override
 	public String get(String key) {
 		if (key == null)
@@ -311,6 +423,9 @@ public class Assignment implements PrefixMap {
 		return trie.get(key);
 	}
 
+	/**
+	 * adds the key value pair to the trie structure
+	 */
 	@Override
 	public String put(String key, String value) {
 		if (key == null || value == null)
@@ -323,6 +438,9 @@ public class Assignment implements PrefixMap {
 
 	}
 
+	/**
+	 * removes the key from the trie structure if it exists
+	 */
 	@Override
 	public String remove(String key) {
 		if (key == null)
@@ -366,8 +484,6 @@ public class Assignment implements PrefixMap {
 	@Override
 	public int sumKeyLengths() {
 		return String.join("", this.getKeysMatchingPrefix("")).length();
-		// System.out.println(count);
-		// return trie.prefixSum();
 	}
 
 }
